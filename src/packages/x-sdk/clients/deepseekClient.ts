@@ -41,7 +41,7 @@ export class DeepSeekClient {
      */
     async *chatStream(
         messages: ChatMessage[],
-        modelConfig: ModelConfig
+        _modelConfig: ModelConfig
     ): AsyncGenerator<StreamChunk> {
         // Mock streaming implementation
         const chunks = [

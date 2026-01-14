@@ -11,7 +11,7 @@ import { ChatSkeleton } from '@/components/LoadingSkeletons';
 export default function ChatPage() {
     const [isChatActive, setIsChatActive] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [messages, setMessages] = useState([
+    const [messages] = useState([
         { role: 'assistant', content: 'Halo! Saya Elysian AI Assistant. Ada yang bisa saya bantu terkait dokumen atau data Anda hari ini?' }
     ]);
 

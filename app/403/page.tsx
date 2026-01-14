@@ -10,7 +10,7 @@ export default function ForbiddenPage() {
             </div>
             <h1 className="text-4xl font-bold tracking-tight lg:text-5xl mb-4">403 Forbidden</h1>
             <p className="text-xl text-muted-foreground mb-8 max-w-[600px]">
-                Sorry, you don't have permission to access this page. Please contact your administrator if you believe this is an error.
+                Sorry, you don&apos;t have permission to access this page. Please contact your administrator if you believe this is an error.
             </p>
             <Link href="/dashboard">
                 <Button size="lg">Back to Dashboard</Button>

@@ -15,7 +15,7 @@ export interface ChatMessage {
     role: MessageRole;
     content: string;
     timestamp: Date;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
 }
 
 /**
@@ -24,7 +24,7 @@ export interface ChatMessage {
 export interface StreamChunk {
     content: string;
     done: boolean;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
 }
 
 /**
@@ -115,7 +115,7 @@ export interface WorkflowNodeConfig {
     type: WorkflowNodeType;
     label: string;
     position: { x: number; y: number };
-    data: Record<string, any>;
+    data: Record<string, unknown>;
     status?: WorkflowNodeStatus;
 }
 
@@ -129,7 +129,7 @@ export interface WorkflowEdge {
     sourceHandle?: string;
     targetHandle?: string;
     animated?: boolean;
-    style?: Record<string, any>;
+    style?: Record<string, unknown>;
 }
 
 /**
@@ -147,7 +147,7 @@ export interface PipelineItem {
     progress?: number;
     eta?: string;
     lastUpdated: Date;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
 }
 
 /**
@@ -162,7 +162,7 @@ export interface KnowledgeSource {
     embeddingModel: string;
     chunkCount: number;
     lastSync?: Date;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
 }
 
 /**

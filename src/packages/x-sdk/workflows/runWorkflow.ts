@@ -1,15 +1,14 @@
-import type { WorkflowNodeConfig, WorkflowEdge, WorkflowNodeStatus } from './workflowTypes';
 
 /**
  * Workflow execution options
  */
 export interface RunWorkflowOptions {
     workflowId: string;
-    inputs: Record<string, any>;
+    inputs: Record<string, unknown>;
     onNodeStart?: (nodeId: string) => void;
-    onNodeComplete?: (nodeId: string, output: any) => void;
+    onNodeComplete?: (nodeId: string, output: unknown) => void;
     onNodeError?: (nodeId: string, error: Error) => void;
-    onComplete?: (outputs: Record<string, any>) => void;
+    onComplete?: (outputs: Record<string, unknown>) => void;
     onError?: (error: Error) => void;
 }
 
@@ -19,7 +18,7 @@ export interface RunWorkflowOptions {
 export interface WorkflowResult {
     workflowId: string;
     status: 'success' | 'failed' | 'partial';
-    outputs: Record<string, any>;
+    outputs: Record<string, unknown>;
     executionTime: number;
     nodesExecuted: string[];
     errors?: Array<{ nodeId: string; error: string }>;
@@ -32,7 +31,7 @@ export interface WorkflowResult {
  * @returns Workflow execution result
  */
 export async function runWorkflow(options: RunWorkflowOptions): Promise<WorkflowResult> {
-    const { workflowId, inputs, onNodeStart, onNodeComplete, onComplete, onError } = options;
+    const { workflowId, onNodeStart, onNodeComplete, onComplete, onError } = options;
 
     const startTime = Date.now();
     const nodesExecuted: string[] = [];
