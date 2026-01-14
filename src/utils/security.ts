@@ -34,6 +34,7 @@ export function sanitizeInput(input: string): string {
 /**
  * Mask sensitive data in logs
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function maskSensitiveData(data: any): any {
     if (typeof data !== 'object' || data === null) return data;
 
