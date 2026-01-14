@@ -79,7 +79,7 @@ export function LandingNavbar() {
     );
 }
 
-function MobileMenuItem({ icon: Icon, label, href, active }: { icon: any, label: string, href: string, active?: boolean }) {
+function MobileMenuItem({ icon: Icon, label, href, active }: { icon: React.ElementType, label: string, href: string, active?: boolean }) {
     return (
         <Link href={href}>
             <div className={cn(

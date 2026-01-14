@@ -1,4 +1,4 @@
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
     data: T;
     status: number;
     message?: string;
@@ -7,7 +7,7 @@ export interface ApiResponse<T = any> {
 export interface ApiError {
     message: string;
     code?: string;
-    details?: any;
+    details?: unknown;
 }
 
 export interface PaginationParams {
@@ -15,7 +15,7 @@ export interface PaginationParams {
     pageSize: number;
 }
 
-export interface PaginatedResponse<T = any> {
+export interface PaginatedResponse<T = unknown> {
     data: T[];
     total: number;
     page: number;
