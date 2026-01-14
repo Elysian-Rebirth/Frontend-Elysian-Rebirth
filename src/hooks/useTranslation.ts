@@ -1,0 +1,15 @@
+'use client';
+
+import { useI18n } from '@enterprise-ai/x';
+import { getTranslations, type SupportedLocale } from '@/locales';
+import { useMemo } from 'react';
+
+export function useTranslation() {
+    const { locale } = useI18n();
+
+    const t = useMemo(() => {
+        return getTranslations(locale as SupportedLocale);
+    }, [locale]);
+
+    return { t, locale };
+}
