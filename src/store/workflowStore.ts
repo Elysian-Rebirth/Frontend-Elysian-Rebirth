@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Node, Edge, OnNodesChange, OnEdgesChange } from 'reactflow';
+import type { Node, Edge } from 'reactflow';
 
 interface WorkflowState {
   nodes: Node[];
@@ -10,7 +10,7 @@ interface WorkflowState {
   setNodes: (nodes: Node[]) => void;
   setEdges: (edges: Edge[]) => void;
   addNode: (node: Node) => void;
-  updateNode: (id: string, data: any) => void;
+  updateNode: (id: string, data: Record<string, unknown>) => void;
   deleteNode: (id: string) => void;
   setSelectedNode: (node: Node | null) => void;
   saveWorkflow: () => Promise<void>;
@@ -27,7 +27,7 @@ export const useWorkflowStore = create<WorkflowState>()(
       isDirty: false,
 
       setNodes: (nodes) => set({ nodes, isDirty: true }),
-      
+
       setEdges: (edges) => set({ edges, isDirty: true }),
 
       addNode: (node) =>

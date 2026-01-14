@@ -8,13 +8,13 @@ export interface LoginRequest {
 export interface ChatMessageRequest {
     message: string;
     conversationId?: string;
-    context?: Record<string, any>;
+    context?: Record<string, unknown>;
 }
 
 export interface RagQueryRequest {
     query: string;
     topK?: number;
-    filters?: Record<string, any>;
+    filters?: Record<string, unknown>;
 }
 
 export interface DocumentSaveRequest {
@@ -25,5 +25,5 @@ export interface DocumentSaveRequest {
 
 export interface WorkflowExecuteRequest {
     workflowId: string;
-    inputs: Record<string, any>;
+    inputs: Record<string, unknown>;
 }

@@ -8,7 +8,7 @@ export interface ActivityEvent {
   description: string;
   timestamp: number;
   userId?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 interface ActivityState {

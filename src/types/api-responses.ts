@@ -1,6 +1,6 @@
 // API Response Types
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
     success: boolean;
     data?: T;
     error?: ApiError;
@@ -10,7 +10,7 @@ export interface ApiResponse<T = any> {
 export interface ApiError {
     code: string;
     message: string;
-    details?: any;
+    details?: unknown;
     timestamp?: string;
 }
 
@@ -20,7 +20,7 @@ export interface ResponseMeta {
     version?: string;
 }
 
-export interface PaginatedResponse<T = any> {
+export interface PaginatedResponse<T = unknown> {
     data: T[];
     pagination: {
         page: number;
@@ -57,7 +57,7 @@ export interface RagQueryResponse {
         content: string;
         source: string;
         score: number;
-        metadata: Record<string, any>;
+        metadata: Record<string, unknown>;
     }>;
     total: number;
     latency: number;
@@ -77,6 +77,6 @@ export interface WorkflowExecutionResponse {
     executionId: string;
     status: 'pending' | 'running' | 'completed' | 'failed';
     progress: number;
-    outputs?: Record<string, any>;
+    outputs?: Record<string, unknown>;
     error?: string;
 }
