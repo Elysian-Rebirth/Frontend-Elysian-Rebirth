@@ -13,9 +13,9 @@ export const ragSourceSchema = z.object({
 });
 
 export const ragQuerySchema = z.object({
-    query: z.string().min(1, 'Query cannot be empty').max(1000),
+    query: z.string().min(1, 'Query cannot be empty').max(1000, 'Query cannot exceed 1000 characters'),
     topK: z.number().min(1).max(100).optional().default(10),
-    filters: z.record(z.any()).optional(),
+    filters: z.record(z.string(), z.any()).optional(),
 });
 
 export const ragResultSchema = z.object({
@@ -23,7 +23,7 @@ export const ragResultSchema = z.object({
     content: z.string(),
     source: z.string(),
     score: z.number(),
-    metadata: z.record(z.any()),
+    metadata: z.record(z.string(), z.any()),
 });
 
 export const ragQueryResponseSchema = z.object({

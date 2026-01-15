@@ -4,9 +4,9 @@ import { Skeleton } from '@/ui/primitives/skeleton';
 import { Card, CardContent, CardHeader } from '@/ui/primitives/card';
 
 // Helper for consistent shimmering effect
-function ShimmerBlock({ className }: { className?: string }) {
+function ShimmerBlock({ className, style }: { className?: string, style?: React.CSSProperties }) {
     return (
-        <Skeleton className={`bg-slate-200/60 animate-pulse ${className}`} />
+        <Skeleton className={`bg-slate-200/60 animate-pulse ${className}`} style={style} />
     );
 }
 

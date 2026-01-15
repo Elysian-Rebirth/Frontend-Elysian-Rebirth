@@ -136,7 +136,7 @@ export default function DebugConsolePage() {
                                         <AccordionItem key={idx} value={`event-${idx}`}>
                                             <AccordionTrigger>
                                                 <div className="flex items-center gap-4 text-sm">
-                                                    <Badge variant={event.type === 'error' ? 'destructive' : 'outline'}>
+                                                    <Badge variant={event.type === 'error.occurred' ? 'destructive' : 'outline'}>
                                                         {event.type}
                                                     </Badge>
                                                     <span className="text-muted-foreground">

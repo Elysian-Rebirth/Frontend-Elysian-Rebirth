@@ -11,9 +11,9 @@ export const chatMessageSchema = z.object({
 });
 
 export const sendMessageSchema = z.object({
-    message: z.string().min(1, 'Message cannot be empty').max(10000),
+    message: z.string().min(1, 'Message cannot be empty').max(10000, 'Message cannot exceed 10000 characters'),
     conversationId: z.string().optional(),
-    context: z.record(z.any()).optional(),
+    context: z.record(z.string(), z.any()).optional(),
 });
 
 export const chatHistorySchema = z.array(chatMessageSchema);

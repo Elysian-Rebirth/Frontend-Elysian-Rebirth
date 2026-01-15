@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import type { Attachment } from '../types';
-import { Input, Button, Space, Upload, message } from 'antd';
+import { Input, Button, Space, Upload } from 'antd';
 import { SendOutlined, PaperClipOutlined, AudioOutlined } from '@ant-design/icons';
 import type { UploadFile } from 'antd';
 

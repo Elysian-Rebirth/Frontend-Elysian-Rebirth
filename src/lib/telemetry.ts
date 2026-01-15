@@ -11,6 +11,7 @@ type EventType =
     | 'workflow.execute'
     | 'user.login'
     | 'user.logout'
+    | 'user.debug'
     | 'error.occurred';
 
 interface TelemetryEvent {

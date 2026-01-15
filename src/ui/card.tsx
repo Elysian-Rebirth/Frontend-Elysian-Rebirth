@@ -84,3 +84,5 @@ export {
   CardDescription,
   CardContent,
 };
+
+export type CardProps = React.HTMLAttributes<HTMLDivElement>;

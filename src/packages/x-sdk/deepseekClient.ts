@@ -1,4 +1,4 @@
-import type { ChatMessage, ModelConfig, StreamChunk } from '../types';
+import type { ChatMessage, ModelConfig, StreamChunk } from './types';
 
 /**
  * DeepSeek Client configuration

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { ThoughtStep } from '../types';
+import type { ThoughtStep } from './types';
 import { Steps, Spin, Typography } from 'antd';
 import { LoadingOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 

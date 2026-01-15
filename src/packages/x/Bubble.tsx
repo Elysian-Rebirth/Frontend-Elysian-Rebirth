@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import type { ChatMessage } from '../types';
+import type { ChatMessage } from './types';
 // Note: AiMarkdown import commented out to avoid circular dependency during build
 // import { AiMarkdown } from '@enterprise-ai/x-markdown';
 import { Avatar } from 'antd';

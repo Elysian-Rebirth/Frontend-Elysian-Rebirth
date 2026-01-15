@@ -75,6 +75,7 @@ export const Attachments: React.FC<AttachmentsProps> = ({
                             !readonly && onRemove
                                 ? [
                                     <Button
+                                        key="delete"
                                         type="text"
                                         size="small"
                                         danger

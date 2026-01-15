@@ -69,7 +69,7 @@ export function RagSources({ sources, onUpload }: RagSourcesProps) {
                                                 {source.status}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell>{new Date(source.createdAt).toLocaleDateString()}</TableCell>
+                                        <TableCell>{new Date(source.uploadedAt).toLocaleDateString()}</TableCell>
                                         <TableCell className="text-right">
                                             <Button variant="ghost" size="icon" className="h-8 w-8 text-red-400 hover:text-red-500">
                                                 <Trash2 className="h-4 w-4" />
