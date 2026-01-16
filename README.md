@@ -1,6 +1,6 @@
 # ELISYAN REBIRTH AI Platform - Frontend
 
-Next.js 14 frontend application for the BISHENG Enterprise AI Platform.
+Next.js 14 frontend application for theElisyan Rebirth AI Platform.
 
 ## Running Locally
 
