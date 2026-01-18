@@ -2,7 +2,7 @@
 
 Next.js 14 frontend application for theElisyan Rebirth AI Platform.
 
-## Running Locally
+## Running Locally -- Tutor
 
 ```bash
 # From monorepo root
