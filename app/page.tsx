@@ -179,7 +179,12 @@ export default function ElysianLanding() {
 }
 
 // Navbar Component
-function Navbar({ mobileMenuOpen, setMobileMenuOpen }) {
+interface NavbarProps {
+    mobileMenuOpen: boolean;
+    setMobileMenuOpen: (open: boolean) => void;
+}
+
+function Navbar({ mobileMenuOpen, setMobileMenuOpen }: NavbarProps) {
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
