@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import { Slack, Figma, Github, Chrome, Trello, Mail, Database, Cloud, ChevronRight, Zap } from 'lucide-react';
+import { Slack, Figma, Github, Mail, Database, Cloud, ChevronRight, Zap } from 'lucide-react';
 
 export function IntegrationsCarousel() {
     const carouselRef = useRef<HTMLDivElement>(null);
@@ -121,7 +121,14 @@ const integrations = [
     },
 ];
 
-function CarouselCard({ item, index }: { item: any, index: number }) {
+interface IntegrationItem {
+    title: string;
+    desc: string;
+    icon: React.ReactNode;
+    color: string;
+}
+
+function CarouselCard({ item, index }: { item: IntegrationItem, index: number }) {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -11,7 +11,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/';
-import { Badge } from '@/components/ui/';
 import {
     Menu,
     Bell,

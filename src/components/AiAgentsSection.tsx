@@ -1,20 +1,16 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import {
-    Bot,
     Code2,
-    Terminal,
     ShieldCheck,
     CheckCircle2,
     Sparkles,
     Wand2,
     Search,
-    Command,
     Loader2
 } from 'lucide-react';
-import Image from 'next/image';
 
 const AGENTS = [
     {
@@ -138,8 +134,8 @@ export function AiAgentsSection() {
                                     <motion.div
                                         key={agent.id}
                                         className={`relative group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 cursor-pointer ${isActive
-                                                ? 'bg-blue-50/80 shadow-sm ring-1 ring-blue-100'
-                                                : 'hover:bg-slate-50'
+                                            ? 'bg-blue-50/80 shadow-sm ring-1 ring-blue-100'
+                                            : 'hover:bg-slate-50'
                                             }`}
                                         onClick={() => setActiveIndex(index)}
                                     >

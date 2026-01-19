@@ -2,9 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import {
-    Rocket, Code, Shield, Users, Zap, Search, Globe, ChevronRight, Play, XCircle, Bot, FileText,
+    Shield, Zap, XCircle, Bot, FileText,
     ArrowRight, Sparkles, TrendingUp, Menu, X, Store, Truck, PenTool, Stethoscope, CheckCircle2
 } from 'lucide-react';
 import { ProductShowcase } from '@/components/ProductShowcase';
@@ -291,7 +291,7 @@ function ProblemSection() {
                             </span>
                         </h2>
                         <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                            Banyak pemilik bisnis terjebak menjadi "karyawan" di bisnisnya sendiri. Waktu habis untuk hal teknis, bukan strategis.
+                            Banyak pemilik bisnis terjebak menjadi &quot;karyawan&quot; di bisnisnya sendiri. Waktu habis untuk hal teknis, bukan strategis.
                         </p>
 
                         <div className="space-y-3">

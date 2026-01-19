@@ -1,8 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Terminal, FileText, Bot, Command, Cpu, ArrowUpRight, Search } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Bot, Cpu, ArrowUpRight } from 'lucide-react';
 
 export function ProductShowcase() {
     return (

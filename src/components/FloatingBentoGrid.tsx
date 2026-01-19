@@ -43,7 +43,7 @@ export function FloatingBentoGrid() {
                     </div>
                     <div className="space-y-2">
                         <div className="p-3 bg-slate-50 rounded-lg text-xs text-slate-600 mb-2">
-                            "Buatkan surat jalan untuk Toko Berkah..."
+                            &quot;Buatkan surat jalan untuk Toko Berkah...&quot;
                         </div>
                         <div className="flex items-center gap-2 text-xs font-semibold text-blue-600">
                             <Sparkles className="w-3 h-3" />

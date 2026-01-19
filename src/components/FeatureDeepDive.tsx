@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { GitBranch, CheckCircle2, Inbox, BarChart3, ArrowUpRight, Filter, MoreHorizontal, User } from 'lucide-react';
+import { ArrowUpRight, User } from 'lucide-react';
 
 export function FeatureDeepDive() {
     return (

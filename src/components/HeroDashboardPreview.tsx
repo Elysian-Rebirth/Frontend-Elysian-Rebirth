@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import {
     Search,
     Bell,
@@ -12,7 +11,6 @@ import {
     Users,
     CheckCircle2,
     Circle,
-    Clock,
     Paperclip,
     MessageSquare,
     ChevronDown
@@ -157,7 +155,22 @@ export function HeroDashboardPreview() {
     );
 }
 
-function KanbanColumn({ title, count, color, items }: any) {
+interface KanbanColumnProps {
+    title: string;
+    count: number;
+    color: string;
+    items: Array<{
+        title: string;
+        tag: string;
+        tagColor: string;
+        priority: string;
+        subtitle?: string;
+        active?: boolean;
+        completed?: boolean;
+    }>;
+}
+
+function KanbanColumn({ title, count, color, items }: KanbanColumnProps) {
     return (
         <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between mb-1">
@@ -170,7 +183,7 @@ function KanbanColumn({ title, count, color, items }: any) {
             </div>
 
             <div className="flex flex-col gap-3">
-                {items.map((item: any, i: number) => (
+                {items.map((item, i: number) => (
                     <div key={i} className={`p-4 rounded-xl border transition-all cursor-pointer group ${item.active ? 'bg-white shadow-lg shadow-blue-500/10 border-blue-200 ring-1 ring-blue-100' : 'bg-white border-slate-200/60 shadow-sm hover:border-blue-200 hover:shadow-md'}`}>
                         <div className="flex items-start justify-between mb-2">
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${item.tagColor}`}>
