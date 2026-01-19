@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { motion } from 'framer-motion';
 import {
     Bot,
@@ -140,7 +141,15 @@ export function FloatingBentoGrid() {
     );
 }
 
-function FloatingParticle({ icon, color, x, y, delay }: any) {
+interface FloatingParticleProps {
+    icon: React.ReactNode;
+    color: string;
+    x: string;
+    y: string;
+    delay: number;
+}
+
+function FloatingParticle({ icon, color, x, y, delay }: FloatingParticleProps) {
     return (
         <motion.div
             className={`absolute ${color} w-8 h-8 opacity-80`}

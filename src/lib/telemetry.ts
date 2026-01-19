@@ -111,7 +111,8 @@ export const toast = {
             },
             destroy: () => sonnerToast.dismiss(id),
             // Maintain Antd message compatibility if possible, though return type differs slightly
-            then: (resolve: any, reject: any) => { /* dummy */ },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+            then: (_resolve: (value: unknown) => void, _reject: (reason?: unknown) => void) => { /* dummy */ },
         };
     },
 };

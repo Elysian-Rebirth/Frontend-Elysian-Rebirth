@@ -41,8 +41,8 @@ export class OpenAIClient {
      * Stream a chat completion response (mock implementation)
      */
     async *chatStream(
-        messages: ChatMessage[],
-        modelConfig: ModelConfig
+        _messages: ChatMessage[],
+        _modelConfig: ModelConfig
     ): AsyncGenerator<StreamChunk> {
         // Mock streaming implementation
         const chunks = [
