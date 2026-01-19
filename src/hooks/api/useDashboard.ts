@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 
 export function useDashboard() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [stats, setStats] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
 

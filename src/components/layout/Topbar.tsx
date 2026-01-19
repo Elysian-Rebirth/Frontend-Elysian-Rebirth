@@ -42,7 +42,7 @@ export interface TopbarProps {
 export const Topbar: React.FC<TopbarProps> = ({
     logo,
     title = 'Asisten Operasional',
-    collapsed,
+    collapsed: _collapsed,
     onToggleSidebar,
     user,
     notificationCount = 0,

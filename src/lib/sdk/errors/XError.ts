@@ -9,6 +9,7 @@ export interface XErrorOptions {
     message: string;
     status?: number;
     retryable?: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     context?: Record<string, any>;
     cause?: Error;
 }
@@ -33,6 +34,7 @@ export class XError extends Error {
     public readonly type: XErrorType;
     public readonly status?: number;
     public readonly retryable: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public readonly context?: Record<string, any>;
     public readonly cause?: Error;
 
@@ -89,6 +91,7 @@ export class XError extends Error {
     /**
      * Convert to JSON for logging/telemetry
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     toJSON(): Record<string, any> {
         return {
             name: this.name,
@@ -114,6 +117,7 @@ export const createNetworkError = (message: string, status?: number): XError => 
     });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createRagError = (message: string, context?: Record<string, any>): XError => {
     return new XError({
         type: 'rag',
@@ -123,6 +127,7 @@ export const createRagError = (message: string, context?: Record<string, any>): 
     });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createWorkflowError = (message: string, context?: Record<string, any>): XError => {
     return new XError({
         type: 'workflow',
@@ -141,6 +146,7 @@ export const createAuthError = (message: string): XError => {
     });
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createValidationError = (message: string, context?: Record<string, any>): XError => {
     return new XError({
         type: 'validation',
