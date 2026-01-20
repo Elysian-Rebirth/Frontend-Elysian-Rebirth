@@ -13,14 +13,24 @@ import { IntegrationsCarousel } from '@/components/IntegrationsCarousel';
 import { CollaborationSection } from '@/components/CollaborationSection';
 import { AiAgentsSection } from '@/components/AiAgentsSection';
 import { FloatingBentoGrid } from '@/components/FloatingBentoGrid';
+import { LandingNavbar } from '@/components/LandingNavbar';
+import { LandingTerminal } from '@/components/LandingTerminal';
 
 export default function ElysianLanding() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    // mobileMenuOpen state removed as it was only for the old Navbar
+    // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const heroRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: heroRef,
         offset: ["start start", "end start"]
     });
+
+    // Terminal View State
+    const [showTerminal, setShowTerminal] = useState(false);
+
+    const toggleTerminal = (value: boolean) => {
+        setShowTerminal(value);
+    };
 
     const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
     const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
@@ -33,8 +43,12 @@ export default function ElysianLanding() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-cyan-50/20 font-sans overflow-x-hidden selection:bg-blue-100 selection:text-blue-900"
         >
-            {/* Floating Navigation */}
-            <Navbar mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
+            {/* Floating Navigation - Custom SaaS Style */}
+            {/* Floating Navigation - Custom SaaS Style */}
+            <LandingNavbar
+                showTerminal={showTerminal}
+                setShowTerminal={toggleTerminal}
+            />
 
             {/* Hero Section - Anti-Gravity + Floating Bento (Combined) */}
             <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
@@ -115,7 +129,7 @@ export default function ElysianLanding() {
                                         <motion.button
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
-                                            className="w-full sm:w-auto h-12 px-8 rounded-full bg-slate-900 text-white font-semibold shadow-xl shadow-slate-900/20 flex items-center justify-center gap-2"
+                                            className="w-full sm:w-auto h-12 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 flex items-center justify-center gap-2 transition-all"
                                         >
                                             Mulai Sekarang
                                         </motion.button>
@@ -131,9 +145,13 @@ export default function ElysianLanding() {
                             </motion.div>
                         </div>
 
-                        {/* Right: The Floating Bento Grid (Restored & Enhanced) */}
+                        {/* Right: The Elysian System Console OR Bento Grid */}
                         <div className="hidden lg:flex w-full lg:w-1/2 relative min-h-[500px] items-center justify-center">
-                            <FloatingBentoGrid />
+                            {showTerminal ? (
+                                <LandingTerminal />
+                            ) : (
+                                <FloatingBentoGrid />
+                            )}
                         </div>
                     </div>
                 </motion.div>
@@ -178,74 +196,7 @@ export default function ElysianLanding() {
     );
 }
 
-// Navbar Component
-interface NavbarProps {
-    mobileMenuOpen: boolean;
-    setMobileMenuOpen: (open: boolean) => void;
-}
-
-function Navbar({ mobileMenuOpen, setMobileMenuOpen }: NavbarProps) {
-    const [scrolled, setScrolled] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    return (
-        <motion.nav
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'py-4' : 'py-6'
-                }`}
-        >
-            <div className="container mx-auto px-4">
-                <div className={`flex items-center justify-between rounded-full transition-all duration-500 ${scrolled
-                    ? 'bg-white/80 backdrop-blur-xl shadow-lg shadow-slate-900/5 px-6 py-3 border border-slate-200/50'
-                    : 'bg-white/40 backdrop-blur-md px-6 py-3 border border-white/30'
-                    }`}>
-                    <div className="font-bold text-xl bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                        Elysian
-                    </div>
-
-                    <div className="hidden md:flex items-center gap-8">
-                        {['Fitur', 'Solusi', 'Harga', 'Blog'].map((item) => (
-                            <button key={item} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                                {item}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                        <Link href="/login">
-                            <button className="hidden md:block text-slate-600 hover:text-blue-600 font-medium transition-colors">
-                                Masuk
-                            </button>
-                        </Link>
-                        <Link href="/register">
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold shadow-lg shadow-blue-500/30"
-                            >
-                                Daftar
-                            </motion.button>
-                        </Link>
-
-                        <button
-                            className="md:hidden"
-                            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        >
-                            {mobileMenuOpen ? <X /> : <Menu />}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </motion.nav>
-    );
-}
-
+// Old Navbar Component Removed
 
 // Infinite Marquee
 function InfiniteMarquee() {

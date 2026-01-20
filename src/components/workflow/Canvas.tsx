@@ -32,7 +32,7 @@ const edgeTypes = {
     animated: AnimatedEdge,
 };
 
-export function Canvas() {
+export function Canvas({ mobileMode = 'edit' }: { mobileMode?: 'view' | 'edit' }) {
     const {
         nodes,
         edges,
@@ -42,6 +42,13 @@ export function Canvas() {
         isValidConnection,
         setSelectedNode,
     } = useWorkflowStore();
+
+    // Responsive Logic
+    // In strict View Mode, disable node dragging.
+    // Pan on drag is always enabled for navigation.
+    // Selection is enabled in both modes (to open Config).
+    const isNodeDraggable = mobileMode === 'edit';
+    const isConnectable = mobileMode === 'edit';
 
     const onNodeClick = useCallback((_: React.MouseEvent, node: any) => {
         setSelectedNode(node.id);
@@ -74,17 +81,31 @@ export function Canvas() {
                 onPaneClick={onPaneClick}
                 fitView
                 className="bg-slate-50"
+
+                // Interaction Controls
+                nodesDraggable={isNodeDraggable}
+                nodesConnectable={isConnectable}
+                elementsSelectable={true}
+                panOnDrag={true}
+                zoomOnPinch={true}
+                minZoom={0.2}
             >
                 <Background color="#94a3b8" gap={20} size={1} />
-                <Controls className="bg-white border-slate-200 shadow-sm" />
+
+                {/* Desktop Controls */}
+                <Controls className="hidden md:flex bg-white border-slate-200 shadow-sm" />
+
+                {/* Mobile: Hide MiniMap to save space, or make it toggleable (hidden for now as per feedback) */}
                 <MiniMap
-                    className="bg-white border-slate-200 shadow-sm rounded-lg overflow-hidden"
+                    className="hidden md:block bg-white border-slate-200 shadow-sm rounded-lg overflow-hidden"
                     maskColor="rgba(241, 245, 249, 0.7)"
+                    zoomable
+                    pannable
                 />
 
                 {nodes.length === 0 && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-                        <div className="bg-white/80 backdrop-blur-sm border border-slate-200 p-8 rounded-2xl shadow-lg text-center max-w-md">
+                        <div className="bg-white/80 backdrop-blur-sm border border-slate-200 p-8 rounded-2xl shadow-lg text-center max-w-md mx-4">
                             <div className="mb-4">
                                 <div className="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-bounce">
                                     <MousePointerClick className="w-8 h-8" />
@@ -92,10 +113,8 @@ export function Canvas() {
                                 <h3 className="text-lg font-bold text-slate-800">Your Canvas is Empty</h3>
                             </div>
                             <p className="text-sm text-slate-500 mb-2 leading-relaxed">
-                                Drag components from the <strong>Sidebar</strong> to start building your AI workflow.
-                            </p>
-                            <p className="text-xs text-slate-400">
-                                Try dropping an <strong>LLM Node</strong> or <strong>Document</strong> first.
+                                <span className="md:hidden">Tap <strong>+</strong></span>
+                                <span className="hidden md:inline">Drag components from the Sidebar</span> to start building.
                             </p>
                         </div>
                     </div>

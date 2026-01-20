@@ -4,13 +4,24 @@ import React, { useState } from 'react';
 import { Bot, GitFork, MessageSquare, MousePointerClick, Search, FileText } from 'lucide-react';
 import { Card, Input } from '@/components/ui/';
 
-export function Sidebar() {
+interface SidebarProps {
+    onNodeSelect?: (type: string, label: string) => void;
+}
+
+export function Sidebar({ onNodeSelect }: SidebarProps) {
     const [search, setSearch] = useState('');
 
     const onDragStart = (event: React.DragEvent, nodeType: string, label: string) => {
         event.dataTransfer.setData('application/reactflow/type', nodeType);
         event.dataTransfer.setData('application/reactflow/label', label);
         event.dataTransfer.effectAllowed = 'move';
+    };
+
+    // Helper to handle both click and drag setup if needed, but click is distinct
+    const handleNodeClick = (type: string, label: string) => {
+        if (onNodeSelect) {
+            onNodeSelect(type, label);
+        }
     };
 
     const matches = (term: string) => term.toLowerCase().includes(search.toLowerCase());
@@ -40,6 +51,7 @@ export function Sidebar() {
                         <div
                             className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white hover:border-blue-400 hover:shadow-md transition-all cursor-grab active:cursor-grabbing group"
                             onDragStart={(event) => onDragStart(event, 'llm', 'Reasoning Engine')}
+                            onClick={() => handleNodeClick('llm', 'Reasoning Engine')}
                             draggable
                         >
                             <div className="h-8 w-8 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
@@ -59,6 +71,7 @@ export function Sidebar() {
                         <div
                             className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white hover:border-purple-300 hover:shadow-md transition-all cursor-grab active:cursor-grabbing group"
                             onDragStart={(event) => onDragStart(event, 'branch', 'Logic Router')}
+                            onClick={() => handleNodeClick('branch', 'Logic Router')}
                             draggable
                         >
                             <div className="h-8 w-8 rounded-md bg-purple-50 text-purple-600 flex items-center justify-center group-hover:bg-purple-100 transition-colors">
@@ -78,6 +91,7 @@ export function Sidebar() {
                         <div
                             className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white hover:border-orange-300 hover:shadow-md transition-all cursor-grab active:cursor-grabbing group"
                             onDragStart={(event) => onDragStart(event, 'document', 'Knowledge Source')}
+                            onClick={() => handleNodeClick('document', 'Knowledge Source')}
                             draggable
                         >
                             <div className="h-8 w-8 rounded-md bg-orange-50 text-orange-600 flex items-center justify-center group-hover:bg-orange-100 transition-colors">
@@ -94,6 +108,7 @@ export function Sidebar() {
                         <div
                             className="flex items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white hover:border-green-300 hover:shadow-md transition-all cursor-grab active:cursor-grabbing group"
                             onDragStart={(event) => onDragStart(event, 'text', 'Input Parameter')}
+                            onClick={() => handleNodeClick('text', 'Input Parameter')}
                             draggable
                         >
                             <div className="h-8 w-8 rounded-md bg-green-50 text-green-600 flex items-center justify-center group-hover:bg-green-100 transition-colors">

@@ -92,4 +92,7 @@ export interface WorkflowState {
 
     // Persistence Actions
     publishVersion: () => void;
+
+    // Computed Properties
+    selectedNode: Node<WorkflowNodeData> | null;
 }

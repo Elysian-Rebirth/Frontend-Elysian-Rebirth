@@ -184,15 +184,21 @@ export const useWorkflowStore = create<WorkflowState>()(
                     };
                 });
             },
+
+            // Computed Getters (Mocking them as properties for now, ideally strictly typed getters)
+            get selectedNode() {
+                const state = get();
+                return state.nodes.find((n) => n.id === state.ui.selectedNodeId) || null;
+            },
         }),
         {
-            name: 'elysian-workflow-storage', // name of the item in the storage (must be unique)
-            storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+            name: 'elysian-workflow-storage',
+            storage: createJSONStorage(() => localStorage),
             partialize: (state) => ({
                 nodes: state.nodes,
                 edges: state.edges,
                 meta: state.meta
-            }), // Only persist Graph and Meta, ignore UI and Execution
+            }),
         }
     )
 );
