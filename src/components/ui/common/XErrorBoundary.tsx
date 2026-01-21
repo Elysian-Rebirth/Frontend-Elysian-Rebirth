@@ -1,6 +1,7 @@
 'use client';
 
 import React, { Component, ReactNode } from 'react';
+import * as Sentry from '@sentry/nextjs';
 
 export interface XErrorBoundaryProps {
     /**
@@ -17,6 +18,11 @@ export interface XErrorBoundaryProps {
      * Children components
      */
     children: ReactNode;
+
+    /**
+     * System name for Sentry tagging
+     */
+    systemName?: string;
 }
 
 interface XErrorBoundaryState {
@@ -29,22 +35,6 @@ interface XErrorBoundaryState {
  * 
  * Catches React errors in the component tree and displays fallback UI.
  * Essential for production stability.
- * 
- * @example
- * ```tsx
- * <XErrorBoundary
- *   fallback={(error, reset) => (
- *     <XErrorState
- *       title="Something went wrong"
- *       message={error.message}
- *       onRetry={reset}
- *     />
- *   )}
- *   onError={(error) => console.error('Error caught:', error)}
- * >
- *   <ChatShell />
- * </XErrorBoundary>
- * ```
  */
 export class XErrorBoundary extends Component<XErrorBoundaryProps, XErrorBoundaryState> {
     constructor(props: XErrorBoundaryProps) {
@@ -63,6 +53,15 @@ export class XErrorBoundary extends Component<XErrorBoundaryProps, XErrorBoundar
     }
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+        // Send to Sentry
+        Sentry.captureException(error, {
+            extra: {
+                componentStack: errorInfo.componentStack,
+                system: this.props.systemName || 'Global'
+            }
+        });
+
+        // Call optional prop callback
         this.props.onError?.(error, errorInfo);
     }
 

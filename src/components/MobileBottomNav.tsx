@@ -36,7 +36,7 @@ export function MobileBottomNav() {
     ];
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-zinc-950 border-t border-slate-200 dark:border-slate-800 h-16 px-6 flex items-center justify-between md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div className="fixed bottom-0 left-0 right-0 z-[40] bg-white dark:bg-zinc-950 border-t border-slate-200 dark:border-slate-800 h-16 px-6 flex items-center justify-between md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-[calc(env(safe-area-inset-bottom))]">
             {navItems.map((item) => (
                 <Link
                     key={item.label}

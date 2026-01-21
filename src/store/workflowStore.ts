@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Node, Edge } from 'reactflow';
 import type { PipelineItem } from '@/types/x';
+import { createEncryptedIdbStorage } from '@/lib/storage-engine';
 
 interface WorkflowState {
   nodes: Node[];
@@ -26,6 +27,8 @@ interface WorkflowState {
   deletePipelineOptimistic: (id: string) => PipelineItem[];
   restorePipelines: (pipelines: PipelineItem[]) => void;
 }
+
+const STORAGE_SECRET = process.env.NEXT_PUBLIC_STORAGE_KEY ?? 'DEV_ONLY_STATIC_KEY';
 
 export const useWorkflowStore = create<WorkflowState>()(
   persist(
@@ -120,10 +123,34 @@ export const useWorkflowStore = create<WorkflowState>()(
     }),
     {
       name: 'workflow-storage',
+      version: 1,
+      storage: createEncryptedIdbStorage<WorkflowState>({
+        key: 'elysian-workflow',
+        secret: STORAGE_SECRET,
+      }),
       partialize: (state) => ({
         nodes: state.nodes,
         edges: state.edges,
-      }),
+      }) as unknown as WorkflowState, // Cast to match PersistStorage expectation, though we only save partial data
+      migrate: (persistedState, version) => {
+        // Migration Strategy
+        // v0 (undefined) -> v1
+        if (version === 0) {
+          const s = persistedState as Partial<WorkflowState>;
+          return {
+            ...s,
+            // Ensure mandatory fields exist
+            nodes: s.nodes || [],
+            edges: s.edges || [],
+            // Re-initialize volatile state
+            selectedNode: null,
+            isDirty: false,
+            pipelines: [],
+            // Function placeholders are not needed as Zustand re-binds them
+          } as WorkflowState;
+        }
+        return persistedState as WorkflowState;
+      },
     }
   )
 );

@@ -37,9 +37,10 @@ export const Sender: React.FC<SenderProps> = ({
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    useEffect(() => {
-        textAreaRef.current?.focus();
-    }, []);
+    // Removed auto-focus to prevent keyboard popup on mobile
+    // useEffect(() => {
+    //    textAreaRef.current?.focus();
+    // }, []);
 
     const handleSend = () => {
         const trimmedValue = inputValue.trim();

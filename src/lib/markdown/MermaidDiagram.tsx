@@ -1,60 +1,33 @@
-import React, { useEffect, useRef } from 'react';
-import mermaid from 'mermaid';
-
-// Initialize mermaid
-mermaid.initialize({
-    startOnLoad: false,
-    theme: 'default',
-    securityLevel: 'loose',
-});
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export interface MermaidDiagramProps {
     chart: string;
     id?: string;
 }
 
+// Dynamically import the heavy inner component
+// ssr: false is CRITICAL to prevent server-side rendering of Mermaid
+const MermaidDiagramInner = dynamic(
+    () => import('./MermaidDiagramInner'),
+    {
+        ssr: false,
+        loading: () => (
+            <div className="w-full flex justify-center py-8">
+                <Skeleton className="h-48 w-full max-w-md rounded-xl bg-slate-100/50" />
+            </div>
+        ),
+    }
+);
+
 /**
- * MermaidDiagram - Mermaid diagram renderer
+ * MermaidDiagram - Wrapper for async Mermaid rendering
  * 
- * @example
- * ```tsx
- * <MermaidDiagram chart="graph TD; A-->B; B-->C;" />
- * ```
+ * This component ensures 'mermaid' library is NOT included in the main bundle.
  */
-export const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ chart, id }) => {
-    const diagramRef = useRef<HTMLDivElement>(null);
-    const diagramId = id || `mermaid-${Math.random().toString(36).substr(2, 9)}`;
-
-    useEffect(() => {
-        const renderDiagram = async () => {
-            if (diagramRef.current && chart) {
-                try {
-                    const { svg } = await mermaid.render(diagramId, chart);
-                    if (diagramRef.current) {
-                        diagramRef.current.innerHTML = svg;
-                    }
-                } catch (error) {
-                    console.error('Mermaid rendering error:', error);
-                    if (diagramRef.current) {
-                        diagramRef.current.innerHTML = `<pre>${chart}</pre>`;
-                    }
-                }
-            }
-        };
-
-        renderDiagram();
-    }, [chart, diagramId]);
-
-    return (
-        <div
-            ref={diagramRef}
-            style={{
-                padding: '16px 0',
-                textAlign: 'center',
-                overflow: 'auto',
-            }}
-        />
-    );
+export const MermaidDiagram: React.FC<MermaidDiagramProps> = (props) => {
+    return <MermaidDiagramInner {...props} />;
 };
 
 MermaidDiagram.displayName = 'MermaidDiagram';

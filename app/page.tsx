@@ -2,17 +2,43 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic'; // Dynamic import
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
     Shield, Zap, XCircle, Bot, FileText,
     ArrowRight, Sparkles, TrendingUp, Menu, X, Store, Truck, PenTool, Stethoscope, CheckCircle2
 } from 'lucide-react';
-import { ProductShowcase } from '@/components/ProductShowcase';
-import { FeatureDeepDive } from '@/components/FeatureDeepDive';
-import { IntegrationsCarousel } from '@/components/IntegrationsCarousel';
-import { CollaborationSection } from '@/components/CollaborationSection';
-import { AiAgentsSection } from '@/components/AiAgentsSection';
-import { FloatingBentoGrid } from '@/components/FloatingBentoGrid';
+import { Skeleton } from '@/components/ui/skeleton'; // Skeleton for lazy loading
+
+// Dynamic Imports with Loading Skeletons for Heavy Sections
+const ProductShowcase = dynamic(() => import('@/components/ProductShowcase').then(mod => mod.ProductShowcase), {
+    loading: () => <Skeleton className="w-full h-[600px] rounded-3xl" />,
+});
+const FeatureDeepDive = dynamic(() => import('@/components/FeatureDeepDive').then(mod => mod.FeatureDeepDive), {
+    loading: () => <div className="py-20"><Skeleton className="w-full max-w-7xl mx-auto h-[500px] rounded-3xl" /></div>,
+});
+const IntegrationsCarousel = dynamic(() => import('@/components/IntegrationsCarousel').then(mod => mod.IntegrationsCarousel), {
+    ssr: false, // Carousel often has hydration issues, safe to disable SSR if below fold
+    loading: () => <div className="py-12"><Skeleton className="w-full h-32 rounded-xl" /></div>,
+});
+const CollaborationSection = dynamic(() => import('@/components/CollaborationSection').then(mod => mod.CollaborationSection), {
+    loading: () => <div className="py-20"><Skeleton className="w-full max-w-5xl mx-auto h-[400px] rounded-3xl" /></div>,
+});
+const AiAgentsSection = dynamic(() => import('@/components/AiAgentsSection').then(mod => mod.AiAgentsSection), {
+    loading: () => <div className="py-20"><Skeleton className="w-full max-w-7xl mx-auto h-[600px] rounded-3xl" /></div>,
+});
+const FloatingBentoGrid = dynamic(() => import('@/components/FloatingBentoGrid').then(mod => mod.FloatingBentoGrid), {
+    ssr: false, // Client interaction heavy
+    loading: () => <Skeleton className="w-full h-full rounded-3xl min-h-[500px]" />,
+});
+
+// Eager imports (Above the fold components)
+// import { ProductShowcase } from '@/components/ProductShowcase'; // Converted to dynamic
+// import { FeatureDeepDive } from '@/components/FeatureDeepDive'; // Converted to dynamic
+// import { IntegrationsCarousel } from '@/components/IntegrationsCarousel'; // Converted to dynamic
+// import { CollaborationSection } from '@/components/CollaborationSection'; // Converted to dynamic
+// import { AiAgentsSection } from '@/components/AiAgentsSection'; // Converted to dynamic
+// import { FloatingBentoGrid } from '@/components/FloatingBentoGrid'; // Converted to dynamic
 import { LandingNavbar } from '@/components/LandingNavbar';
 import { LandingTerminal } from '@/components/LandingTerminal';
 

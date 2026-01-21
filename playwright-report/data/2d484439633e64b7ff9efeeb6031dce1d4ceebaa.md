@@ -1,0 +1,176 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e4]:
+      - complementary [ref=e5]:
+        - generic [ref=e6]:
+          - generic [ref=e7]:
+            - generic [ref=e8]:
+              - img [ref=e9]
+              - img [ref=e11]
+            - heading "Elysian Rebirth" [level=1] [ref=e14]
+          - button [ref=e15] [cursor=pointer]:
+            - img [ref=e16]
+        - navigation [ref=e20]:
+          - generic [ref=e21]:
+            - heading "Main" [level=4] [ref=e22]
+            - link "Dashboard" [ref=e23] [cursor=pointer]:
+              - /url: /dashboard
+              - img [ref=e24]
+              - generic [ref=e27]: Dashboard
+            - link "Chat" [ref=e28] [cursor=pointer]:
+              - /url: /chat
+              - img [ref=e29]
+              - generic [ref=e32]: Chat
+            - link "Document Editor" [ref=e33] [cursor=pointer]:
+              - /url: /editor
+              - img [ref=e34]
+              - generic [ref=e37]: Document Editor
+            - link "Workflow" [ref=e38] [cursor=pointer]:
+              - /url: /workflow
+              - img [ref=e40]
+              - generic [ref=e44]: Workflow
+          - generic [ref=e45]:
+            - heading "System" [level=4] [ref=e46]
+            - link "Settings" [ref=e47] [cursor=pointer]:
+              - /url: /settings
+              - img [ref=e48]
+              - generic [ref=e51]: Settings
+        - generic [ref=e52]:
+          - link "Panduan Memulai Progress Anda 1/5 Selesai" [ref=e54] [cursor=pointer]:
+            - /url: /getting-started
+            - generic [ref=e56]:
+              - generic [ref=e57]:
+                - generic [ref=e58]:
+                  - img [ref=e60]
+                  - generic [ref=e63]: Panduan Memulai
+                - img [ref=e64]
+              - generic [ref=e66]:
+                - progressbar [ref=e67]
+                - generic [ref=e69]:
+                  - generic [ref=e70]: Progress Anda
+                  - generic [ref=e71]: 1/5 Selesai
+          - link "Bantuan" [ref=e72] [cursor=pointer]:
+            - /url: /help
+            - button "Bantuan" [ref=e73]:
+              - img [ref=e74]
+              - text: Bantuan
+          - generic [ref=e77] [cursor=pointer]:
+            - img [ref=e79]
+            - generic [ref=e82]:
+              - paragraph [ref=e83]: Admin User
+              - paragraph [ref=e84]: admin@elysian.ai
+      - main [ref=e85]:
+        - generic [ref=e88]:
+          - generic [ref=e91]:
+            - img [ref=e92]
+            - generic [ref=e97]: Workflow
+          - generic [ref=e98]:
+            - button [ref=e99] [cursor=pointer]:
+              - img [ref=e100]
+            - button [ref=e106] [cursor=pointer]:
+              - img [ref=e107]
+            - button [ref=e110] [cursor=pointer]:
+              - img [ref=e113]
+        - generic [ref=e117]:
+          - complementary [ref=e119]:
+            - generic [ref=e120]:
+              - heading "Components" [level=2] [ref=e121]:
+                - img [ref=e122]
+                - text: Components
+              - generic [ref=e128]:
+                - img [ref=e129]
+                - textbox "Search..." [ref=e132]
+            - generic [ref=e133]:
+              - generic [ref=e134]:
+                - heading "Intelligence" [level=3] [ref=e135]
+                - generic [ref=e136]:
+                  - img [ref=e138]
+                  - generic [ref=e141]:
+                    - generic [ref=e142]: Reasoning Engine
+                    - generic [ref=e143]: Advanced Logic & Generation
+              - generic [ref=e144]:
+                - heading "Logic" [level=3] [ref=e145]
+                - generic [ref=e146]:
+                  - img [ref=e148]
+                  - generic [ref=e153]:
+                    - generic [ref=e154]: Logic Router
+                    - generic [ref=e155]: Conditional Flow Control
+              - generic [ref=e156]:
+                - heading "Knowledge" [level=3] [ref=e157]
+                - generic [ref=e158]:
+                  - img [ref=e160]
+                  - generic [ref=e163]:
+                    - generic [ref=e164]: Knowledge Source
+                    - generic [ref=e165]: Grounding Data & Context
+                - generic [ref=e166]:
+                  - img [ref=e168]
+                  - generic [ref=e170]:
+                    - generic [ref=e171]: Input Parameter
+                    - generic [ref=e172]: Static Operational Variables
+            - paragraph [ref=e174]: Drag items to the canvas
+          - generic [ref=e175]:
+            - generic [ref=e176]:
+              - generic [ref=e177]:
+                - generic [ref=e178]: draft
+                - generic [ref=e179]: v1.0.0
+              - button "Publish" [ref=e180] [cursor=pointer]:
+                - img [ref=e181]
+                - text: Publish
+              - button "Run" [ref=e185] [cursor=pointer]:
+                - img [ref=e186]
+                - text: Run
+            - generic [ref=e190]:
+              - generic [ref=e192]:
+                - generic:
+                  - img
+                  - generic:
+                    - button "Start Trigger" [ref=e193]: Start Trigger
+                    - button "Reasoning Engine Generative Logic Output Style precise balanced creative Instruction Define behavior policy... Advanced Configuration" [ref=e194]:
+                      - generic [ref=e197]:
+                        - generic [ref=e199]:
+                          - img [ref=e201]
+                          - generic [ref=e204]:
+                            - heading "Reasoning Engine" [level=3] [ref=e205]
+                            - paragraph [ref=e206]: Generative Logic
+                        - generic [ref=e207]:
+                          - generic [ref=e208]:
+                            - text: Output Style
+                            - generic [ref=e209]:
+                              - button "precise" [ref=e210] [cursor=pointer]
+                              - button "balanced" [ref=e211] [cursor=pointer]
+                              - button "creative" [ref=e212] [cursor=pointer]
+                          - generic [ref=e213]:
+                            - text: Instruction
+                            - paragraph [ref=e215]: Define behavior policy...
+                          - button "Advanced Configuration" [ref=e217] [cursor=pointer]:
+                            - text: Advanced Configuration
+                            - img [ref=e218]
+              - img [ref=e221]
+              - generic [ref=e223]:
+                - button "zoom in" [disabled]:
+                  - img
+                - button "zoom out" [ref=e224] [cursor=pointer]:
+                  - img [ref=e225]
+                - button "fit view" [ref=e227] [cursor=pointer]:
+                  - img [ref=e228]
+                - button "toggle interactivity" [ref=e230] [cursor=pointer]:
+                  - img [ref=e231]
+              - img "React Flow mini map" [ref=e234]
+              - link "React Flow attribution" [ref=e238] [cursor=pointer]:
+                - /url: https://reactflow.dev
+                - text: React Flow
+          - complementary [ref=e241]:
+            - img [ref=e242]
+            - heading "Configuration" [level=3] [ref=e245]
+            - paragraph [ref=e246]: Select a node on the canvas to configure its properties.
+    - region "Notifications (F8)":
+      - list
+  - generic [ref=e247]:
+    - img [ref=e249]
+    - button "Open Tanstack query devtools" [ref=e297] [cursor=pointer]:
+      - img [ref=e298]
+  - alert [ref=e346]
+```

@@ -60,7 +60,7 @@ export function ChatBubble({ role, content, timestamp, children }: ChatBubblePro
 
                 {/* Bubble */}
                 <div className={cn(
-                    "relative px-5 py-3.5 text-sm shadow-sm backdrop-blur-md transition-all",
+                    "relative px-4 py-3 md:px-5 md:py-3.5 text-sm shadow-sm backdrop-blur-md transition-all",
                     isUser
                         ? "bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-2xl rounded-tr-sm shadow-blue-500/10 hover:shadow-blue-500/20"
                         : "bg-white/80 border border-white/60 text-slate-700 rounded-2xl rounded-tl-sm shadow-slate-200/50 hover:bg-white/90"

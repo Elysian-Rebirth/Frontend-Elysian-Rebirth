@@ -9,6 +9,8 @@ import { cn } from '@/lib/utils';
 import { Loader2, MessageSquarePlus, History, Settings2, PanelRightClose, PanelRightOpen, BarChart2, Code, Mail, Sparkles, Bot, Map, Image, Workflow } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { ChatSidebarContent } from './ChatSidebarContent';
 
 interface Message {
     id: string;
@@ -84,7 +86,7 @@ export function ChatInterface() {
             {/* Main Content Container with Glass Effect */}
             <div className="relative z-10 flex h-full w-full bg-white/30 backdrop-blur-xl shadow-2xl overflow-hidden md:m-4 md:rounded-3xl md:border md:border-white/50">
 
-                {/* Left Sidebar (History) */}
+                {/* Left Sidebar (Desktop) */}
                 <AnimatePresence mode="wait">
                     {sidebarOpen && (
                         <motion.aside
@@ -94,27 +96,7 @@ export function ChatInterface() {
                             transition={{ duration: 0.3, ease: 'easeInOut' }}
                             className="hidden md:flex flex-col border-r border-white/20 bg-white/40 backdrop-blur-md"
                         >
-                            <div className="p-4 border-b border-white/20 flex items-center justify-between">
-                                <span className="font-semibold text-sm tracking-wide text-slate-700">Riwayat Percakapan</span>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-white/40 text-slate-600">
-                                    <MessageSquarePlus className="h-4 w-4" />
-                                </Button>
-                            </div>
-                            <ScrollArea className="flex-1 p-3">
-                                <div className="space-y-2">
-                                    {['Perencanaan Proyek Elysian', 'Bantuan Komponen React', 'Desain Skema Database'].map((chat, i) => (
-                                        <button key={i} className="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-white/40 transition-colors truncate text-slate-600 hover:text-slate-900 font-medium">
-                                            {chat}
-                                        </button>
-                                    ))}
-                                </div>
-                            </ScrollArea>
-                            <div className="p-4 border-t border-white/20">
-                                <div className="flex items-center gap-3 text-sm text-slate-600">
-                                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                                    <span>Online</span>
-                                </div>
-                            </div>
+                            <ChatSidebarContent />
                         </motion.aside>
                     )}
                 </AnimatePresence>
@@ -122,15 +104,30 @@ export function ChatInterface() {
                 {/* Main Chat Area */}
                 <main className="flex-1 flex flex-col relative min-w-0 bg-white/10">
                     {/* Header */}
-                    <div className="h-16 border-b border-white/20 flex items-center justify-between px-6 bg-white/30 backdrop-blur-md z-20">
+                    <div className="h-16 border-b border-white/20 flex items-center justify-between px-4 md:px-6 bg-white/30 backdrop-blur-md z-20">
                         <div className="flex items-center gap-3">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="md:hidden text-slate-600"
-                            >
-                                <History className="h-5 w-5" />
-                            </Button>
+
+                            {/* Mobile Sidebar Trigger */}
+                            <Sheet>
+                                <SheetTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="md:hidden text-slate-600 -ml-2"
+                                    >
+                                        <History className="h-5 w-5" />
+                                    </Button>
+                                </SheetTrigger>
+                                <SheetContent side="left" className="p-0 border-r border-white/20 bg-white/95 backdrop-blur-xl w-[280px]">
+                                    <div className="flex items-center h-16 px-6 border-b border-slate-100">
+                                        <h2 className="font-bold text-lg text-slate-800">Riwayat</h2>
+                                    </div>
+                                    <div className="h-[calc(100%-64px)]">
+                                        <ChatSidebarContent />
+                                    </div>
+                                </SheetContent>
+                            </Sheet>
+
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -140,15 +137,21 @@ export function ChatInterface() {
                                 {sidebarOpen ? <PanelRightClose className="h-5 w-5" /> : <PanelRightOpen className="h-5 w-5" />}
                             </Button>
                             <div className="flex items-center gap-3">
-                                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                                {/* Desktop Logo */}
+                                <div className="hidden md:flex h-9 w-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 items-center justify-center shadow-lg shadow-blue-500/20">
                                     <Bot className="h-5 w-5 text-white" />
+                                </div>
+                                {/* Mobile Logo (Smaller) */}
+                                <div className="md:hidden h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-md">
+                                    <Bot className="h-4 w-4 text-white" />
                                 </div>
                                 <div>
                                     <h2 className="text-sm font-bold text-slate-800 tracking-tight">Elysian Assistant</h2>
                                 </div>
                             </div>
                         </div>
-                        <Button variant="ghost" size="icon" className="text-slate-600 hover:bg-white/40">
+                        {/* Hide Settings on Mobile to reduce clutter */}
+                        <Button variant="ghost" size="icon" className="hidden md:flex text-slate-600 hover:bg-white/40">
                             <Settings2 className="h-5 w-5" />
                         </Button>
                     </div>
@@ -162,16 +165,16 @@ export function ChatInterface() {
                             <div className="h-full flex flex-col items-center justify-center text-center space-y-12 animate-in fade-in slide-in-from-bottom-5 duration-700 fill-mode-forwards pb-20">
 
                                 {/* Hero Greeting */}
-                                <div className="space-y-4 max-w-2xl px-4">
-                                    <div className="h-16 w-16 bg-white rounded-2xl shadow-xl shadow-blue-500/10 flex items-center justify-center mx-auto mb-6 transform hover:scale-105 transition-transform duration-300">
-                                        <div className="h-10 w-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white">
-                                            <MessageSquarePlus className="h-6 w-6" />
+                                <div className="space-y-4 max-w-2xl px-4 mt-8 md:mt-0">
+                                    <div className="h-14 w-14 md:h-16 md:w-16 bg-white rounded-2xl shadow-xl shadow-blue-500/10 flex items-center justify-center mx-auto mb-6 transform hover:scale-105 transition-transform duration-300">
+                                        <div className="h-8 w-8 md:h-10 md:w-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white">
+                                            <MessageSquarePlus className="h-5 w-5 md:h-6 md:w-6" />
                                         </div>
                                     </div>
-                                    <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">
-                                        Apa yang bisa saya bantu hari ini?
+                                    <h1 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">
+                                        Apa yang bisa saya bantu?
                                     </h1>
-                                    <p className="text-lg text-slate-500 max-w-lg mx-auto leading-relaxed">
+                                    <p className="text-base md:text-lg text-slate-500 max-w-lg mx-auto leading-relaxed">
                                         Saya siap membantu Anda dengan analisis data, penulisan kode, atau perencanaan strategis.
                                     </p>
                                 </div>
@@ -245,11 +248,11 @@ export function ChatInterface() {
                     </div>
 
                     {/* Input Area with Toolbar */}
-                    <div className="p-4 md:p-6 bg-gradient-to-t from-white/90 via-white/80 to-transparent">
+                    <div className="p-2 pb-4 md:p-6 bg-gradient-to-t from-white/90 via-white/80 to-transparent">
                         <div className="max-w-4xl mx-auto space-y-3">
                             {/* Professional Mode Selector Toolbar */}
-                            <div className="flex justify-center mb-1">
-                                <div className="inline-flex p-1 bg-white/60 backdrop-blur-md rounded-full border border-white/50 shadow-sm gap-1">
+                            <div className="flex justify-center mb-1 overflow-x-auto no-scrollbar py-1 mask-linear-fade">
+                                <div className="inline-flex p-1 bg-white/60 backdrop-blur-md rounded-full border border-white/50 shadow-sm gap-1 min-w-max">
                                     {modes.map((mode) => {
                                         const Icon = mode.icon;
                                         const isActive = selectedMode === mode.id;
@@ -258,13 +261,13 @@ export function ChatInterface() {
                                                 key={mode.id}
                                                 onClick={() => setSelectedMode(mode.id)}
                                                 className={cn(
-                                                    "flex items-center gap-2 px-4 py-1.5 text-xs font-medium rounded-full transition-all duration-300 border",
+                                                    "flex items-center gap-2 px-3 md:px-4 py-1.5 text-[10px] md:text-xs font-medium rounded-full transition-all duration-300 border",
                                                     isActive
                                                         ? "bg-blue-600 text-white border-blue-500 shadow-md shadow-blue-500/20"
                                                         : "bg-transparent text-slate-500 border-transparent hover:bg-white/50 hover:text-slate-700"
                                                 )}
                                             >
-                                                <Icon className={cn("w-3.5 h-3.5", isActive ? "text-white" : "text-slate-400")} />
+                                                <Icon className={cn("w-3 h-3 md:w-3.5 md:h-3.5", isActive ? "text-white" : "text-slate-400")} />
                                                 {mode.label}
                                             </button>
                                         );

@@ -34,7 +34,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                                         <OfflineBanner />
                                         <SessionTimeoutWarning />
                                         <GlobalCommandDialog />
-                                        <div className="pb-28 md:pb-0">
+                                        <div className="pb-20 md:pb-0">
                                             {children}
                                         </div>
                                         <Toaster />

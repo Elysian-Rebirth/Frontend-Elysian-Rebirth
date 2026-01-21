@@ -9,9 +9,10 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Progress } from '@/components/ui/';
 import { Button } from '@/components/ui/';
 import { Badge } from '@/components/ui/';
-import { useWorkflowStore } from '@/store/workflowStore';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/';
+import { useWorkflows } from '@/queries/workflow.queries';
+import { useDeleteWorkflow } from '@/mutations/workflow.mutations';
 import { PipelineDetailDrawer } from '@/components/dashboard/PipelineDetailDrawer';
 
 export interface ActivePipelinesListProps {
@@ -21,12 +22,15 @@ export interface ActivePipelinesListProps {
 export const ActivePipelinesList: React.FC<ActivePipelinesListProps> = ({
     className,
 }) => {
-    // Connect to global store
-    const { pipelines, deletePipelineOptimistic, restorePipelines } = useWorkflowStore();
+    // Connect to Data Layer (TanStack Query)
+    // "UI components must handle loading/error states exclusively via TanStack Query results."
+    const { data: pipelines, isLoading, error } = useWorkflows();
+    const deleteMutation = useDeleteWorkflow();
     const { toast } = useToast();
     const [selectedPipeline, setSelectedPipeline] = useState<PipelineItem | null>(null);
 
-    const formatTimeAgo = (date: Date): string => {
+    const formatTimeAgo = (date: Date | string | undefined): string => {
+        if (!date) return '';
         const d = new Date(date);
         const seconds = Math.floor((Date.now() - d.getTime()) / 1000);
         if (seconds < 60) return `${seconds}s ago`;
@@ -35,41 +39,22 @@ export const ActivePipelinesList: React.FC<ActivePipelinesListProps> = ({
         return `${Math.floor(seconds / 86400)}d ago`;
     };
 
-    const handleDelete = async (id: string) => {
-        // 1. SNAPSHOT & OPTIMISTIC UPDATE
-        const previousState = deletePipelineOptimistic(id);
-
-        // 2. USER FEEDBACK
-        toast({
-            title: "Pipeline deleted",
-            description: "The pipeline has been removed from the queue.",
-            action: (
-                <ToastAction
-                    altText="Undo"
-                    onClick={() => restorePipelines(previousState)}
-                >
-                    Undo
-                </ToastAction>
-            ),
+    const handleDelete = (id: string) => {
+        deleteMutation.mutate(id, {
+            onSuccess: () => {
+                toast({
+                    title: "Pipeline deleted",
+                    description: "The pipeline has been removed from the queue.",
+                });
+            },
+            onError: (err) => {
+                toast({
+                    title: "Delete failed",
+                    description: "Could not sync with server.",
+                    variant: "destructive"
+                });
+            }
         });
-
-        // 3. SERVER SYNC (Simulated)
-        try {
-            // Simulate API latency
-            await new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve(true);
-                }, 1000);
-            });
-        } catch {
-            // 4. ROLLBACK ON FAILURE
-            restorePipelines(previousState);
-            toast({
-                title: "Delete failed",
-                description: "Could not sync with server. State restored.",
-                variant: "destructive"
-            });
-        }
     };
 
     const getStatusIcon = (status: PipelineItem['status']) => {
@@ -180,8 +165,9 @@ export const ActivePipelinesList: React.FC<ActivePipelinesListProps> = ({
             <div className={cn("overflow-hidden rounded-xl bg-background", className)}>
                 <DataTable
                     columns={columns}
-                    data={pipelines || []}
+                    data={(pipelines as unknown as PipelineItem[]) || []}
                     onRowClick={(row) => setSelectedPipeline(row.original)}
+                    isLoading={isLoading}
                 />
             </div>
 
