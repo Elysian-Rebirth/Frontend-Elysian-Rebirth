@@ -226,7 +226,7 @@ export const OnboardingWidget = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         style={{ zIndex: Z_INDEX.backdrop }}
-                        className="fixed inset-0 pointer-events-none overflow-hidden backdrop-blur-[2px]"
+                        className="fixed inset-0 pointer-events-none overflow-hidden"
                     >
                         <svg className="w-full h-full">
                             <defs>
@@ -234,11 +234,11 @@ export const OnboardingWidget = () => {
                                     <rect x="0" y="0" width="100%" height="100%" fill="white" />
                                     {targetRect && (
                                         <rect
-                                            x={targetRect.left - 4}
-                                            y={targetRect.top - 4}
-                                            width={targetRect.width + 8}
-                                            height={targetRect.height + 8}
-                                            rx="12"
+                                            x={targetRect.left - 8}
+                                            y={targetRect.top - 8}
+                                            width={targetRect.width + 16}
+                                            height={targetRect.height + 16}
+                                            rx="16"
                                             fill="black"
                                         />
                                     )}
@@ -249,11 +249,33 @@ export const OnboardingWidget = () => {
                                 y="0"
                                 width="100%"
                                 height="100%"
-                                fill="rgba(0,0,0,0.6)"
+                                fill="rgba(0,0,0,0.75)"
                                 mask="url(#spotlight-mask)"
                                 className="transition-all duration-300 ease-in-out"
                             />
                         </svg>
+
+                        {/* Glowing Border Around Highlighted Element */}
+                        {targetRect && (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                                style={{
+                                    position: 'absolute',
+                                    left: targetRect.left - 8,
+                                    top: targetRect.top - 8,
+                                    width: targetRect.width + 16,
+                                    height: targetRect.height + 16,
+                                    border: '3px solid #3b82f6',
+                                    borderRadius: '16px',
+                                    boxShadow: '0 0 0 4px rgba(59, 130, 246, 0.2), 0 0 30px rgba(59, 130, 246, 0.4), inset 0 0 20px rgba(59, 130, 246, 0.1)',
+                                    pointerEvents: 'none',
+                                    transition: 'all 0.3s ease-in-out'
+                                }}
+                                className="animate-pulse"
+                            />
+                        )}
                     </motion.div>
 
                     <motion.div

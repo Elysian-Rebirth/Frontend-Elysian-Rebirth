@@ -79,11 +79,23 @@ export function NavigationMenu() {
                             const Icon = getIcon(item.icon);
                             const isActive = pathname === item.href;
 
+                            // Map hrefs to onboarding IDs
+                            const getOnboardingId = (href: string) => {
+                                const idMap: Record<string, string> = {
+                                    '/chat': 'ai-assistant-trigger',
+                                    '/knowledge': 'knowledge-base-trigger',
+                                    '/editor': 'editor-trigger',
+                                    '/workflow': 'workflow-trigger',
+                                    '/settings': 'settings-trigger',
+                                };
+                                return idMap[href];
+                            };
+
                             return (
                                 <Link
                                     key={item.href}
                                     href={item.href}
-                                    id={item.href === '/chat' ? 'ai-assistant-trigger' : undefined}
+                                    id={getOnboardingId(item.href)}
                                     className={cn(
                                         'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors relative',
                                         !isOpen && 'justify-center px-2',
