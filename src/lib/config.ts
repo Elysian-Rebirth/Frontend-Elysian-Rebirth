@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:8080';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
 
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME ?? 'Elysian ';
 export const APP_DESCRIPTION = process.env.NEXT_PUBLIC_APP_DESCRIPTION ?? 'AI-Powered Business Automation Platform';

@@ -11,7 +11,8 @@ import {
     Users,
     CheckCircle2,
     ArrowDown,
-    ArrowUp
+    ArrowUp,
+    type LucideIcon
 } from 'lucide-react';
 import React from 'react';
 import Link from 'next/link';
@@ -286,8 +287,15 @@ function Counter({ end, duration }: { end: number, duration: number }) {
     return <span ref={nodeRef}>{count}</span>;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function FeatureCard({ icon: Icon, color, bgColor, title, items }: { icon: any, color: string, bgColor: string, title: string, items: string[] }) {
+interface FeatureCardProps {
+    icon: LucideIcon;
+    color: string;
+    bgColor: string;
+    title: string;
+    items: string[];
+}
+
+function FeatureCard({ icon: Icon, color, bgColor, title, items }: FeatureCardProps) {
     return (
         <Card className="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all hover:shadow-lg hover:-translate-y-1 duration-300">
             <CardHeader>

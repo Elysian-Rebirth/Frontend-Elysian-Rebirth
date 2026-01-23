@@ -3,12 +3,16 @@ import { Input } from '@/components/ui/';
 import { Button } from '@/components/ui/';
 import { Search, Zap } from 'lucide-react';
 
+interface SearchResult {
+    score: number;
+    content: string;
+}
+
 interface RagSearchProps {
     query: string;
     onQueryChange: (query: string) => void;
     onSearch: () => void;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    results: any[];
+    results: SearchResult[];
     latency?: string;
 }
 

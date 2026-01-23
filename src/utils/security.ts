@@ -34,11 +34,10 @@ export function sanitizeInput(input: string): string {
 /**
  * Mask sensitive data in logs
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function maskSensitiveData(data: any): any {
+export function maskSensitiveData(data: Record<string, unknown> | unknown): unknown {
     if (typeof data !== 'object' || data === null) return data;
 
-    const masked = { ...data };
+    const masked = { ...(data as Record<string, unknown>) };
     const sensitiveKeys = ['password', 'token', 'apiKey', 'secret', 'authorization', 'cookie'];
 
     for (const key in masked) {

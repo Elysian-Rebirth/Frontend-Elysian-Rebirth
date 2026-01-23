@@ -134,11 +134,12 @@ function CarouselCard({ item, index }: { item: IntegrationItem, index: number })
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
-            className={`min-w-[300px] md:min-w-[350px] h-[400px] bg-slate-50 border border-slate-100 rounded-3xl p-8 flex flex-col justify-between relative group hover:bg-white hover:border-slate-200 hover:shadow-2xl transition-all duration-500 ${item.color}`}
+            transition={{ delay: index * 0.1, duration: 0.4 }}
+            style={{ translateZ: 0 }}
+            className={`min-w-[300px] md:min-w-[350px] h-[400px] bg-slate-50 border border-slate-100 rounded-3xl p-8 flex flex-col justify-between relative group hover:bg-white hover:border-slate-200 hover:shadow-2xl transition-all duration-300 ${item.color}`}
         >
             {/* Icon Placeholder Background */}
-            <div className="absolute top-0 right-0 p-32 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-500 pointer-events-none scale-150 grayscale group-hover:grayscale-0">
+            <div className="absolute top-0 right-0 p-32 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-300 pointer-events-none scale-150 grayscale group-hover:grayscale-0">
                 {item.icon}
             </div>
 

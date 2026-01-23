@@ -24,10 +24,10 @@ export function SiteFooter() {
                     {/* Brand Column - Wider */}
                     <div className="lg:col-span-2 space-y-6">
                         <div>
-                            <h3 className="text-2xl font-bold text-slate-900 mb-2">
-                                Elysian Rebirth
+                            <h3 className="text-3xl font-bold text-slate-900 mb-2 font-heading tracking-tighter">
+                                ELYSIAN
                             </h3>
-                            <p className="text-slate-500 text-sm leading-relaxed max-w-md">
+                            <p className="text-slate-500 text-sm leading-relaxed max-w-md font-medium">
                                 Asisten Operasional Cerdas terdepan di Indonesia yang didedikasikan untuk membantu UMKM. Kami menggabungkan kecerdasan buatan canggih untuk mengotomatiskan proses, memberikan wawasan mendalam, dan memacu pertumbuhan bisnis Anda.
                             </p>
                         </div>

@@ -1,4 +1,4 @@
-import { Node, Edge, Viewport } from 'reactflow';
+import { Node, Edge, NodeChange, EdgeChange, Connection } from 'reactflow';
 
 // --- Domain Types ---
 export type PortType = 'text' | 'json' | 'image' | 'embedding' | 'trigger' | 'document' | 'any';
@@ -26,7 +26,7 @@ export interface NodeTypeDefinition {
 // --- Data Structures ---
 export interface WorkflowNodeData {
     label: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface WorkflowMeta {
@@ -45,7 +45,7 @@ export interface ExecutionState {
     // Per-node execution details
     nodeStatus: Record<string, NodeStatus>;
     errors: Record<string, string>; // nodeId -> error message
-    results: Record<string, any>;   // nodeId -> output data
+    results: Record<string, unknown>;   // nodeId -> output data
 }
 
 export interface UIState {
@@ -73,16 +73,16 @@ export interface WorkflowState {
     // Graph Actions
     setNodes: (nodes: Node<WorkflowNodeData>[]) => void;
     setEdges: (edges: Edge[]) => void;
-    onNodesChange: (changes: any) => void; // Using any to avoid circular deps with reacttype
-    onEdgesChange: (changes: any) => void;
-    onConnect: (connection: any) => void;
+    onNodesChange: (changes: NodeChange[]) => void;
+    onEdgesChange: (changes: EdgeChange[]) => void;
+    onConnect: (connection: Connection) => void;
     addNode: (node: Node<WorkflowNodeData>) => void;
 
     // UI Actions
     setSelectedNode: (id: string | null) => void;
 
     // Logic Actions
-    isValidConnection: (connection: any) => boolean;
+    isValidConnection: (connection: Connection | Edge) => boolean;
     updateNodeData: (nodeId: string, data: Partial<WorkflowNodeData>) => void;
 
     // Execution Actions

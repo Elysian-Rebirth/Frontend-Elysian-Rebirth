@@ -9,11 +9,27 @@ import { DashboardStats } from './DashboardStats';
 import { ActivePipelinesList } from './ActivePipelinesList';
 import { BusinessNeedsSection } from './BusinessNeeds';
 import { OnboardingWidget } from '@/components/onboarding/OnboardingWidget';
+import { useTranslation } from '@/hooks/useTranslation';
+import { useDashboardStats } from '@/queries/dashboard.queries';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function DashboardShell({ stats: _stats }: { stats: any }) {
-    // We ignore the passed stats for now as they are placeholders and use realistic mock data
-    // to match the screenshot design requested by the user.
+interface DashboardStatsData {
+    docs?: number;
+    apiCalls?: number;
+    errorRate?: number;
+    successRate?: number;
+}
+
+export function DashboardShell({ stats: _initialStats }: { stats: DashboardStatsData | null }) {
+    const { t } = useTranslation();
+    const { data: stats, isLoading } = useDashboardStats();
+
+    // Use dummy data if still loading but show real stats once fetched
+    const displayStats = stats || {
+        docs: 0,
+        apiCalls: 0,
+        errorRate: 0,
+        successRate: 0
+    };
 
     return (
         <>
@@ -24,10 +40,10 @@ export function DashboardShell({ stats: _stats }: { stats: any }) {
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                         <Home className="w-4 h-4" />
                         <span>/</span>
-                        <span>Dashboard</span>
+                        <span>{t.dashboard.breadcrumb}</span>
                     </div>
-                    <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Dashboard</h1>
-                    <p className="text-muted-foreground mt-1">Monitor token usage and pipeline status.</p>
+                    <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{t.dashboard.heading}</h1>
+                    <p className="text-muted-foreground mt-1">{t.dashboard.description}</p>
                 </div>
 
                 {/* Top Section: Charts & Promo */}
@@ -48,16 +64,17 @@ export function DashboardShell({ stats: _stats }: { stats: any }) {
 
                 {/* Stats Grid */}
                 <DashboardStats
-                    docs={1234}
-                    apiCalls={45600}
-                    errorRate={0.12}
-                    successRate={99.8}
+                    docs={displayStats.docs}
+                    apiCalls={displayStats.apiCalls}
+                    errorRate={displayStats.errorRate}
+                    successRate={displayStats.successRate}
+                    isLoading={isLoading}
                 />
 
                 {/* Active Pipelines Table */}
                 <div className="rounded-xl border bg-white dark:bg-zinc-900 shadow-sm p-6">
                     <div className="mb-6">
-                        <h3 className="font-bold text-lg">Active Pipelines</h3>
+                        <h3 className="font-bold text-lg">{t.dashboard.activePipelines}</h3>
                     </div>
                     <ActivePipelinesList />
                 </div>

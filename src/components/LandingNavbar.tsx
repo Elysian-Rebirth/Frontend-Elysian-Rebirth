@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Infinity as InfinityIcon, ArrowRight, Sun, Moon, Terminal, Monitor } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function LandingNavbar({ showTerminal, setShowTerminal }: { showTerminal?: boolean; setShowTerminal?: (v: boolean) => void }) {
+    const { t } = useTranslation();
     const [scrolled, setScrolled] = useState(false);
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
@@ -25,36 +27,42 @@ export function LandingNavbar({ showTerminal, setShowTerminal }: { showTerminal?
 
     return (
         <header
+            style={{ transform: 'translateZ(0)' }}
             className={cn(
                 "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
                 scrolled
-                    ? "bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-slate-200/50 dark:border-slate-800/50 py-3"
+                    ? "bg-white/90 dark:bg-slate-950/90 backdrop-blur-sm border-slate-200/50 dark:border-slate-800/50 py-3"
                     : "bg-transparent border-transparent py-5"
             )}
         >
             <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                 {/* Logo Area */}
-                <div className="flex items-center gap-2">
-                    <div className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white p-1.5 rounded-lg shadow-lg shadow-blue-500/20">
+                <div className="flex items-center gap-2 group cursor-pointer">
+                    <div className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white p-1.5 rounded-lg shadow-xl shadow-blue-500/20 shine-effect relative overflow-hidden">
                         <InfinityIcon className="w-5 h-5" />
                     </div>
                     <span className={cn(
-                        "font-bold text-xl tracking-tight transition-colors",
+                        "font-bold text-2xl tracking-tighter transition-colors font-heading",
                         scrolled ? "text-slate-900 dark:text-white" : "text-slate-900"
                     )}>
-                        Elysian
+                        ELYSIAN
                     </span>
                 </div>
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:flex items-center gap-8">
-                    {['Product', 'Solutions', 'Enterprise', 'Pricing'].map((item) => (
+                    {[
+                        { name: t.nav.product, href: '/product' },
+                        { name: t.nav.solutions, href: '/solutions' },
+                        { name: t.nav.enterprise, href: '/enterprise' },
+                        { name: t.nav.pricing, href: '/pricing' }
+                    ].map((item) => (
                         <Link
-                            key={item}
-                            href={`/${item.toLowerCase()}`}
+                            key={item.name}
+                            href={item.href}
                             className="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                         >
-                            {item}
+                            {item.name}
                         </Link>
                     ))}
                 </nav>
@@ -98,7 +106,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal }: { showTerminal?
                             variant="ghost"
                             className="hidden sm:inline-flex text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 font-medium"
                         >
-                            Masuk
+                            {t.nav.login}
                         </Button>
                     </Link>
                     <Link href="/dashboard">
@@ -108,7 +116,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal }: { showTerminal?
                                 scrolled ? "h-9 px-4 text-sm" : "h-10 px-6"
                             )}
                         >
-                            Mulai Gratis
+                            {t.nav.getStarted}
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                     </Link>

@@ -19,7 +19,14 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html lang="id" suppressHydrationWarning>
+            <head>
+                <link rel="preconnect" href="https://api.fontshare.com" />
+                <link
+                    href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap"
+                    rel="stylesheet"
+                />
+            </head>
             <body className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans`}>
                 <Providers>{children}</Providers>
             </body>

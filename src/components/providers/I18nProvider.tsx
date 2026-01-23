@@ -144,9 +144,9 @@ export const useI18n = (): I18nContextValue => {
     const context = useContext(I18nContext);
 
     if (!context) {
-        // Fallback to English defaults
+        // Fallback to Indonesian defaults
         return {
-            locale: 'en',
+            locale: 'id',
             direction: 'ltr',
             t: (key, defaultValue) => defaultValue || key,
             formatDate: (date) => date.toLocaleDateString(),

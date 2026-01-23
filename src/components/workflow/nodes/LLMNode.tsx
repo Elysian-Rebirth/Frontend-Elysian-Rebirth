@@ -79,10 +79,10 @@ export function LLMNode({ id, data, selected }: NodeProps<LLMNodeData>) {
                     <div className="space-y-2 nodrag">
                         <Label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Output Style</Label>
                         <div className="grid grid-cols-3 gap-1 bg-slate-50 p-1 rounded-md border border-slate-100">
-                            {['precise', 'balanced', 'creative'].map((p) => (
+                            {(['precise', 'balanced', 'creative'] as const).map((p) => (
                                 <button
                                     key={p}
-                                    onClick={() => handlePresetChange(p as any)}
+                                    onClick={() => handlePresetChange(p)}
                                     className={`text-[10px] font-medium py-1.5 px-2 rounded capitalize transition-all ${currentPreset === p ? 'bg-white text-slate-800 shadow-sm border border-slate-200' : 'text-slate-400 hover:text-slate-600'}`}
                                 >
                                     {p}

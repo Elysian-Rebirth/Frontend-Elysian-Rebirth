@@ -9,6 +9,7 @@ import {
     ArrowRight, Sparkles, TrendingUp, Store, Truck, PenTool, Stethoscope, CheckCircle2
 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton'; // Skeleton for lazy loading
+import { useTranslation } from '@/hooks/useTranslation';
 
 // Dynamic Imports with Loading Skeletons for Heavy Sections
 const ProductShowcase = dynamic(() => import('@/components/ProductShowcase').then(mod => mod.ProductShowcase), {
@@ -41,8 +42,10 @@ const FloatingBentoGrid = dynamic(() => import('@/components/FloatingBentoGrid')
 // import { FloatingBentoGrid } from '@/components/FloatingBentoGrid'; // Converted to dynamic
 import { LandingNavbar } from '@/components/LandingNavbar';
 import { LandingTerminal } from '@/components/LandingTerminal';
+import { LazyViewport } from '@/components/ui/LazyViewport';
 
 export default function ElysianLanding() {
+    const { t } = useTranslation();
     // mobileMenuOpen state removed as it was only for the old Navbar
     // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const heroRef = useRef(null);
@@ -67,7 +70,7 @@ export default function ElysianLanding() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-cyan-50/20 font-sans overflow-x-hidden selection:bg-blue-100 selection:text-blue-900"
+            className="min-h-screen mesh-gradient-bg font-sans overflow-x-hidden selection:bg-blue-100 selection:text-blue-900"
         >
             {/* Floating Navigation - Custom SaaS Style */}
             {/* Floating Navigation - Custom SaaS Style */}
@@ -78,7 +81,7 @@ export default function ElysianLanding() {
 
             {/* Hero Section - Anti-Gravity + Floating Bento (Combined) */}
             <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-                {/* Animated Background Blobs (Restored) */}
+                {/* Animated Background Blobs (Optimized) */}
                 <motion.div
                     animate={{
                         scale: [1, 1.2, 1],
@@ -86,7 +89,8 @@ export default function ElysianLanding() {
                         y: [0, -50, 0],
                     }}
                     transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-[-10%] left-[-5%] w-[700px] h-[700px] bg-gradient-to-br from-blue-400/20 to-cyan-400/20 blur-[100px] rounded-full pointer-events-none"
+                    style={{ transform: 'translateZ(0)' }}
+                    className="absolute top-[-10%] left-[-5%] w-[700px] h-[700px] bg-gradient-to-br from-blue-400/20 to-cyan-400/20 blur-[80px] rounded-full pointer-events-none hidden md:block"
                 />
                 <motion.div
                     animate={{
@@ -95,7 +99,8 @@ export default function ElysianLanding() {
                         y: [0, 80, 0],
                     }}
                     transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                    className="absolute bottom-[-10%] right-[-5%] w-[800px] h-[800px] bg-gradient-to-tl from-indigo-400/15 to-purple-400/15 blur-[120px] rounded-full pointer-events-none"
+                    style={{ transform: 'translateZ(0)' }}
+                    className="absolute bottom-[-10%] right-[-5%] w-[800px] h-[800px] bg-gradient-to-tl from-indigo-400/15 to-purple-400/15 blur-[100px] rounded-full pointer-events-none hidden md:block"
                 />
 
                 <motion.div
@@ -113,27 +118,21 @@ export default function ElysianLanding() {
                                 {/* Badge */}
                                 <motion.div
                                     whileHover={{ scale: 1.05 }}
-                                    className="inline-flex items-center gap-2 px-2.5 py-1.5 sm:px-3 rounded-full bg-white/80 backdrop-blur-md border border-blue-100 shadow-sm mb-4 sm:mb-6 lg:mb-8 cursor-default"
+                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full glassmorphism-premium mb-8 mx-auto lg:mx-0 shadow-xl cursor-default"
                                 >
-                                    <span className="relative flex h-2 w-2">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                                    </span>
-                                    <span className="text-[10px] sm:text-xs font-semibold text-blue-900 tracking-wide uppercase">Elysian v2.0 Public Beta</span>
+                                    <Sparkles className="w-4 h-4 text-blue-500 fill-blue-500 animate-pulse" />
+                                    <span className="text-sm font-bold text-blue-900 tracking-wider uppercase font-heading">{t.landing.hero.badge}</span>
                                 </motion.div>
 
-                                {/* Headline */}
-                                <motion.h1
-                                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-[1.15] sm:leading-[1.1] tracking-tight text-slate-900"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.8, delay: 0.3 }}
+                                {/* Headline - Optimized for LCP (immediate paint) */}
+                                <h1
+                                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1] tracking-tight text-slate-900 font-heading"
                                 >
-                                    Standar Baru <br />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500">
-                                        Manajemen Produk.
+                                    {t.landing.hero.title1} <br />
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-indigo-600 to-cyan-600 animate-gradient-x">
+                                        {t.landing.hero.title2}
                                     </span>
-                                </motion.h1>
+                                </h1>
 
                                 <motion.p
                                     className="text-base sm:text-lg text-slate-600 mb-6 sm:mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0 font-medium px-4 sm:px-0"
@@ -141,7 +140,7 @@ export default function ElysianLanding() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.8, delay: 0.4 }}
                                 >
-                                    Sistem operasi cerdas untuk tim modern. Gabungkan roadmap, dokumen, dan AI dalam satu harmoni.
+                                    {t.landing.hero.description}
                                 </motion.p>
 
                                 {/* CTA Buttons */}
@@ -157,7 +156,7 @@ export default function ElysianLanding() {
                                             whileTap={{ scale: 0.95 }}
                                             className="w-full sm:w-auto h-12 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 flex items-center justify-center gap-2 transition-all"
                                         >
-                                            Mulai Sekarang
+                                            {t.landing.hero.ctaStart}
                                         </motion.button>
                                     </Link>
                                     <motion.button
@@ -165,7 +164,7 @@ export default function ElysianLanding() {
                                         whileTap={{ scale: 0.98 }}
                                         className="w-full sm:w-auto h-12 px-8 rounded-full bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 transition-all shadow-sm"
                                     >
-                                        Lihat Demo
+                                        {t.landing.hero.ctaDemo}
                                     </motion.button>
                                 </motion.div>
                             </motion.div>
@@ -184,38 +183,48 @@ export default function ElysianLanding() {
             </section>
 
 
-            {/* Infinite Marquee */}
-            < InfiniteMarquee />
+            {/* Infinite Marquee - Key visual, keep eager or high margin */}
+            <InfiniteMarquee />
 
-            {/* Product Showcase - Linear Style */}
-            <ProductShowcase />
+            <LazyViewport minHeight="600px">
+                <ProductShowcase />
+            </LazyViewport>
 
-            {/* Feature Deep Dive - Cycles/Triage/Insights */}
-            <FeatureDeepDive />
+            <LazyViewport minHeight="600px">
+                <FeatureDeepDive />
+            </LazyViewport>
 
-            {/* AI Agents Showcase (New) */}
-            <AiAgentsSection />
+            <LazyViewport minHeight="600px">
+                <AiAgentsSection />
+            </LazyViewport>
 
-            {/* Collaboration Section (New) */}
-            <CollaborationSection />
+            <LazyViewport minHeight="600px">
+                <CollaborationSection />
+            </LazyViewport>
 
-            {/* Integrations Carousel */}
-            <IntegrationsCarousel />
+            <LazyViewport minHeight="300px">
+                <IntegrationsCarousel />
+            </LazyViewport>
 
-            {/* Problem Section */}
-            < ProblemSection />
+            <LazyViewport minHeight="500px">
+                <ProblemSection />
+            </LazyViewport>
 
-            {/* Solution Grid */}
-            < SolutionSection />
+            <LazyViewport minHeight="500px">
+                <SolutionSection />
+            </LazyViewport>
 
-            {/* Use Cases */}
-            < UseCasesSection />
+            <LazyViewport minHeight="600px">
+                <UseCasesSection />
+            </LazyViewport>
 
-            {/* CTA */}
-            < CTASection />
+            <LazyViewport minHeight="500px">
+                <CTASection />
+            </LazyViewport>
 
-            {/* FAQ */}
-            < FAQSection />
+            <LazyViewport minHeight="400px">
+                <FAQSection />
+            </LazyViewport>
 
             {/* Global footer is handled by Providers/SiteFooter, avoiding double footer here */}
         </motion.div>
@@ -251,6 +260,7 @@ function InfiniteMarquee() {
 
 // Problem Section
 function ProblemSection() {
+    const { t } = useTranslation();
     return (
         <section className="py-32 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-white/0 via-slate-50/50 to-white/0 pointer-events-none" />
@@ -263,26 +273,21 @@ function ProblemSection() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-slate-900 leading-tight">
-                            Mengapa Bisnis <br />
+                        <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-slate-900 leading-tight font-heading">
+                            {t.landing.problem.title1} <br />
                             <span className="relative inline-block">
-                                Sering Stuck?
+                                {t.landing.problem.title2}
                                 <svg className="absolute -bottom-2 left-0 w-full" height="12" viewBox="0 0 200 12" fill="none">
                                     <path d="M2 10C50 2 150 2 198 10" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" strokeDasharray="8 8" />
                                 </svg>
                             </span>
                         </h2>
                         <p className="text-lg text-slate-600 mb-8 leading-relaxed">
-                            Banyak pemilik bisnis terjebak menjadi &quot;karyawan&quot; di bisnisnya sendiri. Waktu habis untuk hal teknis, bukan strategis.
+                            {t.landing.problem.description}
                         </p>
 
                         <div className="space-y-3">
-                            {[
-                                'Dokumen penting berantakan di WhatsApp & Email',
-                                'Keputusan lambat karena data tidak rapi',
-                                'SOP cuma jadi pajangan dinding',
-                                'Burnout mengurus operasional harian'
-                            ].map((problem, i) => (
+                            {t.landing.problem.items.map((problem, i) => (
                                 <motion.div
                                     key={i}
                                     initial={{ opacity: 0, x: -20 }}
@@ -314,15 +319,11 @@ function ProblemSection() {
                                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
                                     <TrendingUp className="w-6 h-6" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-slate-900">Solusi Elysian</h3>
+                                <h3 className="text-2xl font-bold text-slate-900 font-heading">{t.landing.problem.solutionTitle}</h3>
                             </div>
 
                             <div className="space-y-6 mb-8">
-                                {[
-                                    { title: 'Otomatisasi 80% Pekerjaan Admin', desc: 'Hemat 20+ jam per minggu' },
-                                    { title: 'Pustaka Pengetahuan Terpusat', desc: 'SOP & Dokumen dalam satu akses' },
-                                    { title: 'AI Konteks Lokal', desc: 'Mengerti bahasa bisnis Indonesia' }
-                                ].map((item, i) => (
+                                {t.landing.problem.solutionItems.map((item, i) => (
                                     <motion.div
                                         key={i}
                                         initial={{ opacity: 0, y: 20 }}
@@ -347,7 +348,7 @@ function ProblemSection() {
                                 whileTap={{ scale: 0.98 }}
                                 className="w-full h-12 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold shadow-lg"
                             >
-                                Transformasi Bisnis Sekarang
+                                {t.landing.problem.cta}
                             </motion.button>
                         </div>
                     </motion.div>
@@ -359,11 +360,12 @@ function ProblemSection() {
 
 // Solution Section
 function SolutionSection() {
+    const { t } = useTranslation();
     const features = [
-        { icon: Bot, title: 'AI Assistant 24/7', desc: 'Jawab pertanyaan tim kapan saja', color: 'from-blue-500 to-cyan-500' },
-        { icon: FileText, title: 'Document Hub', desc: 'Semua file dalam satu tempat', color: 'from-indigo-500 to-purple-500' },
-        { icon: Shield, title: 'Advanced Security', desc: 'Standar keamanan perbankan', color: 'from-emerald-500 to-teal-500' },
-        { icon: Zap, title: 'Workflow Automation', desc: 'Otomasi tugas berulang', color: 'from-orange-500 to-amber-500' }
+        { icon: Bot, title: t.landing.features.items.ai.title, desc: t.landing.features.items.ai.desc, color: 'from-blue-500 to-cyan-500' },
+        { icon: FileText, title: t.landing.features.items.docs.title, desc: t.landing.features.items.docs.desc, color: 'from-indigo-500 to-purple-500' },
+        { icon: Shield, title: t.landing.features.items.security.title, desc: t.landing.features.items.security.desc, color: 'from-emerald-500 to-teal-500' },
+        { icon: Zap, title: t.landing.features.items.automation.title, desc: t.landing.features.items.automation.desc, color: 'from-orange-500 to-amber-500' }
     ];
 
     return (
@@ -375,10 +377,12 @@ function SolutionSection() {
                     viewport={{ once: true }}
                     className="text-center max-w-3xl mx-auto mb-20"
                 >
-                    <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-                        Fitur yang <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Mengangkat</span> Bisnis
+                    <h2 className="text-3xl lg:text-4xl font-bold mb-6 font-heading">
+                        {t.landing.features.title.split(' ').map((word, i) => word === 'Mengangkat' || word === 'Elevate' ? (
+                            <span key={i} className="bg-gradient-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent"> {word} </span>
+                        ) : ' ' + word)}
                     </h2>
-                    <p className="text-xl text-slate-600">Platform all-in-one untuk operasional bisnis modern</p>
+                    <p className="text-xl text-slate-600">{t.landing.features.subtitle}</p>
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -395,7 +399,7 @@ function SolutionSection() {
                             <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform shadow-lg`}>
                                 <feature.icon className="w-8 h-8 text-white" />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3">{feature.title}</h3>
+                            <h3 className="text-xl font-bold text-slate-900 mb-3 font-heading">{feature.title}</h3>
                             <p className="text-slate-600">{feature.desc}</p>
                         </motion.div>
                     ))}
@@ -407,11 +411,12 @@ function SolutionSection() {
 
 // Use Cases Section
 function UseCasesSection() {
+    const { t } = useTranslation();
     const cases = [
-        { icon: Store, title: 'Retail & Toko', items: ['Cek stok otomatis', 'Balas chat pelanggan', 'Deskripsi produk'], color: 'from-orange-500 to-red-500' },
-        { icon: Truck, title: 'Logistik', items: ['Tracking kiriman', 'Rekap surat jalan', 'Optimasi rute'], color: 'from-blue-500 to-cyan-500' },
-        { icon: PenTool, title: 'Agency', items: ['Ide konten instan', 'Draft proposal', 'Analisis brief'], color: 'from-pink-500 to-purple-500' },
-        { icon: Stethoscope, title: 'Klinik', items: ['Rekap medis', 'Jadwal dokter', 'Reminder pasien'], color: 'from-emerald-500 to-teal-500' }
+        { icon: Store, title: t.landing.useCases.items.retail.title, items: t.landing.useCases.items.retail.items, color: 'from-orange-500 to-red-500' },
+        { icon: Truck, title: t.landing.useCases.items.logistics.title, items: t.landing.useCases.items.logistics.items, color: 'from-blue-500 to-cyan-500' },
+        { icon: PenTool, title: t.landing.useCases.items.agency.title, items: t.landing.useCases.items.agency.items, color: 'from-pink-500 to-purple-500' },
+        { icon: Stethoscope, title: t.landing.useCases.items.clinic.title, items: t.landing.useCases.items.clinic.items, color: 'from-emerald-500 to-teal-500' }
     ];
 
     return (
@@ -423,8 +428,8 @@ function UseCasesSection() {
                     viewport={{ once: true }}
                     className="text-center max-w-3xl mx-auto mb-20"
                 >
-                    <h2 className="text-4xl lg:text-5xl font-bold mb-6">Siapa yang Butuh Elysian?</h2>
-                    <p className="text-xl text-slate-600">Platform fleksibel yang beradaptasi dengan model bisnis Anda</p>
+                    <h2 className="text-3xl lg:text-4xl font-bold mb-6 font-heading">{t.landing.useCases.title}</h2>
+                    <p className="text-xl text-slate-600">{t.landing.useCases.subtitle}</p>
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -441,7 +446,7 @@ function UseCasesSection() {
                             <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 group-hover:rotate-3 bg-gradient-to-br ${useCase.color}`}>
                                 <useCase.icon className="h-8 w-8 text-white" />
                             </div>
-                            <h3 className="text-xl font-bold mb-4 text-slate-900">{useCase.title}</h3>
+                            <h3 className="text-xl font-bold mb-4 text-slate-900 font-heading">{useCase.title}</h3>
                             <ul className="space-y-3">
                                 {useCase.items.map((item, idx) => (
                                     <li key={idx} className="text-sm text-slate-500 flex items-center gap-3">
@@ -461,6 +466,7 @@ function UseCasesSection() {
 
 // CTA Section - Elysian Rebirth Style
 function CTASection() {
+    const { t } = useTranslation();
     return (
         <section className="py-32 relative overflow-hidden">
             {/* Ambient Background */}
@@ -506,10 +512,10 @@ function CTASection() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.2 }}
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-md border border-blue-200 shadow-sm mb-10 mx-auto"
+                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full glassmorphism-premium mb-10 mx-auto shadow-xl"
                             >
-                                <Sparkles className="w-4 h-4 text-blue-500 fill-blue-500" />
-                                <span className="text-sm font-semibold text-blue-900 tracking-wide uppercase">Bergabung dengan Revolusi AI</span>
+                                <Sparkles className="w-4 h-4 text-blue-500 fill-blue-500 animate-pulse" />
+                                <span className="text-sm font-bold text-blue-900 tracking-wider uppercase font-heading">{t.landing.cta.badge}</span>
                             </motion.div>
 
                             <motion.h2
@@ -517,11 +523,11 @@ function CTASection() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.3 }}
-                                className="text-5xl md:text-7xl font-bold mb-8 leading-tight tracking-tight text-slate-900"
+                                className="text-4xl md:text-6xl font-bold mb-8 leading-tight tracking-tight text-slate-900 font-heading"
                             >
-                                Siap Membuat Bisnis Anda <br />
-                                <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-500 bg-clip-text text-transparent">
-                                    Lebih Ringan?
+                                {t.landing.cta.title1} <br />
+                                <span className="bg-gradient-to-r from-blue-700 via-cyan-600 to-teal-600 bg-clip-text text-transparent">
+                                    {t.landing.cta.title2}
                                 </span>
                             </motion.h2>
 
@@ -532,7 +538,7 @@ function CTASection() {
                                 transition={{ delay: 0.4 }}
                                 className="text-xl md:text-2xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed"
                             >
-                                Bergabunglah dengan <span className="font-bold text-slate-900">500+ pebisnis</span> yang telah beralih ke cara kerja masa depan. Hemat waktu, kurangi stres.
+                                {t.landing.cta.description}
                             </motion.p>
 
                             <motion.div
@@ -549,7 +555,7 @@ function CTASection() {
                                         className="h-16 px-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold text-lg shadow-xl shadow-blue-500/30 flex items-center gap-3 group relative overflow-hidden"
                                     >
                                         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                                        <span>Mulai Uji Coba Gratis</span>
+                                        <span>{t.landing.cta.btnStart}</span>
                                         <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                                     </motion.button>
                                 </Link>
@@ -563,7 +569,7 @@ function CTASection() {
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                         <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                                     </span>
-                                    Konsultasi Tim
+                                    {t.landing.cta.btnConsult}
                                 </motion.button>
                             </motion.div>
 
@@ -573,7 +579,7 @@ function CTASection() {
                                 transition={{ delay: 0.7 }}
                                 className="mt-8 text-sm text-slate-400 font-medium"
                             >
-                                Tanpa kartu kredit. Batalkan kapan saja.
+                                {t.landing.cta.foot}
                             </motion.p>
                         </div>
                     </div>
@@ -585,11 +591,12 @@ function CTASection() {
 
 // FAQ Section
 function FAQSection() {
+    const { t } = useTranslation();
     const faqs = [
-        { q: "Apakah data bisnis saya aman?", a: "Sangat aman. Kami menggunakan enkripsi standar perbankan (AES-256) dan server yang terisolasi untuk setiap klien." },
-        { q: "Bisa integrasi dengan WhatsApp?", a: "Ya! Elysian memiliki fitur integrasi WhatsApp Business API resmi untuk auto-reply dan manajemen order." },
-        { q: "Apakah ada training penggunaan?", a: "Kami menyediakan video tutorial lengkap dan sesi onboarding 1-on-1 untuk paket Premium." },
-        { q: "Bagaimana jika saya ingin berhenti?", a: "Anda bisa berhenti berlangganan kapan saja. Data Anda bisa diekspor sepenuhnya." }
+        { q: t.landing.faq.q1, a: t.landing.faq.a1 },
+        { q: t.landing.faq.q2, a: t.landing.faq.a2 },
+        { q: t.landing.faq.q3, a: t.landing.faq.a3 },
+        { q: t.landing.faq.q4, a: t.landing.faq.a4 }
     ];
 
     return (
@@ -599,8 +606,8 @@ function FAQSection() {
 
             <div className="container mx-auto px-4 max-w-3xl relative z-10">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold mb-4 text-slate-900">Pertanyaan Umum</h2>
-                    <p className="text-lg text-slate-600">Jawaban untuk keraguan Anda</p>
+                    <h2 className="text-4xl font-bold mb-4 text-slate-900 font-heading">{t.landing.faq.title}</h2>
+                    <p className="text-lg text-slate-600">{t.landing.faq.subtitle}</p>
                 </div>
                 <div className="space-y-4">
                     {faqs.map((item, i) => (
@@ -612,7 +619,7 @@ function FAQSection() {
                             transition={{ delay: i * 0.1 }}
                             className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300"
                         >
-                            <h3 className="font-bold text-lg text-slate-900 mb-2">{item.q}</h3>
+                            <h3 className="font-bold text-lg text-slate-900 mb-2 font-heading">{item.q}</h3>
                             <p className="text-slate-600 leading-relaxed">{item.a}</p>
                         </motion.div>
                     ))}

@@ -16,8 +16,7 @@ type EventType =
 
 interface TelemetryEvent {
     type: EventType;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    payload?: any;
+    payload?: Record<string, unknown>;
     timestamp: number;
     userId?: string;
 }
@@ -26,8 +25,7 @@ class TelemetryService {
     private events: TelemetryEvent[] = [];
     private enabled: boolean = true;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    track(type: EventType, payload?: any) {
+    track(type: EventType, payload?: Record<string, unknown>) {
         if (!this.enabled) return;
 
         const event: TelemetryEvent = {
@@ -100,8 +98,7 @@ export const toast = {
     info: (msg: string) => {
         sonnerToast.info(msg);
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    loading: (msg: string, key?: string | number, _metadata?: Record<string, any>) => {
+    loading: (msg: string, key?: string | number, _metadata?: Record<string, unknown>) => {
         const id = sonnerToast.loading(msg, { id: key });
         return {
             update: (params: { content?: string, type?: 'success' | 'error' | 'info' }) => {
