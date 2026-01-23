@@ -83,6 +83,7 @@ export function NavigationMenu() {
                                 <Link
                                     key={item.href}
                                     href={item.href}
+                                    id={item.href === '/chat' ? 'ai-assistant-trigger' : undefined}
                                     className={cn(
                                         'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors relative',
                                         !isOpen && 'justify-center px-2',

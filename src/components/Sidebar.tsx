@@ -13,7 +13,7 @@ export function Sidebar() {
     const { isOpen, toggle } = useSidebar();
 
     return (
-        <aside className={cn(
+        <aside id="main-sidebar" className={cn(
             "border-r border-blue-100 bg-white relative hidden md:flex flex-col h-full overflow-hidden shadow-sm z-30 transition-all duration-300 ease-in-out",
             isOpen ? "w-64" : "w-20"
         )}>
@@ -99,7 +99,7 @@ export function Sidebar() {
                 )}
 
                 {/* User Profile - Compact */}
-                <div className={cn(
+                <div id="user-menu-trigger" className={cn(
                     "flex items-center gap-3 p-2 rounded-lg hover:bg-white/80 transition-all duration-200 cursor-pointer group border border-transparent hover:border-blue-100 hover:shadow-sm",
                     !isOpen && "justify-center"
                 )}>
