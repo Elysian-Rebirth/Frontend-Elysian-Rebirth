@@ -7,10 +7,12 @@ export interface OnboardingStep {
     outcome?: string;
     ctaLabel: string;
     navigateTo?: string; // Optional: Auto-navigate to this route
+    mobileOnly?: boolean; // Only show on mobile
+    desktopOnly?: boolean; // Only show on desktop
 }
 
-export const onboardingSteps: OnboardingStep[] = [
-    // INTRO - Dashboard
+// Desktop-focused onboarding (full feature tour with spotlight)
+export const desktopOnboardingSteps: OnboardingStep[] = [
     {
         id: 1,
         title: "Selamat Datang di Elysian!",
@@ -19,10 +21,9 @@ export const onboardingSteps: OnboardingStep[] = [
         label: "MULAI",
         outcome: "Anda sekarang paham pusat kontrol aplikasi",
         ctaLabel: "Mulai Tour",
-        navigateTo: "/dashboard"
+        navigateTo: "/dashboard",
+        desktopOnly: true
     },
-
-    // NAVIGATION
     {
         id: 2,
         title: "Navigasi Global",
@@ -30,10 +31,9 @@ export const onboardingSteps: OnboardingStep[] = [
         targetId: "main-sidebar",
         label: "NAVIGASI",
         outcome: "Anda tau cara berpindah antar fitur",
-        ctaLabel: "Mengerti"
+        ctaLabel: "Mengerti",
+        desktopOnly: true
     },
-
-    // AI CHAT
     {
         id: 3,
         title: "AI Assistant - Otak Sistem",
@@ -41,10 +41,9 @@ export const onboardingSteps: OnboardingStep[] = [
         targetId: "ai-assistant-trigger",
         label: "AI CORE",
         outcome: "Akses ke asisten AI utama",
-        ctaLabel: "Lanjut"
+        ctaLabel: "Lanjut",
+        desktopOnly: true
     },
-
-    // KNOWLEDGE BASE
     {
         id: 4,
         title: "Knowledge Base - Pustaka Cerdas",
@@ -53,10 +52,9 @@ export const onboardingSteps: OnboardingStep[] = [
         label: "KNOWLEDGE",
         outcome: "Sistem 'belajar' dari dokumen Anda",
         ctaLabel: "Paham",
-        navigateTo: "/knowledge"
+        navigateTo: "/knowledge",
+        desktopOnly: true
     },
-
-    // EDITOR
     {
         id: 5,
         title: "Smart Editor - Tulis dengan AI",
@@ -64,10 +62,9 @@ export const onboardingSteps: OnboardingStep[] = [
         targetId: "editor-trigger",
         label: "EDITOR",
         outcome: "Tool untuk konten berkualitas tinggi",
-        ctaLabel: "Oke"
+        ctaLabel: "Oke",
+        desktopOnly: true
     },
-
-    // WORKFLOW
     {
         id: 6,
         title: "Workflow Builder - Otomasi Visual",
@@ -75,10 +72,9 @@ export const onboardingSteps: OnboardingStep[] = [
         targetId: "workflow-trigger",
         label: "AUTOMATION",
         outcome: "Otomasi tanpa coding",
-        ctaLabel: "Menarik!"
+        ctaLabel: "Menarik!",
+        desktopOnly: true
     },
-
-    // SETTINGS
     {
         id: 7,
         title: "Settings - Kontrol Penuh",
@@ -86,10 +82,9 @@ export const onboardingSteps: OnboardingStep[] = [
         targetId: "settings-trigger",
         label: "SETTINGS",
         outcome: "Kustomisasi sesuai kebutuhan",
-        ctaLabel: "Jelas"
+        ctaLabel: "Jelas",
+        desktopOnly: true
     },
-
-    // USER MENU
     {
         id: 8,
         title: "Profil & Akun",
@@ -97,6 +92,68 @@ export const onboardingSteps: OnboardingStep[] = [
         targetId: "user-menu-trigger",
         label: "AKUN",
         outcome: "Manajemen akun personal",
-        ctaLabel: "Selesai"
+        ctaLabel: "Selesai",
+        desktopOnly: true
     }
 ];
+
+// Mobile-focused onboarding (compact, bottom nav focused, no spotlight)
+export const mobileOnboardingSteps: OnboardingStep[] = [
+    {
+        id: 101,
+        title: "👋 Selamat Datang!",
+        description: "Elysian adalah platform AI enterprise Anda. Mari kenali fitur-fitur utama dalam 5 langkah singkat.",
+        targetId: "mobile-welcome",
+        label: "MULAI",
+        ctaLabel: "Mulai",
+        mobileOnly: true
+    },
+    {
+        id: 102,
+        title: "🏠 Dashboard",
+        description: "Halaman ini menampilkan ringkasan aktivitas AI, penggunaan token, dan performa sistem Anda.",
+        targetId: "mobile-nav-dashboard",
+        label: "HOME",
+        outcome: "Monitor aktivitas real-time",
+        ctaLabel: "Lanjut",
+        mobileOnly: true
+    },
+    {
+        id: 103,
+        title: "💬 Chat AI",
+        description: "Tap ikon Chat di bawah untuk berbicara dengan AI. Tanya apa saja, minta analisis, atau beri perintah.",
+        targetId: "mobile-nav-chat",
+        label: "AI",
+        outcome: "Akses asisten AI kapan saja",
+        ctaLabel: "Paham",
+        mobileOnly: true
+    },
+    {
+        id: 104,
+        title: "📚 Knowledge Base",
+        description: "Upload dokumen perusahaan (SOP, Invoice) agar AI bisa 'belajar' dan menjawab pertanyaan Anda.",
+        targetId: "mobile-nav-knowledge",
+        label: "DOCS",
+        outcome: "AI yang lebih pintar",
+        ctaLabel: "Mengerti",
+        mobileOnly: true
+    },
+    {
+        id: 105,
+        title: "👤 Profil Anda",
+        description: "Tap ikon Profile untuk mengatur akun, notifikasi, dan preferensi aplikasi.",
+        targetId: "mobile-nav-profile",
+        label: "AKUN",
+        outcome: "Kontrol penuh akun Anda",
+        ctaLabel: "Selesai",
+        mobileOnly: true
+    }
+];
+
+// Helper function to get appropriate steps based on device
+export function getOnboardingSteps(isMobile: boolean): OnboardingStep[] {
+    return isMobile ? mobileOnboardingSteps : desktopOnboardingSteps;
+}
+
+// Export all steps combined (for backward compatibility)
+export const onboardingSteps = [...desktopOnboardingSteps, ...mobileOnboardingSteps];

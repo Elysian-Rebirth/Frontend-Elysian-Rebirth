@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, ArrowRight, HelpCircle } from 'lucide-react';
 import { useOnboardingStore } from '@/store/useOnboardingStore';
-import { onboardingSteps } from '@/config/onboarding';
+import { getOnboardingSteps } from '@/config/onboarding';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Z_INDEX } from '@/config/zIndex';
@@ -146,12 +146,24 @@ export const OnboardingWidget = () => {
     } = useOnboardingStore();
 
     const [isMounted, setIsMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
     const { toast } = useToast();
 
-    // Derived State
+    // Detect mobile on mount
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // Get appropriate steps based on device
+    const steps = getOnboardingSteps(isMobile);
     const stepNumber = getStepNumber();
-    const currentStepData = onboardingSteps[stepNumber - 1];
+    const currentStepData = steps[stepNumber - 1];
 
     // All hooks MUST be called before any conditional returns
     useEffect(() => {
@@ -336,7 +348,7 @@ export const OnboardingWidget = () => {
                                 <div className="flex justify-between items-center mb-5">
                                     <div className="flex items-center gap-2">
                                         <div className="flex gap-1">
-                                            {onboardingSteps.map((s, idx) => (
+                                            {steps.map((s, idx) => (
                                                 <div
                                                     key={s.id}
                                                     className={`w-1.5 h-1.5 rounded-full ${idx + 1 === stepNumber ? 'bg-blue-600' : idx + 1 < stepNumber ? 'bg-blue-200' : 'bg-slate-200'}`}
@@ -397,8 +409,8 @@ export const OnboardingWidget = () => {
                                             onClick={() => nextStep()}
                                             className="group flex items-center gap-2 px-5 py-2.5 bg-slate-900 dark:bg-blue-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-900/5 hover:shadow-blue-900/10 hover:-translate-y-0.5 transition-all"
                                         >
-                                            {stepNumber === onboardingSteps.length ? "Selesai" : currentStepData.ctaLabel}
-                                            {stepNumber === onboardingSteps.length ? <CheckCircle2 size={16} /> : <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />}
+                                            {stepNumber === steps.length ? "Selesai" : currentStepData.ctaLabel}
+                                            {stepNumber === steps.length ? <CheckCircle2 size={16} /> : <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />}
                                         </button>
                                     </div>
                                 </div>
