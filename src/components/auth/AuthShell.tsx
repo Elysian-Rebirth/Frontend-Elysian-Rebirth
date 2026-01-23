@@ -70,7 +70,7 @@ export function AuthShell({ children, mode }: AuthShellProps) {
                             className="mb-0"
                         >
                             <Image
-                                src="/login-illust/20.png"
+                                src={isRegister ? "/login-illust/10.png" : "/login-illust/20.png"}
                                 width={500}
                                 height={500}
                                 alt="Illustration"
