@@ -72,7 +72,7 @@ export function ConfigPanel() {
                     <div className="space-y-2">
                         <Label className="text-xs text-slate-600">Node Identifier</Label>
                         <Input
-                            value={selectedNode.data.label}
+                            value={(selectedNode.data.label as string) || ''}
                             onChange={(e) => handleChange('label', e.target.value)}
                             className="bg-white h-8 text-xs border-slate-200"
                         />
@@ -98,7 +98,7 @@ export function ConfigPanel() {
                                         <Label className="text-xs font-semibold text-slate-600">Behavior Instruction</Label>
                                         <Textarea
                                             placeholder="Define the agent's persona, constraints, and operational rules..."
-                                            value={selectedNode.data.systemPrompt || ''}
+                                            value={(selectedNode.data.systemPrompt as string) || ''}
                                             onChange={(e) => handleChange('systemPrompt', e.target.value)}
                                             className="min-h-[120px] bg-white font-mono text-xs border-slate-200 focus:border-slate-400 resize-none p-3"
                                         />
@@ -112,7 +112,7 @@ export function ConfigPanel() {
                                             <Input
                                                 type="number"
                                                 min="0" max="1" step="0.1"
-                                                value={selectedNode.data.temperature || 0.7}
+                                                value={(selectedNode.data.temperature as number) || 0.7}
                                                 onChange={(e) => handleChange('temperature', parseFloat(e.target.value))}
                                                 className="w-16 h-7 text-xs bg-white text-center"
                                             />
@@ -129,7 +129,7 @@ export function ConfigPanel() {
                                     <Label>Evaluation Expression</Label>
                                     <Input
                                         placeholder="e.g. input.length > 0"
-                                        value={selectedNode.data.condition || ''}
+                                        value={(selectedNode.data.condition as string) || ''}
                                         onChange={(e) => handleChange('condition', e.target.value)}
                                         className="font-mono text-xs bg-slate-50"
                                     />
@@ -144,7 +144,7 @@ export function ConfigPanel() {
                                     <div className="space-y-2">
                                         <Label>Source Origin</Label>
                                         <Select
-                                            value={selectedNode.data.sourceType || 'upload'}
+                                            value={(selectedNode.data.sourceType as string) || 'upload'}
                                             onValueChange={(val) => handleChange('sourceType', val)}
                                         >
                                             <SelectTrigger className="h-8 text-xs bg-white border-slate-200">
@@ -162,7 +162,7 @@ export function ConfigPanel() {
                                             {selectedNode.data.sourceType === 'url' ? 'Resource URI' : 'Asset Filename'}
                                         </Label>
                                         <Input
-                                            value={selectedNode.data.filename || ''}
+                                            value={(selectedNode.data.filename as string) || ''}
                                             onChange={(e) => handleChange('filename', e.target.value)}
                                             placeholder={selectedNode.data.sourceType === 'url' ? 'https://docs.elysian.com/spec' : 'q3_financial_report.pdf'}
                                             className="h-8 text-xs bg-white border-slate-200"
@@ -186,7 +186,7 @@ export function ConfigPanel() {
                                     <Label>Default Value</Label>
                                     <Textarea
                                         placeholder="Enter text..."
-                                        value={selectedNode.data.text || ''}
+                                        value={(selectedNode.data.text as string) || ''}
                                         onChange={(e) => handleChange('text', e.target.value)}
                                         className="min-h-[100px] bg-slate-50"
                                     />
