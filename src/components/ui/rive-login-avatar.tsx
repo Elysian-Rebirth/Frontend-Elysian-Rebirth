@@ -86,14 +86,18 @@ export default function RiveLoginAvatar({
     }, [submitStatus, trigSuccessInput, trigFailInput]);
 
     return (
-        // Fixed height container to prevent CLS as per professor's request
-        // Fixed height container with CSS Filter Hack to "bleach" the baked-in grey background to white
+        // Aggressive filter to force light-background to white while keeping blacks deep
+        // Added mask-image (radial-gradient) to soften the edges ("gradasi") giving it a more "alive" / organic feel
         <div
             className="w-full h-full relative cursor-pointer"
             aria-label="Interactive Login Avatar"
-            style={{ filter: 'brightness(1.1) contrast(1.1)' }}
+            style={{
+                filter: 'brightness(1.1) contrast(1.1) saturate(1.1)',
+                maskImage: 'radial-gradient(circle, black 60%, transparent 100%)',
+                WebkitMaskImage: 'radial-gradient(circle, black 60%, transparent 100%)'
+            }}
         >
-            <RiveComponent className="w-full h-full" />
+            <RiveComponent className="w-full h-full block" />
         </div>
     );
 }

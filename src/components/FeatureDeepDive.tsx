@@ -5,7 +5,7 @@ import { ArrowUpRight, User } from 'lucide-react';
 
 export function FeatureDeepDive() {
     return (
-        <section className="py-16 md:py-24 bg-slate-50 relative overflow-hidden">
+        <section className="py-16 md:py-24 bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
             {/* Soft background mesh for depth */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
 
@@ -26,17 +26,17 @@ export function FeatureDeepDive() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-6"
+                        className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-6"
                     >
                         Manajemen Proyek <br />
-                        <span className="text-slate-400">Tanpa Hambatan.</span>
+                        <span className="text-slate-400 dark:text-slate-500">Tanpa Hambatan.</span>
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-lg text-slate-500"
+                        className="text-lg text-slate-500 dark:text-slate-400"
                     >
                         Elysian memberikan visibilitas total dari ide hingga eksekusi.
                     </motion.p>
@@ -50,11 +50,11 @@ export function FeatureDeepDive() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-xl shadow-blue-500/5 h-auto md:h-[400px] flex flex-col relative overflow-hidden group"
+                        className="bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 shadow-xl shadow-blue-500/5 h-auto md:h-[400px] flex flex-col relative overflow-hidden group"
                     >
                         <div className="mb-6 md:mb-8 relative z-10">
-                            <h3 className="text-xl font-bold text-slate-900 mb-2">Automated Cycles</h3>
-                            <p className="text-slate-500 text-sm">Lacak progress sprint tim Anda secara otomatis dengan grafik intuitif.</p>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Automated Cycles</h3>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm">Lacak progress sprint tim Anda secara otomatis dengan grafik intuitif.</p>
                         </div>
 
                         {/* Graph Animation */}
@@ -72,11 +72,11 @@ export function FeatureDeepDive() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 }}
-                        className="bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-xl shadow-purple-500/5 h-auto md:h-[400px] flex flex-col relative overflow-hidden group"
+                        className="bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 shadow-xl shadow-purple-500/5 h-auto md:h-[400px] flex flex-col relative overflow-hidden group"
                     >
                         <div className="mb-6 md:mb-8 relative z-10">
-                            <h3 className="text-xl font-bold text-slate-900 mb-2">Smart Inbox</h3>
-                            <p className="text-slate-500 text-sm">Review, approve, atau decline request yang masuk dengan cepat.</p>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Smart Inbox</h3>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm">Review, approve, atau decline request yang masuk dengan cepat.</p>
                         </div>
 
                         {/* Inbox Animation */}
@@ -95,14 +95,14 @@ export function FeatureDeepDive() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
-                    className="w-full bg-white rounded-3xl p-6 md:p-8 border border-slate-200 shadow-xl shadow-cyan-500/5 h-[400px] md:h-[500px] flex flex-col relative overflow-hidden group"
+                    className="w-full bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 shadow-xl shadow-cyan-500/5 h-[400px] md:h-[500px] flex flex-col relative overflow-hidden group"
                 >
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 relative z-10">
                         <div className="max-w-md">
-                            <h3 className="text-xl font-bold text-slate-900 mb-2">Elysian Insights</h3>
-                            <p className="text-slate-500 text-sm">Prediksi bottleneck dan optimalkan performa tim dengan analitik data berbasis AI.</p>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Elysian Insights</h3>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm">Prediksi bottleneck dan optimalkan performa tim dengan analitik data berbasis AI.</p>
                         </div>
-                        <button className="mt-4 md:mt-0 px-4 py-2 rounded-full bg-slate-50 border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-100 transition-colors flex items-center gap-2">
+                        <button className="mt-4 md:mt-0 px-4 py-2 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
                             View Report <ArrowUpRight className="w-4 h-4" />
                         </button>
                     </div>
@@ -127,8 +127,8 @@ function CyclesGraphAnimation() {
     return (
         <div className="relative w-full h-full flex items-end px-4 pb-4">
             {/* Axes */}
-            <div className="absolute left-0 bottom-4 top-0 w-px bg-slate-100" />
-            <div className="absolute left-0 bottom-4 right-0 h-px bg-slate-100" />
+            <div className="absolute left-0 bottom-4 top-0 w-px bg-slate-100 dark:bg-slate-800" />
+            <div className="absolute left-0 bottom-4 right-0 h-px bg-slate-100 dark:bg-slate-800" />
 
             {/* Curves */}
             <svg className="w-full h-full overflow-visible" preserveAspectRatio="none">
@@ -166,10 +166,10 @@ function CyclesGraphAnimation() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 2 }}
-                className="absolute top-1/4 right-1/4 bg-white shadow-lg border border-slate-100 px-3 py-1.5 rounded-lg flex flex-col items-center z-10"
+                className="absolute top-1/4 right-1/4 bg-white dark:bg-slate-800 shadow-lg border border-slate-100 dark:border-slate-700 px-3 py-1.5 rounded-lg flex flex-col items-center z-10"
             >
                 <div className="text-[10px] text-slate-400 uppercase font-bold">Velocity</div>
-                <div className="text-lg font-bold text-slate-800">42 pts</div>
+                <div className="text-lg font-bold text-slate-800 dark:text-white">42 pts</div>
             </motion.div>
         </div>
     );
@@ -191,14 +191,14 @@ function SmartInboxAnimation() {
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.2 }}
-                        className="group bg-white border border-slate-100 rounded-xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between cursor-pointer"
+                        className="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-xl p-3 shadow-sm hover:shadow-md transition-all flex items-center justify-between cursor-pointer"
                     >
                         <div className="flex items-center gap-3 min-w-0">
-                            <div className="w-8 h-8 rounded-full bg-slate-100 flex-shrink-0 flex items-center justify-center text-slate-500">
+                            <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex-shrink-0 flex items-center justify-center text-slate-500 dark:text-slate-400">
                                 <User className="w-4 h-4" />
                             </div>
                             <div className="min-w-0">
-                                <div className="text-sm font-medium text-slate-800 truncate pr-2">{item.title}</div>
+                                <div className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate pr-2">{item.title}</div>
                                 <div className="text-xs text-slate-400 truncate">By {item.user} • {item.time}</div>
                             </div>
                         </div>
@@ -235,12 +235,12 @@ function InsightsChartAnimation() {
             {/* Grid Lines */}
             <div className="absolute inset-0 grid grid-cols-6 gap-x-12">
                 {[...Array(6)].map((_, i) => (
-                    <div key={i} className="h-full w-px bg-slate-100 border-r border-dashed border-slate-200" />
+                    <div key={i} className="h-full w-px bg-slate-100 dark:bg-slate-800 border-r border-dashed border-slate-200 dark:border-slate-700" />
                 ))}
             </div>
             <div className="absolute inset-0 grid grid-rows-4 gap-y-12">
                 {[...Array(4)].map((_, i) => (
-                    <div key={i} className="w-full h-px bg-slate-100 border-b border-dashed border-slate-200" />
+                    <div key={i} className="w-full h-px bg-slate-100 dark:bg-slate-800 border-b border-dashed border-slate-200 dark:border-slate-700" />
                 ))}
             </div>
 

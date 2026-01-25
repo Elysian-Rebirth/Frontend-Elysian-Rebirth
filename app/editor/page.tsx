@@ -42,7 +42,7 @@ export default function DocumentEditorPage() {
                     <div className="flex-1 flex flex-col items-center justify-center p-6 text-center animate-in fade-in zoom-in duration-500">
                         <div className="relative w-64 h-64 mb-8 animate-float delay-200">
                             <Image
-                                src="/elysian_empty_doc.png"
+                                src="/assets/payment.png"
                                 alt="Document Editor"
                                 fill
                                 className="object-contain drop-shadow-2xl"

@@ -27,7 +27,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     return (
         <MockProvider>
             <QueryProvider>
-                <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+                <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} forcedTheme="light">
                     <TelemetryProvider onEvent={() => { }}>
                         <I18nProvider locale="id">
                             <PermissionsProvider permissions={['admin', 'editor']} roles={['admin']}>

@@ -15,7 +15,7 @@ export function IntegrationsCarousel() {
     }, []);
 
     return (
-        <section className="py-24 bg-white relative overflow-hidden">
+        <section className="py-24 bg-white dark:bg-slate-900 relative overflow-hidden">
             {/* Section Header */}
             <div className="container mx-auto px-4 mb-12">
                 <div className="flex flex-col md:flex-row justify-between items-end gap-6">
@@ -33,12 +33,12 @@ export function IntegrationsCarousel() {
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="text-4xl font-bold text-slate-900 leading-tight mb-4"
+                            className="text-4xl font-bold text-slate-900 dark:text-white leading-tight mb-4"
                         >
                             Terhubung dengan <br />
                             <span className="text-slate-400">Tools Favorit Anda.</span>
                         </motion.h2>
-                        <p className="text-slate-500">
+                        <p className="text-slate-500 dark:text-slate-400">
                             Elysian terintegrasi dengan ratusan aplikasi untuk menjaga alur kerja tim Anda tetap lancar.
                         </p>
                     </div>
@@ -92,8 +92,8 @@ const integrations = [
     {
         title: "GitHub Actions",
         desc: "Otomatisasi deployment dan sync status issue.",
-        icon: <Github className="w-8 h-8 text-black" />,
-        color: "group-hover:shadow-black/5"
+        icon: <Github className="w-8 h-8 text-black dark:text-white" />,
+        color: "group-hover:shadow-black/5 dark:group-hover:shadow-white/5"
     },
     {
         title: "Google Drive",
@@ -104,8 +104,8 @@ const integrations = [
     {
         title: "Notion Pages",
         desc: "Embed halaman wiki dan knowledge base internal.",
-        icon: <FileTextIcon className="w-8 h-8 text-slate-800" />,
-        color: "group-hover:shadow-slate-800/5"
+        icon: <FileTextIcon className="w-8 h-8 text-slate-800 dark:text-slate-200" />,
+        color: "group-hover:shadow-slate-800/5 dark:group-hover:shadow-slate-200/5"
     },
     {
         title: "PostgreSQL",
@@ -136,7 +136,7 @@ function CarouselCard({ item, index }: { item: IntegrationItem, index: number })
             viewport={{ once: true }}
             transition={{ delay: index * 0.1, duration: 0.4 }}
             style={{ translateZ: 0 }}
-            className={`min-w-[300px] md:min-w-[350px] h-[400px] bg-slate-50 border border-slate-100 rounded-3xl p-8 flex flex-col justify-between relative group hover:bg-white hover:border-slate-200 hover:shadow-2xl transition-all duration-300 ${item.color}`}
+            className={`min-w-[300px] md:min-w-[350px] h-[400px] bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-3xl p-8 flex flex-col justify-between relative group hover:bg-white dark:hover:bg-slate-700 hover:border-slate-200 dark:hover:border-slate-600 hover:shadow-2xl transition-all duration-300 ${item.color}`}
         >
             {/* Icon Placeholder Background */}
             <div className="absolute top-0 right-0 p-32 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-300 pointer-events-none scale-150 grayscale group-hover:grayscale-0">
@@ -144,16 +144,16 @@ function CarouselCard({ item, index }: { item: IntegrationItem, index: number })
             </div>
 
             <div className="relative z-10">
-                <div className="w-16 h-16 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                <div className="w-16 h-16 bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
                     {item.icon}
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
-                <p className="text-slate-500 leading-relaxed text-sm">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">{item.title}</h3>
+                <p className="text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
                     {item.desc}
                 </p>
             </div>
 
-            <div className="relative z-10 pt-6 border-t border-slate-200/50">
+            <div className="relative z-10 pt-6 border-t border-slate-200/50 dark:border-slate-700/50">
                 <button className="flex items-center gap-2 text-sm font-semibold text-slate-400 group-hover:text-blue-600 transition-colors">
                     Pelajari lebih lanjut <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>

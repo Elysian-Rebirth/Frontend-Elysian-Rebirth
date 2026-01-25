@@ -72,9 +72,9 @@ export function AiAgentsSection() {
     }, []);
 
     return (
-        <section className="py-32 bg-white relative overflow-hidden">
+        <section className="py-32 bg-white dark:bg-slate-900 relative overflow-hidden">
             {/* Background Gradients */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-white to-white pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-white to-white dark:from-slate-800/20 dark:via-slate-900 dark:to-slate-950 pointer-events-none" />
 
             <div className="container mx-auto px-4 relative z-10">
                 <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto mb-20">
@@ -82,7 +82,7 @@ export function AiAgentsSection() {
                         initial={{ opacity: 0, y: 10 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-sm font-medium text-slate-600"
+                        className="flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-600 dark:text-slate-300"
                     >
                         <Sparkles className="w-4 h-4 text-blue-500" />
                         <span>Elysian Neural Network</span>
@@ -92,12 +92,12 @@ export function AiAgentsSection() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-5xl md:text-6xl font-bold text-slate-900 leading-tight mb-6"
+                        className="text-5xl md:text-6xl font-bold text-slate-900 dark:text-white leading-tight mb-6"
                     >
                         Delegasikan tugas ke <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">AI Agents Spesialis.</span>
                     </motion.h2>
-                    <p className="text-xl text-slate-500 max-w-2xl">
+                    <p className="text-xl text-slate-500 dark:text-slate-400 max-w-2xl">
                         Pilih agent yang tepat untuk setiap pekerjaan. Dari analis data hingga auditor keamanan, semua siap bekerja 24/7.
                     </p>
                 </div>
@@ -105,22 +105,22 @@ export function AiAgentsSection() {
                 {/* The "Command Palette" Visual */}
                 <div className="relative max-w-2xl mx-auto min-h-[400px]">
                     {/* Shadow & Glow */}
-                    <div className="absolute inset-0 bg-blue-500/5 blur-[80px] rounded-full transform scale-150" />
+                    <div className="absolute inset-0 bg-blue-500/5 dark:bg-blue-500/10 blur-[80px] rounded-full transform scale-150" />
 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         whileInView={{ opacity: 1, scale: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="relative bg-white/80 backdrop-blur-2xl rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] border border-white/50 overflow-hidden ring-1 ring-slate-900/5"
+                        className="relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] border border-white/50 dark:border-slate-700 overflow-hidden ring-1 ring-slate-900/5 dark:ring-white/5"
                     >
                         {/* Header: "Assign to..." */}
-                        <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 bg-white/50">
+                        <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50">
                             <div className="w-4 h-4 text-slate-400">
                                 <Search className="w-4 h-4" />
                             </div>
                             <span className="text-slate-400 text-base font-medium">Assign to...</span>
                             <div className="ml-auto flex gap-2">
-                                <kbd className="hidden sm:inline-flex h-6 items-center gap-1 rounded border border-slate-200 bg-slate-50 px-2 font-mono text-[10px] font-medium text-slate-500">
+                                <kbd className="hidden sm:inline-flex h-6 items-center gap-1 rounded border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 font-mono text-[10px] font-medium text-slate-500 dark:text-slate-400">
                                     <span className="text-xs">⌘</span>K
                                 </kbd>
                             </div>
@@ -134,27 +134,27 @@ export function AiAgentsSection() {
                                     <motion.div
                                         key={agent.id}
                                         className={`relative group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-300 cursor-pointer ${isActive
-                                            ? 'bg-blue-50/80 shadow-sm ring-1 ring-blue-100'
-                                            : 'hover:bg-slate-50'
+                                            ? 'bg-blue-50/80 dark:bg-blue-900/20 shadow-sm ring-1 ring-blue-100 dark:ring-blue-800'
+                                            : 'hover:bg-slate-50 dark:hover:bg-slate-800'
                                             }`}
                                         onClick={() => setActiveIndex(index)}
                                     >
                                         {/* Avatar / Icon */}
-                                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-300 ${isActive ? agent.color : 'bg-slate-100 text-slate-500'}`}>
+                                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-300 ${isActive ? agent.color : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
                                             {agent.icon}
                                         </div>
 
                                         {/* Info */}
                                         <div className="flex-grow">
                                             <div className="flex items-center gap-2">
-                                                <h4 className={`text-sm font-semibold transition-colors duration-300 ${isActive ? 'text-slate-900' : 'text-slate-700'}`}>
+                                                <h4 className={`text-sm font-semibold transition-colors duration-300 ${isActive ? 'text-slate-900 dark:text-white' : 'text-slate-700 dark:text-slate-300'}`}>
                                                     {agent.name}
                                                 </h4>
-                                                <span className="px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200 text-[10px] font-medium text-slate-500 uppercase tracking-wide">
+                                                <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                                                     Agent
                                                 </span>
                                             </div>
-                                            <p className="text-xs text-slate-500 mt-0.5">
+                                            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                                                 {agent.role}
                                             </p>
                                         </div>
@@ -176,7 +176,7 @@ export function AiAgentsSection() {
                         </div>
 
                         {/* Footer Status */}
-                        <div className="bg-slate-50/50 px-6 py-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                        <div className="bg-slate-50/50 dark:bg-slate-900/50 px-6 py-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                             <div className="flex items-center gap-2">
                                 <Loader2 className="w-3 h-3 animate-spin text-blue-500" />
                                 <span>Processing context...</span>
@@ -189,27 +189,27 @@ export function AiAgentsSection() {
                     <motion.div
                         animate={{ y: [0, -10, 0] }}
                         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                        className="absolute -right-12 top-20 bg-white rounded-xl shadow-lg border border-slate-100 p-4 hidden md:block"
+                        className="absolute -right-12 top-20 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 p-4 hidden md:block"
                     >
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-2 h-2 rounded-full bg-green-500" />
-                            <span className="text-xs font-semibold text-slate-700">Financial Audit</span>
+                            <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Financial Audit</span>
                         </div>
-                        <div className="h-1.5 w-24 bg-slate-100 rounded-full mb-1" />
-                        <div className="h-1.5 w-16 bg-slate-100 rounded-full" />
+                        <div className="h-1.5 w-24 bg-slate-100 dark:bg-slate-700 rounded-full mb-1" />
+                        <div className="h-1.5 w-16 bg-slate-100 dark:bg-slate-700 rounded-full" />
                     </motion.div>
 
                     <motion.div
                         animate={{ y: [0, 15, 0] }}
                         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -left-12 bottom-32 bg-white rounded-xl shadow-lg border border-slate-100 p-4 hidden md:block"
+                        className="absolute -left-12 bottom-32 bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 p-4 hidden md:block"
                     >
                         <div className="flex items-center gap-3 mb-2">
                             <div className="w-2 h-2 rounded-full bg-blue-500" />
-                            <span className="text-xs font-semibold text-slate-700">Code Analysis</span>
+                            <span className="text-xs font-semibold text-slate-700 dark:text-slate-200">Code Analysis</span>
                         </div>
-                        <div className="h-1.5 w-32 bg-slate-100 rounded-full mb-1" />
-                        <div className="h-1.5 w-20 bg-slate-100 rounded-full" />
+                        <div className="h-1.5 w-32 bg-slate-100 dark:bg-slate-700 rounded-full mb-1" />
+                        <div className="h-1.5 w-20 bg-slate-100 dark:bg-slate-700 rounded-full" />
                     </motion.div>
 
                 </div>

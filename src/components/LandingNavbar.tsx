@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Infinity as InfinityIcon, ArrowRight, Sun, Moon, Terminal, Monitor } from 'lucide-react';
-import { useTheme } from 'next-themes';
 import { useTranslation } from '@/hooks/useTranslation';
 
-export function LandingNavbar({ showTerminal, setShowTerminal }: { showTerminal?: boolean; setShowTerminal?: (v: boolean) => void }) {
+interface LandingNavbarProps {
+    showTerminal?: boolean;
+    setShowTerminal?: (v: boolean) => void;
+    isDark?: boolean;
+    toggleTheme?: () => void;
+}
+
+export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleTheme }: LandingNavbarProps) {
     const { t } = useTranslation();
     const [scrolled, setScrolled] = useState(false);
-    const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -21,19 +27,40 @@ export function LandingNavbar({ showTerminal, setShowTerminal }: { showTerminal?
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const toggleTheme = () => {
-        setTheme(theme === 'dark' ? 'light' : 'dark');
-    };
+
 
     return (
-        <header
-            style={{ transform: 'translateZ(0)' }}
+        <motion.header
+            initial="initial"
+            animate={scrolled ? "scrolled" : "initial"}
+            variants={{
+                initial: {
+                    top: 0,
+                    width: "100%",
+                    borderRadius: "0px",
+                    borderBottomColor: "rgba(255,255,255,0)", // Transparent
+                    backgroundColor: "rgba(255,255,255,0)", // Transparent
+                    boxShadow: "0 0 0 rgba(0,0,0,0)",
+                    paddingTop: "24px",
+                    paddingBottom: "24px",
+                },
+                scrolled: {
+                    top: 16, // 16px = 1rem (top-4)
+                    width: "90%", // Mobile width
+                    borderRadius: "9999px", // rounded-full
+                    borderBottomColor: "rgba(255,255,255,0)", // Transparent bottom border (handled by full border)
+                    backgroundColor: isDark ? "rgba(15, 23, 42, 0.8)" : "rgba(255, 255, 255, 0.8)", // Slate 900 / White with opacity
+                    boxShadow: "0 10px 15px -3px rgba(30, 58, 138, 0.1), 0 4px 6px -2px rgba(30, 58, 138, 0.05)", // Shadow blue
+                    paddingTop: "12px",
+                    paddingBottom: "12px",
+                }
+            }}
+            transition={{ type: "spring", stiffness: 200, damping: 25, mass: 0.8 }}
             className={cn(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
-                scrolled
-                    ? "bg-white/90 dark:bg-slate-950/90 backdrop-blur-sm border-slate-200/50 dark:border-slate-800/50 py-3"
-                    : "bg-transparent border-transparent py-5"
+                "fixed left-1/2 -translate-x-1/2 z-50 backdrop-blur-lg border border-transparent",
+                scrolled && "border-slate-200/50 dark:border-blue-500/30 md:max-w-5xl"
             )}
+            style={{ maxWidth: scrolled ? '64rem' : '100%' }} // Manual sync for max-w-5xl/full
         >
             <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                 {/* Logo Area */}
@@ -43,7 +70,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal }: { showTerminal?
                     </div>
                     <span className={cn(
                         "font-bold text-2xl tracking-tighter transition-colors font-heading",
-                        scrolled ? "text-slate-900 dark:text-white" : "text-slate-900"
+                        scrolled ? "text-slate-900 dark:text-white" : "text-slate-900 dark:text-white"
                     )}>
                         ELYSIAN
                     </span>
@@ -93,7 +120,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal }: { showTerminal?
                             title="Toggle Theme"
                         >
                             <span className="sr-only">Toggle Theme</span>
-                            {mounted && theme === 'dark' ? (
+                            {mounted && isDark ? (
                                 <Sun className="w-4 h-4" />
                             ) : (
                                 <Moon className="w-4 h-4" />
@@ -122,6 +149,6 @@ export function LandingNavbar({ showTerminal, setShowTerminal }: { showTerminal?
                     </Link>
                 </div>
             </div>
-        </header>
+        </motion.header>
     );
 }

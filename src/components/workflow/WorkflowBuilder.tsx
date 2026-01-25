@@ -23,7 +23,7 @@ function WorkflowBuilderContent() {
     const { addNode, selectedNode, setSelectedNode } = useWorkflowStore();
 
     // Mobile State
-    const [mobileMode, setMobileMode] = useState<'view' | 'edit'>('view');
+    const [mobileMode, setMobileMode] = useState<'view' | 'edit'>('edit');
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     // Derived config open state based on selection
@@ -107,7 +107,16 @@ function WorkflowBuilderContent() {
             {/* Main Canvas Area */}
             <div className="flex-1 relative h-full" ref={reactFlowWrapper}>
                 <Toolbar mobileMode={mobileMode} setMobileMode={setMobileMode} setIsSidebarOpen={setIsSidebarOpen} />
-                <div className="absolute inset-0" onDrop={onDrop} onDragOver={onDragOver}>
+                <div
+                    className="absolute inset-0 cursor-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEgMUwyMyAxNkwxNCAxOEw5IDMwTDEgMVoiIGZpbGw9IiMxMTE4MjciIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4='),_default]"
+                    onDrop={onDrop}
+                    onDragOver={onDragOver}
+                >
+                    <style jsx global>{`
+                        .react-flow__pane, .react-flow__node, .react-flow__edge {
+                            cursor: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEgMUwyMyAxNkwxNCAxOEw5IDMwTDEgMVoiIGZpbGw9IiMxMTE4MjciIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4='), default !important;
+                        }
+                    `}</style>
                     <Canvas mobileMode={mobileMode} />
                 </div>
                 {/* Mobile Empty State Overlay */}

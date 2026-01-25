@@ -16,11 +16,10 @@ export function TryElysianWidget() {
             {/* 2. Content */}
             <div className="relative z-10 flex flex-col h-full justify-between">
                 <div className="flex gap-4">
-                    {/* Icon Area */}
-                    <div className="flex-shrink-0">
-                        <div className="w-12 h-12 rounded-xl bg-sky-50 flex items-center justify-center border border-sky-100 overflow-hidden">
-                            {/* Using the requested image */}
-                            <Image src="/elysian_empty_doc.png" alt="Elysian" width={32} height={32} className="w-8 h-8 object-contain" />
+                    {/* Images Area */}
+                    <div className="flex-shrink-0 flex -space-x-3">
+                        <div className="w-12 h-12 rounded-xl bg-sky-50 flex items-center justify-center border-2 border-white overflow-hidden shadow-sm z-20">
+                            <Image src="/assets/payment.png" alt="Promo 1" width={48} height={48} className="w-full h-full object-cover" />
                         </div>
                     </div>
 

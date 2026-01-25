@@ -38,19 +38,19 @@ export function FloatingBentoGrid() {
                             <Bot className="w-6 h-6" />
                         </div>
                         <div>
-                            <h3 className="font-bold text-slate-800">AI Assistant</h3>
-                            <p className="text-xs text-slate-500">Always online</p>
+                            <h3 className="font-bold text-slate-800 dark:text-white">AI Assistant</h3>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">Always online</p>
                         </div>
                     </div>
                     <div className="space-y-2">
-                        <div className="p-3 bg-slate-50/50 rounded-lg text-xs text-slate-600 mb-2">
+                        <div className="p-3 bg-slate-50/50 dark:bg-slate-800/50 rounded-lg text-xs text-slate-600 dark:text-slate-300 mb-2">
                             &quot;Buatkan surat jalan untuk Toko Berkah...&quot;
                         </div>
-                        <div className="flex items-center gap-2 text-xs font-semibold text-blue-600">
+                        <div className="flex items-center gap-2 text-xs font-semibold text-blue-600 dark:text-blue-400">
                             <Sparkles className="w-3 h-3" />
                             <span>Memproses...</span>
                         </div>
-                        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                        <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                             <motion.div
                                 animate={{ x: ["-100%", "100%"] }}
                                 transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
@@ -125,16 +125,16 @@ export function FloatingBentoGrid() {
                 style={{ transform: 'translateZ(0)' }}
                 className="absolute bottom-0 left-20 z-10 hidden sm:block"
             >
-                <div className="w-56 glassmorphism-premium p-5 rounded-2xl shadow-xl border border-slate-100">
+                <div className="w-56 glassmorphism-premium p-5 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700">
                     <div className="w-12 h-12 rounded-full bg-blue-50/50 flex items-center justify-center text-blue-600 mx-auto mb-3">
                         <Shield className="w-6 h-6" />
                     </div>
                     <div className="text-center">
-                        <h3 className="font-bold text-slate-800 font-heading">Keamanan Bank</h3>
-                        <p className="text-[10px] text-slate-500 mt-1">Enkripsi AES-256</p>
+                        <h3 className="font-bold text-slate-800 dark:text-white font-heading">Keamanan Bank</h3>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">Enkripsi AES-256</p>
                         <div className="mt-3 flex justify-center gap-1">
                             <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                            <span className="text-[10px] text-green-600 font-medium">Protected</span>
+                            <span className="text-[10px] text-green-600 dark:text-green-400 font-medium">Protected</span>
                         </div>
                     </div>
                 </div>
@@ -157,9 +157,9 @@ export function FloatingBentoGrid() {
                 style={{ transform: 'translateZ(0)' }}
                 className="absolute top-[-20px] left-1/2 -translate-x-1/2 z-50 pointer-events-none"
             >
-                <div className="flex items-center gap-3 px-4 py-2 rounded-full glassmorphism-premium shadow-2xl border border-white/40">
+                <div className="flex items-center gap-3 px-4 py-2 rounded-full glassmorphism-premium shadow-2xl border border-white/40 dark:border-white/10">
                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                    <span className="text-xs font-bold text-slate-800 font-heading">New Order: #2941 - Pro Plan</span>
+                    <span className="text-xs font-bold text-slate-800 dark:text-white font-heading">New Order: #2941 - Pro Plan</span>
                 </div>
             </motion.div>
 

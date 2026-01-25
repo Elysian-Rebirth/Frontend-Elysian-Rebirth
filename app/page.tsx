@@ -61,6 +61,9 @@ export default function ElysianLanding() {
         setShowTerminal(value);
     };
 
+    const [isLandingDark, setIsLandingDark] = useState(false);
+    const toggleTheme = () => setIsLandingDark(!isLandingDark);
+
     const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
     const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
     const heroY = useTransform(scrollYProgress, [0, 0.5], [0, -50]);
@@ -70,13 +73,15 @@ export default function ElysianLanding() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="min-h-screen mesh-gradient-bg font-sans overflow-x-hidden selection:bg-blue-100 selection:text-blue-900"
+            className={`min-h-screen mesh-gradient-bg font-sans overflow-x-hidden selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100 ${isLandingDark ? 'dark' : ''}`}
         >
             {/* Floating Navigation - Custom SaaS Style */}
             {/* Floating Navigation - Custom SaaS Style */}
             <LandingNavbar
                 showTerminal={showTerminal}
                 setShowTerminal={toggleTerminal}
+                isDark={isLandingDark}
+                toggleTheme={toggleTheme}
             />
 
             {/* Hero Section - Anti-Gravity + Floating Bento (Combined) */}
@@ -118,15 +123,15 @@ export default function ElysianLanding() {
                                 {/* Badge */}
                                 <motion.div
                                     whileHover={{ scale: 1.05 }}
-                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full glassmorphism-premium mb-8 mx-auto lg:mx-0 shadow-xl cursor-default"
+                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full glassmorphism-premium mb-8 mx-auto lg:mx-0 shadow-xl cursor-default dark:border-blue-500/20"
                                 >
                                     <Sparkles className="w-4 h-4 text-blue-500 fill-blue-500 animate-pulse" />
-                                    <span className="text-sm font-bold text-blue-900 tracking-wider uppercase font-heading">{t.landing.hero.badge}</span>
+                                    <span className="text-sm font-bold text-blue-900 dark:text-blue-100 tracking-wider uppercase font-heading">{t.landing.hero.badge}</span>
                                 </motion.div>
 
                                 {/* Headline - Optimized for LCP (immediate paint) */}
                                 <h1
-                                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1] tracking-tight text-slate-900 font-heading"
+                                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1] tracking-tight text-slate-900 dark:text-white font-heading"
                                 >
                                     {t.landing.hero.title1} <br />
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-indigo-600 to-cyan-600 animate-gradient-x">
@@ -135,7 +140,7 @@ export default function ElysianLanding() {
                                 </h1>
 
                                 <motion.p
-                                    className="text-base sm:text-lg text-slate-600 mb-6 sm:mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0 font-medium px-4 sm:px-0"
+                                    className="text-base sm:text-lg text-slate-600 dark:text-slate-300 mb-6 sm:mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0 font-medium px-4 sm:px-0"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.8, delay: 0.4 }}
@@ -162,7 +167,7 @@ export default function ElysianLanding() {
                                     <motion.button
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
-                                        className="w-full sm:w-auto h-12 px-8 rounded-full bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-slate-50 transition-all shadow-sm"
+                                        className="w-full sm:w-auto h-12 px-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
                                     >
                                         {t.landing.hero.ctaDemo}
                                     </motion.button>
@@ -238,7 +243,7 @@ function InfiniteMarquee() {
     const industries = ['Retail', 'Logistik', 'Agency', 'Klinik', 'F&B', 'Manufaktur', 'Konsultan', 'Properti'];
 
     return (
-        <div className="relative py-12 overflow-hidden bg-white/50 backdrop-blur-sm border-y border-slate-100">
+        <div className="relative py-12 overflow-hidden bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-y border-slate-100 dark:border-slate-800">
             <div className="flex gap-16">
                 <motion.div
                     animate={{ x: [0, -1000] }}
@@ -246,14 +251,14 @@ function InfiniteMarquee() {
                     className="flex gap-16 whitespace-nowrap"
                 >
                     {[...industries, ...industries].map((industry, i) => (
-                        <span key={i} className="text-2xl font-bold text-slate-300">
+                        <span key={i} className="text-2xl font-bold text-slate-300 dark:text-slate-700">
                             {industry}
                         </span>
                     ))}
                 </motion.div>
             </div>
-            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white/50 to-transparent pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white/50 to-transparent pointer-events-none" />
+            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white/90 dark:from-slate-900/90 to-transparent pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white/90 dark:from-slate-900/90 to-transparent pointer-events-none" />
         </div>
     );
 }
@@ -263,7 +268,7 @@ function ProblemSection() {
     const { t } = useTranslation();
     return (
         <section className="py-32 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-b from-white/0 via-slate-50/50 to-white/0 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white/0 via-slate-50/50 dark:via-slate-900/20 to-white/0 pointer-events-none" />
 
             <div className="container mx-auto px-4 relative z-10">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -273,7 +278,7 @@ function ProblemSection() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-slate-900 leading-tight font-heading">
+                        <h2 className="text-3xl lg:text-4xl font-bold mb-6 text-slate-900 dark:text-white leading-tight font-heading">
                             {t.landing.problem.title1} <br />
                             <span className="relative inline-block">
                                 {t.landing.problem.title2}
@@ -282,7 +287,7 @@ function ProblemSection() {
                                 </svg>
                             </span>
                         </h2>
-                        <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                        <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
                             {t.landing.problem.description}
                         </p>
 
@@ -294,12 +299,12 @@ function ProblemSection() {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: i * 0.1 }}
-                                    className="flex items-center gap-4 p-4 rounded-2xl bg-white/60 backdrop-blur-sm border border-slate-100 hover:border-red-200 transition-all group"
+                                    className="flex items-center gap-4 p-4 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-100 dark:border-slate-700 hover:border-red-200 dark:hover:border-red-500/50 transition-all group"
                                 >
                                     <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                                         <XCircle className="w-5 h-5 text-red-500" />
                                     </div>
-                                    <span className="text-slate-700 font-medium">{problem}</span>
+                                    <span className="text-slate-700 dark:text-slate-200 font-medium">{problem}</span>
                                 </motion.div>
                             ))}
                         </div>
@@ -312,14 +317,14 @@ function ProblemSection() {
                         transition={{ duration: 0.8 }}
                         className="relative"
                     >
-                        <div className="bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-10 shadow-2xl border border-white/50 relative overflow-hidden">
+                        <div className="bg-white/70 dark:bg-slate-900/80 backdrop-blur-xl rounded-[2.5rem] p-10 shadow-2xl border border-white/50 dark:border-slate-700 relative overflow-hidden">
                             <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-blue-500/10 to-transparent rounded-tr-[2.5rem]" />
 
                             <div className="flex items-center gap-3 mb-8">
                                 <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
                                     <TrendingUp className="w-6 h-6" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-slate-900 font-heading">{t.landing.problem.solutionTitle}</h3>
+                                <h3 className="text-2xl font-bold text-slate-900 dark:text-white font-heading">{t.landing.problem.solutionTitle}</h3>
                             </div>
 
                             <div className="space-y-6 mb-8">
@@ -336,8 +341,8 @@ function ProblemSection() {
                                             <CheckCircle2 className="w-5 h-5 text-blue-600" />
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-slate-900 text-lg">{item.title}</h4>
-                                            <p className="text-slate-500 text-sm mt-1">{item.desc}</p>
+                                            <h4 className="font-bold text-slate-900 dark:text-white text-lg">{item.title}</h4>
+                                            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">{item.desc}</p>
                                         </div>
                                     </motion.div>
                                 ))}
@@ -369,7 +374,7 @@ function SolutionSection() {
     ];
 
     return (
-        <section className="py-32 bg-gradient-to-b from-white to-slate-50">
+        <section className="py-32 bg-gradient-to-b from-white to-slate-50 dark:from-slate-950 dark:to-slate-900">
             <div className="container mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -382,7 +387,7 @@ function SolutionSection() {
                             <span key={i} className="bg-gradient-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent"> {word} </span>
                         ) : ' ' + word)}
                     </h2>
-                    <p className="text-xl text-slate-600">{t.landing.features.subtitle}</p>
+                    <p className="text-xl text-slate-600 dark:text-slate-400">{t.landing.features.subtitle}</p>
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -394,13 +399,13 @@ function SolutionSection() {
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
                             whileHover={{ y: -10, boxShadow: "0 25px 50px rgba(0, 0, 0, 0.1)" }}
-                            className="group bg-white/70 backdrop-blur-xl rounded-3xl p-8 border border-white/50 shadow-xl hover:shadow-2xl transition-all cursor-pointer"
+                            className="group bg-white/70 dark:bg-slate-800/50 backdrop-blur-xl rounded-3xl p-8 border border-white/50 dark:border-slate-700 shadow-xl hover:shadow-2xl transition-all cursor-pointer"
                         >
                             <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform shadow-lg`}>
                                 <feature.icon className="w-8 h-8 text-white" />
                             </div>
-                            <h3 className="text-xl font-bold text-slate-900 mb-3 font-heading">{feature.title}</h3>
-                            <p className="text-slate-600">{feature.desc}</p>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3 font-heading">{feature.title}</h3>
+                            <p className="text-slate-600 dark:text-slate-300">{feature.desc}</p>
                         </motion.div>
                     ))}
                 </div>
@@ -420,7 +425,7 @@ function UseCasesSection() {
     ];
 
     return (
-        <section className="py-32 bg-white">
+        <section className="py-32 bg-white dark:bg-slate-950">
             <div className="container mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -429,7 +434,7 @@ function UseCasesSection() {
                     className="text-center max-w-3xl mx-auto mb-20"
                 >
                     <h2 className="text-3xl lg:text-4xl font-bold mb-6 font-heading">{t.landing.useCases.title}</h2>
-                    <p className="text-xl text-slate-600">{t.landing.useCases.subtitle}</p>
+                    <p className="text-xl text-slate-600 dark:text-slate-400">{t.landing.useCases.subtitle}</p>
                 </motion.div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -441,16 +446,16 @@ function UseCasesSection() {
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
                             whileHover={{ y: -10, transition: { duration: 0.2 } }}
-                            className="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl border border-slate-100 transition-all cursor-default"
+                            className="group bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-lg hover:shadow-2xl border border-slate-100 dark:border-slate-800 transition-all cursor-default"
                         >
                             <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 group-hover:rotate-3 bg-gradient-to-br ${useCase.color}`}>
                                 <useCase.icon className="h-8 w-8 text-white" />
                             </div>
-                            <h3 className="text-xl font-bold mb-4 text-slate-900 font-heading">{useCase.title}</h3>
+                            <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-white font-heading">{useCase.title}</h3>
                             <ul className="space-y-3">
                                 {useCase.items.map((item, idx) => (
-                                    <li key={idx} className="text-sm text-slate-500 flex items-center gap-3">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                                    <li key={idx} className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-3">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600" />
                                         {item}
                                     </li>
                                 ))}
@@ -470,7 +475,7 @@ function CTASection() {
     return (
         <section className="py-32 relative overflow-hidden">
             {/* Ambient Background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white via-blue-50/30 to-white pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white via-blue-50/30 to-white dark:from-slate-950 dark:via-blue-900/10 dark:to-slate-950 pointer-events-none" />
 
             {/* Animated Blobs */}
             <motion.div
@@ -500,7 +505,7 @@ function CTASection() {
                 >
                     <div className="relative isolate rounded-[3rem] overflow-hidden">
                         {/* Glass Container */}
-                        <div className="absolute inset-0 bg-white/40 backdrop-blur-2xl border border-white/60" />
+                        <div className="absolute inset-0 bg-white/40 dark:bg-slate-900/60 backdrop-blur-2xl border border-white/60 dark:border-slate-700" />
 
                         {/* Inner Gradient Reflection */}
                         <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-transparent to-blue-300/20 opacity-50" />
@@ -523,7 +528,7 @@ function CTASection() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.3 }}
-                                className="text-4xl md:text-6xl font-bold mb-8 leading-tight tracking-tight text-slate-900 font-heading"
+                                className="text-4xl md:text-6xl font-bold mb-8 leading-tight tracking-tight text-slate-900 dark:text-white font-heading"
                             >
                                 {t.landing.cta.title1} <br />
                                 <span className="bg-gradient-to-r from-blue-700 via-cyan-600 to-teal-600 bg-clip-text text-transparent">
@@ -536,7 +541,7 @@ function CTASection() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.4 }}
-                                className="text-xl md:text-2xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed"
+                                className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 mb-12 max-w-2xl mx-auto leading-relaxed"
                             >
                                 {t.landing.cta.description}
                             </motion.p>
@@ -563,7 +568,7 @@ function CTASection() {
                                 <motion.button
                                     whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.9)" }}
                                     whileTap={{ scale: 0.98 }}
-                                    className="h-16 px-10 rounded-full bg-white/70 backdrop-blur-xl border-2 border-slate-200 text-slate-700 font-bold text-lg hover:border-blue-200 hover:text-blue-700 transition-all shadow-lg flex items-center gap-3"
+                                    className="h-16 px-10 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border-2 border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-bold text-lg hover:border-blue-200 dark:hover:border-blue-500 hover:text-blue-700 dark:hover:text-blue-400 transition-all shadow-lg flex items-center gap-3"
                                 >
                                     <span className="relative flex h-3 w-3">
                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -600,14 +605,14 @@ function FAQSection() {
     ];
 
     return (
-        <section className="py-32 bg-slate-50 relative overflow-hidden">
+        <section className="py-32 bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
             {/* Decorative Background Elements */}
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
 
             <div className="container mx-auto px-4 max-w-3xl relative z-10">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold mb-4 text-slate-900 font-heading">{t.landing.faq.title}</h2>
-                    <p className="text-lg text-slate-600">{t.landing.faq.subtitle}</p>
+                    <h2 className="text-4xl font-bold mb-4 text-slate-900 dark:text-white font-heading">{t.landing.faq.title}</h2>
+                    <p className="text-lg text-slate-600 dark:text-slate-400">{t.landing.faq.subtitle}</p>
                 </div>
                 <div className="space-y-4">
                     {faqs.map((item, i) => (
@@ -617,10 +622,10 @@ function FAQSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1 }}
-                            className="bg-white rounded-2xl p-6 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300"
+                            className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-700 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300"
                         >
-                            <h3 className="font-bold text-lg text-slate-900 mb-2 font-heading">{item.q}</h3>
-                            <p className="text-slate-600 leading-relaxed">{item.a}</p>
+                            <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2 font-heading">{item.q}</h3>
+                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{item.a}</p>
                         </motion.div>
                     ))}
                 </div>

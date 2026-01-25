@@ -28,7 +28,9 @@ export default function RootLayout({
                 />
             </head>
             <body className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans`}>
-                <Providers>{children}</Providers>
+                <Providers>
+                    {children}
+                </Providers>
             </body>
         </html>
     );

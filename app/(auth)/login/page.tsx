@@ -56,7 +56,7 @@ export default function LoginPage() {
 
             // Simple validation simulation
             if (!values.email || !values.password) {
-                throw new Error("Invalid credentials");
+                throw new Error("Kredensial tidak valid");
             }
 
             const mockUser = {
@@ -130,8 +130,8 @@ export default function LoginPage() {
                 {/* 2. The Card (Floating, White, Clean) */}
                 <div className="w-full max-w-[380px] bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 p-6 z-30 relative mb-8">
                     <div className="text-center mb-6">
-                        <h1 className="text-xl font-bold tracking-tight text-slate-900">Welcome Back</h1>
-                        <p className="text-slate-500 text-xs font-medium mt-1">Enter your credentials to access functionality.</p>
+                        <h1 className="text-xl font-bold tracking-tight text-slate-900">Selamat Datang Kembali</h1>
+                        <p className="text-slate-500 text-xs font-medium mt-1">Masukkan kredensial Anda untuk mengakses fitur.</p>
                     </div>
 
                     <Form {...form}>
@@ -162,9 +162,9 @@ export default function LoginPage() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="flex items-center justify-between">
-                                            <FormLabel className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Password</FormLabel>
+                                            <FormLabel className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Kata Sandi</FormLabel>
                                             <Link href="/forgot-password" className="text-xs text-blue-600 font-bold hover:underline">
-                                                Forgot?
+                                                Lupa?
                                             </Link>
                                         </div>
                                         <FormControl>
@@ -189,11 +189,11 @@ export default function LoginPage() {
                                 disabled={isLoading}
                             >
                                 {isLoading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
-                                Sign In
+                                Masuk
                             </Button>
 
                             <div className="text-center text-sm text-slate-500 mt-6 pb-2">
-                                Don&apos;t have an account? <Link href="/register" className="text-blue-600 font-bold hover:underline">Create one</Link>
+                                Belum punya akun? <Link href="/register" className="text-blue-600 font-bold hover:underline">Buat akun</Link>
                             </div>
                         </form>
                     </Form>
@@ -231,10 +231,10 @@ export default function LoginPage() {
 
                     <div className="text-center space-y-2">
                         <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-                            Welcome Back
+                            Selamat Datang Kembali
                         </h1>
                         <p className="text-slate-500 text-sm">
-                            Enter your credentials to access your workspace.
+                            Masukkan kredensial Anda untuk mengakses ruang kerja.
                         </p>
                     </div>
 
@@ -245,11 +245,11 @@ export default function LoginPage() {
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1">Email Address</FormLabel>
+                                        <FormLabel className="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1">Alamat Email</FormLabel>
                                         <FormControl>
                                             <Input
                                                 {...field}
-                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400"
+                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900"
                                                 placeholder="name@company.com"
                                                 onFocus={() => setIsEmailFocused(true)}
                                                 onBlur={() => setIsEmailFocused(false)}
@@ -266,15 +266,15 @@ export default function LoginPage() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <div className="flex items-center justify-between">
-                                            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1">Password</FormLabel>
+                                            <FormLabel className="text-xs font-semibold uppercase tracking-wider text-slate-500 ml-1">Kata Sandi</FormLabel>
                                             <Link href="/forgot-password" className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:underline">
-                                                Forgot?
+                                                Lupa?
                                             </Link>
                                         </div>
                                         <FormControl>
                                             <InputPassword
                                                 {...field}
-                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400"
+                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900"
                                                 placeholder="••••••••"
                                                 onFocus={() => setIsPasswordFocused(true)}
                                                 onBlur={() => setIsPasswordFocused(false)}
@@ -290,11 +290,11 @@ export default function LoginPage() {
                                 disabled={isLoading}
                                 className="w-full h-11 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98] mt-4"
                             >
-                                {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Sign In"}
+                                {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Masuk"}
                             </Button>
 
                             <div className="pt-4 text-center text-sm text-slate-500">
-                                Don&apos;t have an account? <Link href="/register" className="text-blue-700 font-semibold hover:underline">Create one</Link>
+                                Belum punya akun? <Link href="/register" className="text-blue-700 font-semibold hover:underline">Buat akun</Link>
                             </div>
                         </form>
                     </Form>
@@ -303,7 +303,7 @@ export default function LoginPage() {
                 {/* Footer Links */}
                 <div className="absolute bottom-6 left-0 w-full text-center">
                     <p className="text-xs text-slate-400">
-                        &copy; 2026 Elysian Corp. <Link href="#" className="hover:text-slate-600">Privacy</Link> &middot; <Link href="#" className="hover:text-slate-600">Terms</Link>
+                        &copy; 2026 Elysian Corp. <Link href="#" className="hover:text-slate-600">Privasi</Link> &middot; <Link href="#" className="hover:text-slate-600">Syarat</Link>
                     </p>
                 </div>
             </div >
