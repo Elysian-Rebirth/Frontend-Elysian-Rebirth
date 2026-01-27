@@ -50,7 +50,7 @@ export function FeatureDeepDive() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 shadow-xl shadow-blue-500/5 h-auto md:h-[400px] flex flex-col relative overflow-hidden group"
+                        className="bg-blue-50 dark:bg-blue-900/10 rounded-3xl p-6 md:p-8 border border-blue-100 dark:border-blue-800 shadow-xl shadow-blue-500/5 h-auto md:h-[400px] flex flex-col relative overflow-hidden group"
                     >
                         <div className="mb-6 md:mb-8 relative z-10">
                             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Automated Cycles</h3>
@@ -72,7 +72,7 @@ export function FeatureDeepDive() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 }}
-                        className="bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 shadow-xl shadow-purple-500/5 h-auto md:h-[400px] flex flex-col relative overflow-hidden group"
+                        className="bg-purple-50 dark:bg-purple-900/10 rounded-3xl p-6 md:p-8 border border-purple-100 dark:border-purple-800 shadow-xl shadow-purple-500/5 h-auto md:h-[400px] flex flex-col relative overflow-hidden group"
                     >
                         <div className="mb-6 md:mb-8 relative z-10">
                             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Smart Inbox</h3>
@@ -95,7 +95,7 @@ export function FeatureDeepDive() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
-                    className="w-full bg-white dark:bg-slate-900 rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-slate-800 shadow-xl shadow-cyan-500/5 h-[400px] md:h-[500px] flex flex-col relative overflow-hidden group"
+                    className="w-full bg-cyan-50 dark:bg-cyan-900/10 rounded-3xl p-6 md:p-8 border border-cyan-100 dark:border-cyan-800 shadow-xl shadow-cyan-500/5 h-[400px] md:h-[500px] flex flex-col relative overflow-hidden group"
                 >
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 relative z-10">
                         <div className="max-w-md">

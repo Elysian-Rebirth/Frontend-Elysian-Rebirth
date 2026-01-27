@@ -72,9 +72,9 @@ export function AiAgentsSection() {
     }, []);
 
     return (
-        <section className="py-32 bg-white dark:bg-slate-900 relative overflow-hidden">
+        <section className="py-16 lg:py-32 bg-white dark:bg-transparent relative overflow-hidden">
             {/* Background Gradients */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-white to-white dark:from-slate-800/20 dark:via-slate-900 dark:to-slate-950 pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-50/50 via-white to-white dark:from-slate-800/10 dark:via-slate-900/60 dark:to-slate-950/80 pointer-events-none" />
 
             <div className="container mx-auto px-4 relative z-10">
                 <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto mb-20">
@@ -92,12 +92,13 @@ export function AiAgentsSection() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-5xl md:text-6xl font-bold text-slate-900 dark:text-white leading-tight mb-6"
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                        className="text-3xl sm:text-4xl lg:text-6xl font-bold text-slate-900 dark:text-white leading-tight mb-6"
                     >
                         Delegasikan tugas ke <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">AI Agents Spesialis.</span>
                     </motion.h2>
-                    <p className="text-xl text-slate-500 dark:text-slate-400 max-w-2xl">
+                    <p className="text-lg sm:text-xl text-slate-500 dark:text-slate-400 max-w-2xl">
                         Pilih agent yang tepat untuk setiap pekerjaan. Dari analis data hingga auditor keamanan, semua siap bekerja 24/7.
                     </p>
                 </div>

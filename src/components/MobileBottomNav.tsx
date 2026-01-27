@@ -36,7 +36,7 @@ export function MobileBottomNav() {
     ];
 
     return (
-        <div id="mobile-bottom-nav" className="fixed bottom-0 left-0 right-0 z-[40] bg-white dark:bg-zinc-950 border-t border-slate-200 dark:border-slate-800 h-16 px-6 flex items-center justify-between md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-[calc(env(safe-area-inset-bottom))]">
+        <div id="mobile-bottom-nav" className="fixed bottom-0 left-0 right-0 z-[100] bg-white/90 dark:bg-zinc-950/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 h-16 px-6 flex items-center justify-between md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] pb-[calc(env(safe-area-inset-bottom))] transition-all duration-300">
             {navItems.map((item) => {
                 const getOnboardingId = (href: string) => {
                     if (href === '/dashboard') return 'mobile-nav-dashboard';

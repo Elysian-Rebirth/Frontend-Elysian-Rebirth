@@ -36,14 +36,14 @@ export function DashboardShell({ stats: _initialStats }: { stats: DashboardStats
             <OnboardingWidget />
             <div className="p-6 md:p-8 max-w-[1600px] mx-auto space-y-8">
                 {/* Header */}
-                <div id="dashboard-header">
+                <div id="dashboard-header" className="pt-4 md:pt-0">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                         <Home className="w-4 h-4" />
                         <span>/</span>
                         <span>{t.dashboard.breadcrumb}</span>
                     </div>
-                    <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{t.dashboard.heading}</h1>
-                    <p className="text-muted-foreground mt-1">{t.dashboard.description}</p>
+                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{t.dashboard.heading}</h1>
+                    <p className="text-sm md:text-base text-muted-foreground mt-1">{t.dashboard.description}</p>
                 </div>
 
                 {/* Top Section: Charts & Promo */}

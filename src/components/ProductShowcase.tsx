@@ -47,18 +47,18 @@ export function ProductShowcase() {
                 </div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
-                    {/* Card 1: White Terminal / Integration */}
-                    <ShowcaseCard delay={0.3} title="Integrasi Developer" bg="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                    {/* Card 1: White Terminal / Integration (Yellow/Amber Theme) */}
+                    <ShowcaseCard delay={0.3} title="Integrasi Developer" bg="bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50">
                         <WhiteTerminalAnimation />
                     </ShowcaseCard>
 
-                    {/* Card 2: AI Editor / Document */}
-                    <ShowcaseCard delay={0.4} title="Analisis Dokumen (RAG)" bg="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                    {/* Card 2: AI Editor / Document (Blue Theme) */}
+                    <ShowcaseCard delay={0.4} title="Analisis Dokumen (RAG)" bg="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50">
                         <AiEditorAnimation />
                     </ShowcaseCard>
 
-                    {/* Card 3: Analytics Graph */}
-                    <ShowcaseCard delay={0.5} title="Wawasan Bisnis" bg="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                    {/* Card 3: Analytics Graph (Green/Emerald Theme) */}
+                    <ShowcaseCard delay={0.5} title="Wawasan Bisnis" bg="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
                         <AnalyticsGraphAnimation />
                     </ShowcaseCard>
                 </div>
@@ -76,12 +76,12 @@ function ShowcaseCard({ children, title, delay, bg }: { children: React.ReactNod
             transition={{ delay, duration: 0.8 }}
             className={`rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 flex flex-col h-[500px] relative group hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 ${bg}`}
         >
-            <div className="p-6 md:p-8 flex-grow relative z-10 bg-slate-50/30 dark:bg-slate-900/50 overflow-hidden flex items-center justify-center">
+            <div className="p-6 md:p-8 flex-grow relative z-10 overflow-hidden flex items-center justify-center">
                 {children}
             </div>
-            <div className="relative z-10 p-6 md:p-8 bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700">
+            <div className="relative z-10 p-6 md:p-8 pt-0">
                 <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{title}</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm">
+                <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">
                     Teknologi canggih yang bekerja di belakang layar untuk bisnis Anda.
                 </p>
             </div>
