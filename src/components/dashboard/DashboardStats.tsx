@@ -20,7 +20,7 @@ export function DashboardStats({ docs, apiCalls, errorRate, successRate, isLoadi
     );
 
     return (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4 md:mb-6 lg:mb-8">
             <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium text-blue-400">

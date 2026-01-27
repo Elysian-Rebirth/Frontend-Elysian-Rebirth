@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export function TryElysianWidget() {
     return (
-        <div className="relative group overflow-hidden rounded-2xl border border-sky-100 bg-white p-6 h-full shadow-sm">
+        <div className="relative group overflow-hidden rounded-2xl border border-sky-100 bg-white p-4 md:p-6 h-full shadow-sm">
 
             {/* 1. Subtle Cloud/Wave Decoration */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-sky-50 rounded-full blur-3xl -mr-16 -mt-16 opacity-60" />
@@ -34,16 +34,19 @@ export function TryElysianWidget() {
                     </div>
                 </div>
 
-                <div className="mt-6 flex items-center gap-4">
+                <div className="mt-4 md:mt-6 space-y-3 md:space-y-0 md:flex md:items-center md:gap-4">
                     {/* Progress Bar */}
-                    <div className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden">
-                        <div className="h-full w-[25%] bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full" />
+                    <div className="flex items-center gap-2 md:flex-1">
+                        <div className="flex-1 h-3 bg-slate-100 rounded-full overflow-hidden">
+                            <div className="h-full w-[25%] bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full" />
+                        </div>
+                        <span className="text-sm font-bold text-emerald-600">25%</span>
                     </div>
-                    <span className="text-sm font-bold text-emerald-600">25%</span>
 
                     {/* CTA Button */}
-                    <Button className="bg-sky-50 text-blue-600 hover:bg-sky-100 hover:text-blue-700 border-none font-semibold shadow-none">
-                        Klaim Hadiah Sekarang
+                    <Button className="w-full md:w-auto bg-sky-50 text-blue-600 hover:bg-sky-100 hover:text-blue-700 border-none font-semibold shadow-none">
+                        <span className="hidden sm:inline">Klaim Hadiah Sekarang</span>
+                        <span className="sm:hidden">Klaim Sekarang</span>
                     </Button>
                 </div>
             </div>

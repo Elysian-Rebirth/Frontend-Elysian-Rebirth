@@ -16,7 +16,7 @@ export function QuestWidget() {
     const progress = 33; // 1 out of 3 done
 
     return (
-        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-5 shadow-sm relative overflow-hidden">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-4 md:p-5 shadow-sm relative overflow-hidden">
 
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
@@ -46,7 +46,7 @@ export function QuestWidget() {
                     <div
                         key={q.id}
                         className={cn(
-                            "flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer group",
+                            "flex items-center justify-between p-2 md:p-3 rounded-xl border transition-all cursor-pointer group",
                             q.completed
                                 ? "bg-green-50/50 border-green-100 dark:bg-green-900/10 dark:border-green-900/30"
                                 : "bg-zinc-50 border-zinc-100 hover:border-blue-200 dark:bg-zinc-800/50 dark:border-zinc-800"
