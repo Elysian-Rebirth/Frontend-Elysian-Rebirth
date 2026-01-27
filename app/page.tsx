@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import Script from 'next/script';
 import dynamic from 'next/dynamic'; // Dynamic import
 import { motion, useScroll, useTransform } from 'framer-motion';
 import {
@@ -48,7 +47,6 @@ const ElysianSpace = dynamic(() => import('@/components/backgrounds/ElysianSpace
 // import { FloatingBentoGrid } from '@/components/FloatingBentoGrid'; // Converted to dynamic
 import { LandingNavbar } from '@/components/LandingNavbar';
 import { LandingTerminal } from '@/components/LandingTerminal';
-import { LazyViewport } from '@/components/ui/LazyViewport';
 
 export default function ElysianLanding() {
     const { t } = useTranslation();
@@ -72,7 +70,6 @@ export default function ElysianLanding() {
     const toggleTheme = () => setTheme(isLandingDark ? 'light' : 'dark');
 
     const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-    const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
     const heroY = useTransform(scrollYProgress, [0, 0.5], [0, -50]);
 
     return (
@@ -441,8 +438,8 @@ function UseCasesSection() {
 function CTASection() {
     const { t } = useTranslation();
     const vantaRef = useRef<HTMLDivElement>(null);
-    const [vantaEffect, setVantaEffect] = useState<any>(null);
 
+    // Use ref to track effect instance without triggering re-renders
     const vantaEffectRef = useRef<any>(null);
 
     useEffect(() => {
@@ -468,14 +465,14 @@ function CTASection() {
                     await loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js", "three-js");
                 }
 
-                // @ts-ignore
+                // @ts-expect-error
                 if (!window.VANTA || !window.VANTA.CLOUDS) {
                     await loadScript("https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js", "vanta-clouds");
                 }
 
-                // @ts-ignore
+                // @ts-expect-error
                 if (vantaRef.current && window.VANTA && window.VANTA.CLOUDS && !vantaEffectRef.current) {
-                    // @ts-ignore
+                    // @ts-expect-error
                     vantaEffectRef.current = window.VANTA.CLOUDS({
                         el: vantaRef.current,
                         mouseControls: true,

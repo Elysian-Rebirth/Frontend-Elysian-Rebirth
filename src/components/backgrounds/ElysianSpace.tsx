@@ -5,7 +5,7 @@ import { Canvas } from '@react-three/fiber';
 import { Sparkles } from '@react-three/drei';
 import { useTheme } from 'next-themes';
 
-function ElysianScene({ isDark }: { isDark: boolean }) {
+function ElysianScene() {
     const colors = useMemo(() => ({
         near: '#e0f2fe',     // blue-100 (bright stars)
         mid: '#93c5fd',      // blue-300
