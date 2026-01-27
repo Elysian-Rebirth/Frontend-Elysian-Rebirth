@@ -3,8 +3,9 @@
 import React from 'react';
 import { BaseEdge, EdgeProps, getBezierPath } from 'reactflow';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function AnimatedEdge({
-    id,
+    id: _id,
     sourceX,
     sourceY,
     targetX,

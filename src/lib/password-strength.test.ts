@@ -26,7 +26,8 @@ describe('checkPasswordStrength', () => {
 
     it('should identify medium strength passwords', () => {
         // Length 8, mix of letters/nums, but maybe simple
-        const result = checkPasswordStrength('Pass1234');
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const _result = checkPasswordStrength('Pass1234');
         // "123" is sequence -> penalty
         // length(2) + complexity(2) - penalty(1) = 3 -> Strong? Wait
         // Let's try 'PassWord1'

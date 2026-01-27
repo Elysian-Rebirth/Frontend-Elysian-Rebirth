@@ -7,7 +7,6 @@ export interface PasswordFeedback {
 }
 
 export const checkPasswordStrength = (password: string): PasswordFeedback => {
-    let score = 0;
     const messages: string[] = [];
 
     if (!password) {
@@ -15,8 +14,7 @@ export const checkPasswordStrength = (password: string): PasswordFeedback => {
     }
 
     // 1. Length Check
-    if (password.length >= 8) score += 1;
-    else messages.push('Minimal 8 karakter');
+    if (password.length < 8) messages.push('Minimal 8 karakter');
 
     // 2. Complexity Check
     const hasLower = /[a-z]/.test(password);
@@ -26,12 +24,10 @@ export const checkPasswordStrength = (password: string): PasswordFeedback => {
 
     const complexityCount = [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
 
-    if (complexityCount >= 3) score += 1;
-    else messages.push('Gunakan kombinasi huruf besar, kecil, angka, & simbol');
+    if (complexityCount < 3) messages.push('Gunakan kombinasi huruf besar, kecil, angka, & simbol');
 
     // 3. Repeated Characters Check (e.g., "aaaaa")
     if (/(.)\1{2,}/.test(password)) {
-        score = Math.max(0, score - 1);
         messages.push('Hindari karakter berulang (misal: aaa)');
     }
 
@@ -42,7 +38,6 @@ export const checkPasswordStrength = (password: string): PasswordFeedback => {
 
     const hasSequence = sequences.some(seq => lowerPassword.includes(seq));
     if (hasSequence) {
-        score = Math.max(0, score - 1);
         messages.push('Hindari urutan berurutan (misal: 123, abc)');
     }
 
