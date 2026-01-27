@@ -101,7 +101,7 @@ export function ElysianSpace() {
                 style={{ position: 'absolute', inset: 0 }}
             >
                 <Suspense fallback={null}>
-                    <ElysianScene isDark={isDark} />
+                    <ElysianScene />
                 </Suspense>
             </Canvas>
         </div>
