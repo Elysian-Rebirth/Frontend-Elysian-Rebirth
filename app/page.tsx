@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton'; // Skeleton for lazy loading
 import { useTranslation } from '@/hooks/useTranslation';
+import { useTheme } from 'next-themes';
 
 // Dynamic Imports with Loading Skeletons for Heavy Sections
 const ProductShowcase = dynamic(() => import('@/components/ProductShowcase').then(mod => mod.ProductShowcase), {
@@ -61,8 +62,9 @@ export default function ElysianLanding() {
         setShowTerminal(value);
     };
 
-    const [isLandingDark, setIsLandingDark] = useState(false);
-    const toggleTheme = () => setIsLandingDark(!isLandingDark);
+    const { theme, setTheme } = useTheme();
+    const isLandingDark = theme === 'dark';
+    const toggleTheme = () => setTheme(isLandingDark ? 'light' : 'dark');
 
     const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
     const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
@@ -73,7 +75,7 @@ export default function ElysianLanding() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className={`min-h-screen mesh-gradient-bg font-sans overflow-x-hidden selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100 ${isLandingDark ? 'dark' : ''}`}
+            className={`min-h-screen mesh-gradient-bg font-sans overflow-x-hidden selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100`}
         >
             {/* Floating Navigation - Custom SaaS Style */}
             {/* Floating Navigation - Custom SaaS Style */}
@@ -87,29 +89,16 @@ export default function ElysianLanding() {
             {/* Hero Section - Anti-Gravity + Floating Bento (Combined) */}
             <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
                 {/* Animated Background Blobs (Optimized) */}
-                <motion.div
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        x: [0, 100, 0],
-                        y: [0, -50, 0],
-                    }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ transform: 'translateZ(0)' }}
-                    className="absolute top-[-10%] left-[-5%] w-[700px] h-[700px] bg-gradient-to-br from-blue-400/20 to-cyan-400/20 blur-[80px] rounded-full pointer-events-none hidden md:block"
+                {/* Static Background Blobs (Performance Optimized) */}
+                <div
+                    className="absolute top-[-10%] left-[-5%] w-[700px] h-[700px] bg-gradient-to-br from-blue-400/20 to-cyan-400/20 blur-[80px] rounded-full pointer-events-none hidden md:block opacity-60"
                 />
-                <motion.div
-                    animate={{
-                        scale: [1, 1.1, 1],
-                        x: [0, -80, 0],
-                        y: [0, 80, 0],
-                    }}
-                    transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                    style={{ transform: 'translateZ(0)' }}
-                    className="absolute bottom-[-10%] right-[-5%] w-[800px] h-[800px] bg-gradient-to-tl from-indigo-400/15 to-purple-400/15 blur-[100px] rounded-full pointer-events-none hidden md:block"
+                <div
+                    className="absolute bottom-[-10%] right-[-5%] w-[800px] h-[800px] bg-gradient-to-tl from-indigo-400/15 to-purple-400/15 blur-[100px] rounded-full pointer-events-none hidden md:block opacity-60"
                 />
 
                 <motion.div
-                    style={{ opacity: heroOpacity, scale: heroScale, y: heroY }}
+                    style={{ opacity: heroOpacity, y: heroY }}
                     className="container mx-auto px-4 py-8 sm:py-12 lg:py-20 relative z-10"
                 >
                     <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-24">
@@ -382,7 +371,7 @@ function SolutionSection() {
                     viewport={{ once: true }}
                     className="text-center max-w-3xl mx-auto mb-20"
                 >
-                    <h2 className="text-3xl lg:text-4xl font-bold mb-6 font-heading">
+                    <h2 className="text-3xl lg:text-4xl font-bold mb-6 font-heading text-slate-900 dark:text-white">
                         {t.landing.features.title.split(' ').map((word, i) => word === 'Mengangkat' || word === 'Elevate' ? (
                             <span key={i} className="bg-gradient-to-r from-blue-700 to-cyan-600 bg-clip-text text-transparent"> {word} </span>
                         ) : ' ' + word)}
@@ -433,7 +422,7 @@ function UseCasesSection() {
                     viewport={{ once: true }}
                     className="text-center max-w-3xl mx-auto mb-20"
                 >
-                    <h2 className="text-3xl lg:text-4xl font-bold mb-6 font-heading">{t.landing.useCases.title}</h2>
+                    <h2 className="text-3xl lg:text-4xl font-bold mb-6 font-heading text-slate-900 dark:text-white">{t.landing.useCases.title}</h2>
                     <p className="text-xl text-slate-600 dark:text-slate-400">{t.landing.useCases.subtitle}</p>
                 </motion.div>
 
