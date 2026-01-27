@@ -39,7 +39,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                     width: "100%",
                     borderRadius: "0px",
                     borderBottomColor: "rgba(255,255,255,0)", // Transparent
-                    backgroundColor: "rgba(255,255,255,0)", // Transparent
+                    backgroundColor: isDark ? "rgba(15, 23, 42, 0)" : "rgba(255, 255, 255, 0)", // Transparent but respects theme
                     boxShadow: "0 0 0 rgba(0,0,0,0)",
                     paddingTop: "24px",
                     paddingBottom: "24px",
