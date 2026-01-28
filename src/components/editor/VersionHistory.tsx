@@ -49,7 +49,7 @@ export function VersionHistory() {
                         <div className="text-center py-10 text-muted-foreground">
                             <Clock className="h-10 w-10 mx-auto mb-3 opacity-20" />
                             <p>No snapshots yet.</p>
-                            <p className="text-xs">Click "Save" to create a version.</p>
+                            <p className="text-xs">Click &quot;Save&quot; to create a version.</p>
                         </div>
                     ) : (
                         snapshots.map((snap) => (

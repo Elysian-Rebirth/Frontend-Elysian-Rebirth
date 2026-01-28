@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Editor } from '@tiptap/react';
 import { toast } from 'sonner';
 
-export function useGhostwriter(editor: Editor | null, isMobile: boolean) {
+export function useGhostwriter(editor: Editor | null, _isMobile: boolean) {
     const [suggestion, setSuggestion] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);

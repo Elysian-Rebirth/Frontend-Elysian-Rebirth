@@ -12,7 +12,7 @@ import Placeholder from '@tiptap/extension-placeholder';
 import CharacterCount from '@tiptap/extension-character-count';
 import { EditorToolbar } from './EditorToolbar';
 import { EditorBubbleMenu } from './EditorBubbleMenu';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import { toast } from 'sonner';
 import { rag } from '@/lib/sdk/modules/rag';
 import { extractPlainText } from '@/lib/editor/aiContext';
@@ -41,7 +41,7 @@ export function DocumentEditor({
     isMobile = false
 }: DocumentEditorProps) {
     // Enterprise Store & Persistence
-    const { setDocument, updateContent, currentDocument, isDirty, markSynced, createSnapshot } = useEditorStore();
+    const { setDocument, updateContent, currentDocument, isDirty, createSnapshot } = useEditorStore();
     useCrashRecovery();
 
     // Initialize store on mount (with Draft Protection)
@@ -57,7 +57,7 @@ export function DocumentEditor({
                 setDocument(document);
             }
         }
-    }, [document.id, currentDocument?.id, isDirty]);
+    }, [document.id, document, currentDocument?.id, isDirty, setDocument]);
 
     // Sync Editor with Store (Handling Restore)
 
@@ -93,7 +93,7 @@ export function DocumentEditor({
             attributes: {
                 class: 'prose prose-slate prose-base w-full p-10 focus:outline-none min-h-[800px] dark:prose-invert max-w-none bg-white dark:bg-slate-950 shadow-sm mx-auto my-4 border border-slate-200 dark:border-slate-800',
             },
-            handleKeyDown: (view, event) => {
+            handleKeyDown: (_view, _event) => {
                 // This handleKeyDown is intentionally left empty or for specific key events.
                 // The onUpdate callback below handles content changes for persistence.
                 // If specific key events need to trigger content updates, they should be added here.
@@ -162,7 +162,7 @@ export function DocumentEditor({
             } else {
                 toast.warning("Gagal", { description: result.message });
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error("Error", { description: "Gagal menghubungkan ke RAG pipeline." });
         }
     };

@@ -68,7 +68,7 @@ export function GhostwriterWidget({
                             </div>
 
                             <p className="text-sm text-slate-600 dark:text-slate-300 italic pl-3 border-l-2 border-cyan-400 leading-relaxed font-medium">
-                                "{suggestion}"
+                                &quot;{suggestion}&quot;
                             </p>
 
                             <div className="flex justify-end pt-1">
