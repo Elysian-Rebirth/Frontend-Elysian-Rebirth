@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from '@/components/ui/';
-import { Card } from '@/components/ui/';
-import { Badge } from '@/components/ui/';
-import { Save, FileText, Maximize2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Save, FileText, Maximize2, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { EditorDocument } from '@/lib/sdk/schemas';
 import { useEditor, EditorContent, type JSONContent } from '@tiptap/react';
@@ -12,7 +12,16 @@ import Placeholder from '@tiptap/extension-placeholder';
 import CharacterCount from '@tiptap/extension-character-count';
 import { EditorToolbar } from './EditorToolbar';
 import { EditorBubbleMenu } from './EditorBubbleMenu';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { toast } from 'sonner';
+import { rag } from '@/lib/sdk/modules/rag';
+import { extractPlainText } from '@/lib/editor/aiContext';
+import { useEditorStore } from '@/store/editorStore';
+import { useCrashRecovery } from '@/hooks/use-crash-recovery';
+import { SlashCommand, getSuggestionItems, renderItems } from './extensions/slash-command';
+import { VersionHistory } from './VersionHistory';
+import { useGhostwriter } from '@/hooks/use-ghostwriter';
+import { GhostwriterWidget } from './GhostwriterWidget';
 
 interface DocumentEditorProps {
     document: EditorDocument;
@@ -31,6 +40,28 @@ export function DocumentEditor({
     pdfUrl,
     isMobile = false
 }: DocumentEditorProps) {
+    // Enterprise Store & Persistence
+    const { setDocument, updateContent, currentDocument, isDirty, markSynced, createSnapshot } = useEditorStore();
+    useCrashRecovery();
+
+    // Initialize store on mount (with Draft Protection)
+    useEffect(() => {
+        // If we are opening a different document, load it.
+        if (currentDocument?.id !== document.id) {
+            setDocument(document);
+        } else {
+            // Same document ID. 
+            // Only overwrite if we DON'T have a dirty draft.
+            // If isDirty is true, we keep the local version (Persistence).
+            if (!isDirty) {
+                setDocument(document);
+            }
+        }
+    }, [document.id, currentDocument?.id, isDirty]);
+
+    // Sync Editor with Store (Handling Restore)
+
+
     // Default schema to prevent crashes
     const defaultContent: JSONContent = {
         type: 'doc',
@@ -42,25 +73,99 @@ export function DocumentEditor({
             heading: { levels: [1, 2, 3] },
         }),
         Placeholder.configure({
-            placeholder: 'Mulai ketik spesifikasi produksi di sini...',
+            placeholder: 'Type "/" for commands...',
             emptyEditorClass: 'is-editor-empty before:content-[attr(data-placeholder)] before:text-slate-400 before:float-left before:pointer-events-none before:h-0',
         }),
         CharacterCount,
+        SlashCommand.configure({
+            suggestion: {
+                items: getSuggestionItems,
+                render: renderItems,
+            },
+        }),
     ], []);
 
     const editor = useEditor({
         extensions,
-        content: initialContent || defaultContent,
+        // PRIORITY: Use rehydrated draft if available, else initial content
+        content: currentDocument?.content || initialContent || defaultContent,
         editorProps: {
             attributes: {
-                class: 'prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none min-h-[500px] max-w-none dark:prose-invert',
+                class: 'prose prose-slate prose-base w-full p-10 focus:outline-none min-h-[800px] dark:prose-invert max-w-none bg-white dark:bg-slate-950 shadow-sm mx-auto my-4 border border-slate-200 dark:border-slate-800',
+            },
+            handleKeyDown: (view, event) => {
+                // This handleKeyDown is intentionally left empty or for specific key events.
+                // The onUpdate callback below handles content changes for persistence.
+                // If specific key events need to trigger content updates, they should be added here.
             },
         },
         onUpdate: ({ editor }) => {
+            // Prevent ghost updates on mount/hydration
+            if (!editor.isFocused) return;
+
+            updateContent(editor.getJSON());
             onChange(editor.getJSON());
         },
         immediatelyRender: false,
     });
+
+    // Enterprise: AI Ghostwriter (Initialized AFTER editor)
+    const { suggestion, isLoading: isGhostwriterLoading, acceptSuggestion, discardSuggestion } = useGhostwriter(editor, isMobile);
+
+    // Handle Tab key to accept suggestion
+    useEffect(() => {
+        if (!editor || !suggestion) return;
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                acceptSuggestion();
+            }
+        };
+
+        const view = editor.view;
+        view.dom.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            view.dom.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [editor, suggestion, acceptSuggestion]);
+
+    // Sync Editor with Store (Handling Restore)
+    useEffect(() => {
+        if (editor && currentDocument?.content) {
+            // Simple check to prevent infinite loop of updates
+            const currentEditorContent = JSON.stringify(editor.getJSON());
+            const storeContent = JSON.stringify(currentDocument.content);
+
+            if (currentEditorContent !== storeContent) {
+                editor.commands.setContent(currentDocument.content);
+            }
+        }
+    }, [currentDocument, editor]);
+
+    const handleProcessWithAI = async () => {
+        if (!editor) return;
+
+        const text = extractPlainText(editor);
+        if (!text) {
+            toast.error("Editor kosong. Tulis sesuatu dulu!");
+            return;
+        }
+
+        toast.info("Mengirim ke AI...", { description: "Sedang memproses dokumen Anda." });
+
+        try {
+            const result = await rag.processDocument(document.id, text);
+            if (result.success) {
+                toast.success("Sukses!", { description: result.message });
+            } else {
+                toast.warning("Gagal", { description: result.message });
+            }
+        } catch (error) {
+            toast.error("Error", { description: "Gagal menghubungkan ke RAG pipeline." });
+        }
+    };
 
     return (
         <div className={cn(
@@ -92,22 +197,47 @@ export function DocumentEditor({
 
             {/* Editor View */}
             <Card className="flex-1 border-border flex flex-col bg-card overflow-hidden shadow-sm">
-                <div className="px-4 py-3 border-b border-border flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
-                    <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-xs font-normal bg-white dark:bg-slate-800">
-                            v{document.version}
-                        </Badge>
-                        <span className="text-sm font-medium text-foreground">
-                            {document.title}
-                        </span>
-                        <span className="text-xs text-muted-foreground ml-2">
+                <div className="px-4 py-3 border-b border-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-50/50 dark:bg-slate-900/50">
+                    <div className="flex items-center justify-between w-full sm:w-auto gap-2">
+                        <div className="flex items-center gap-2 overflow-hidden">
+                            <Badge variant="outline" className="text-xs font-normal bg-white dark:bg-slate-800 shrink-0">
+                                v{document.version}
+                            </Badge>
+                            <span className="text-sm font-medium text-foreground truncate">
+                                {document.title}
+                            </span>
+                        </div>
+                        <span className="text-xs text-muted-foreground sm:hidden shrink-0">
                             {editor?.storage.characterCount.words() || 0} words
                         </span>
                     </div>
-                    <Button size="sm" onClick={onSave} className="h-8 gap-2 bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-                        <Save className="h-4 w-4" />
-                        Save
-                    </Button>
+
+                    <div className="flex items-center justify-end w-full sm:w-auto gap-2">
+                        <span className="text-xs text-muted-foreground hidden sm:inline-block mr-2">
+                            {editor?.storage.characterCount.words() || 0} words
+                        </span>
+                        <VersionHistory />
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={handleProcessWithAI}
+                            className="h-8 gap-1.5 flex-1 sm:flex-none text-purple-600 border-purple-200 hover:text-white hover:bg-gradient-to-r hover:from-purple-500 hover:to-indigo-600 hover:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
+                        >
+                            <Sparkles className="h-3.5 w-3.5" />
+                            <span className="truncate">Analyze AI</span>
+                        </Button>
+                        <Button
+                            size="sm"
+                            onClick={() => {
+                                onSave();
+                                createSnapshot('Manual Save');
+                            }}
+                            className="h-8 gap-1.5 flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+                        >
+                            <Save className="h-3.5 w-3.5" />
+                            <span>Save</span>
+                        </Button>
+                    </div>
                 </div>
 
                 {/* Tiptap Toolbar */}
@@ -116,11 +246,19 @@ export function DocumentEditor({
                 {/* Floating Menu */}
                 <EditorBubbleMenu editor={editor} />
 
+                {/* Ghostwriter Widget (AI Autocomplete) */}
+                <GhostwriterWidget
+                    suggestion={suggestion}
+                    isLoading={isGhostwriterLoading}
+                    onAccept={acceptSuggestion}
+                    onDiscard={discardSuggestion}
+                    isMobile={isMobile}
+                />
+
                 {/* Editor Area */}
                 <div
-                    className="flex-1 overflow-y-auto bg-white dark:bg-slate-950/50 cursor-text !cursor-text group"
+                    className="flex-1 overflow-y-auto bg-white dark:bg-slate-950/50 group relative cursor-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEgMUwyMyAxNkwxNCAxOEw5IDMwTDEgMVoiIGZpbGw9IiMxMTE4MjciIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8L3N2Zz4='),_default]"
                     onClick={() => editor?.chain().focus().run()}
-                    style={{ cursor: 'text' }} // Fail-safe
                 >
                     <EditorContent editor={editor} className="min-h-full" />
                 </div>

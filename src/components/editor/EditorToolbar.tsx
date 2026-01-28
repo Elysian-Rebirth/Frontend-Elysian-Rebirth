@@ -122,7 +122,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => editor.chain().focus().undo().run()}
+                onClick={() => (editor.chain().focus() as any).undo().run()}
                 disabled={!editor.can().undo()}
                 className="h-8 w-8 p-0"
                 title="Undo"
@@ -132,7 +132,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
             <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => editor.chain().focus().redo().run()}
+                onClick={() => (editor.chain().focus() as any).redo().run()}
                 disabled={!editor.can().redo()}
                 className="h-8 w-8 p-0"
                 title="Redo"

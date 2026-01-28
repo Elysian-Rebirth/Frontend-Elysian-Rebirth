@@ -3,10 +3,11 @@
 import { Protected } from '@/components/auth/Protected';
 import Image from 'next/image';
 import { Button } from '@/components/ui/';
-import { Upload } from 'lucide-react';
+import { Upload, CheckCircle2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { EditorSkeleton } from '@/components/LoadingSkeletons';
 import dynamic from 'next/dynamic';
+import { toast } from 'sonner';
 
 // Dynamically import DocumentEditor to prevent SSR issues with Tiptap
 const DocumentEditor = dynamic(
@@ -77,7 +78,7 @@ export default function DocumentEditorPage() {
                     </div>
                 ) : (
                     // Active Editor Interface (Mock UI)
-                    <div className="flex-1 flex flex-col items-center p-6 animate-in fade-in duration-500">
+                    <div className="flex-1 flex flex-col p-4 md:p-6 animate-in fade-in duration-500 w-full max-w-[1600px] mx-auto">
                         {/* Actual Document Editor Component */}
                         <DocumentEditor
                             document={{
@@ -89,7 +90,13 @@ export default function DocumentEditorPage() {
                             }}
                             initialContent={null} // Will trigger default schema in Editor
                             onChange={(json) => console.log('Editor Content:', json)}
-                            onSave={() => alert('Document Saved! (Check console for JSON)')}
+                            onSave={() => {
+                                toast.success("Dokumen Disimpan", {
+                                    description: "Perubahan Anda telah tersimpan dengan aman.",
+                                    icon: <div className="bg-green-500 rounded-full p-0.5"><CheckCircle2 className="h-3 w-3 text-white" /></div>,
+                                    duration: 3000,
+                                });
+                            }}
                             pdfUrl={undefined}
                             isMobile={false}
                         />

@@ -1,57 +1,84 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/';
-import { Button } from '@/components/ui/';
-import { History, Bot, User } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/';
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { History, RotateCcw, Clock } from "lucide-react";
+import { useEditorStore } from "@/store/editorStore";
+import { formatDistanceToNow } from "date-fns";
+import { toast } from "sonner";
+import { useState } from "react";
 
-interface Version {
-    id: string;
-    type: 'ai' | 'human';
-    label: string;
-    timestamp: Date;
-}
+export function VersionHistory() {
+    const { snapshots, restoreSnapshot } = useEditorStore();
+    const [isOpen, setIsOpen] = useState(false);
 
-interface VersionHistoryProps {
-    versions: Version[];
-}
+    const handleRestore = (id: string) => {
+        restoreSnapshot(id);
+        setIsOpen(false);
+        toast.success("Version Restored", {
+            description: "Your editor content has been reverted to this snapshot."
+        });
+        // We might need to force editor re-render or content update here
+        // But since we bound content to store, it *should* update if DocumentEditor handles prop changes or we force it.
+        // For Tiptap, we usually need to imperatively set content.
+        // We'll handle that in DocumentEditor's useEffect.
+    };
 
-export function VersionHistory({ versions }: VersionHistoryProps) {
     return (
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-                <div className="absolute top-4 right-4 z-10">
-                    <Button variant="outline" size="icon" className="shadow-md bg-background">
-                        <History className="h-4 w-4" />
-                    </Button>
-                </div>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                    <History className="h-4 w-4 text-muted-foreground" />
+                    <span className="sr-only">Version History</span>
+                </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="w-[400px] sm:w-[540px] overflow-y-auto">
                 <SheetHeader>
-                    <SheetTitle>Version History</SheetTitle>
+                    <SheetTitle className="flex items-center gap-2">
+                        <History className="h-5 w-5" />
+                        Version History
+                    </SheetTitle>
                 </SheetHeader>
-                <ScrollArea className="h-[calc(100vh-80px)] mt-6 pr-4">
-                    <div className="space-y-6">
-                        {versions.map((version) => (
-                            <div key={version.id} className="relative pl-6 border-l-2 border-border pb-6 last:pb-0">
-                                <div className={`absolute -left-[9px] top-0 h-4 w-4 rounded-full border-2 border-background 
-                                    ${version.type === 'ai' ? 'bg-purple-500' : 'bg-blue-500'}`}
-                                />
-                                <div className="space-y-1">
-                                    <p className="text-sm font-medium leading-none flex items-center gap-2">
-                                        {version.type === 'ai' ? (
-                                            <Bot className="h-3 w-3 text-purple-400" />
-                                        ) : (
-                                            <User className="h-3 w-3 text-blue-400" />
-                                        )}
-                                        {version.label}
-                                    </p>
-                                    <p className="text-xs text-muted-foreground">
-                                        {version.timestamp.toLocaleString()}
-                                    </p>
+
+                <div className="mt-6 flex flex-col gap-4">
+                    {snapshots.length === 0 ? (
+                        <div className="text-center py-10 text-muted-foreground">
+                            <Clock className="h-10 w-10 mx-auto mb-3 opacity-20" />
+                            <p>No snapshots yet.</p>
+                            <p className="text-xs">Click "Save" to create a version.</p>
+                        </div>
+                    ) : (
+                        snapshots.map((snap) => (
+                            <div key={snap.id} className="flex flex-col gap-2 p-4 rounded-lg border border-border bg-card/50 hover:bg-card transition-all">
+                                <div className="flex items-center justify-between">
+                                    <span className="font-semibold text-sm">{snap.name}</span>
+                                    <span className="text-xs text-muted-foreground font-mono">
+                                        v{snap.version}
+                                    </span>
+                                </div>
+                                <div className="text-xs text-muted-foreground flex items-center gap-1">
+                                    <Clock className="h-3 w-3" />
+                                    {formatDistanceToNow(snap.timestamp, { addSuffix: true })}
+                                </div>
+                                <div className="mt-2 flex justify-end">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-7 text-xs gap-1"
+                                        onClick={() => handleRestore(snap.id)}
+                                    >
+                                        <RotateCcw className="h-3 w-3" />
+                                        Restore
+                                    </Button>
                                 </div>
                             </div>
-                        ))}
-                    </div>
-                </ScrollArea>
+                        ))
+                    )}
+                </div>
             </SheetContent>
         </Sheet>
     );

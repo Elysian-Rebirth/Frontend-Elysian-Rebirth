@@ -64,5 +64,32 @@ export const rag = {
             lastModified: new Date(),
         };
         return EditorDocumentSchema.parse(mockData);
+    },
+
+    /**
+     * Frontend-only mock for processing document text.
+     * In the real backend, this would:
+     * 1. Receive text
+     * 2. Generate Embeddings (OpenAI/Cohere)
+     * 3. Store in Vector DB (Pinecone/Milvus)
+     */
+    processDocument: async (documentId: string, text: string): Promise<{ success: boolean; message: string }> => {
+        console.log(`[RAG-SDK] Processing document ${documentId}...`);
+        console.log(`[RAG-SDK] Extracted Text Length: ${text.length} characters`);
+
+        // Simulating network delay for AI processing
+        await delay(2000);
+
+        if (text.length < 50) {
+            return {
+                success: false,
+                message: "Teks terlalu pendek untuk dianalisis. Mohon tulis lebih banyak."
+            };
+        }
+
+        return {
+            success: true,
+            message: "Dokumen berhasil dikirim ke pipeline RAG. AI akan mempelajarinya."
+        };
     }
 };

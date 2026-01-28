@@ -19,7 +19,6 @@ export function EditorBubbleMenu({ editor }: EditorBubbleMenuProps) {
     return (
         <BubbleMenu
             editor={editor}
-            tippyOptions={{ duration: 100, animation: 'scale' }}
             className="flex items-center gap-1 p-1 rounded-lg border border-slate-200 bg-white shadow-lg dark:border-slate-800 dark:bg-slate-900"
         >
             <Button
@@ -41,8 +40,11 @@ export function EditorBubbleMenu({ editor }: EditorBubbleMenuProps) {
             <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                className={cn("h-8 w-8 p-0", editor.isActive('bold') && "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100")}
+                onMouseDown={(e) => {
+                    e.preventDefault();
+                    editor.chain().focus().toggleBold().run();
+                }}
+                className={cn("h-8 w-8 p-0", editor.isActive('bold') && "bg-green-600 text-white hover:bg-green-700 hover:text-white")}
                 title="Bold"
             >
                 <Bold className="h-3.5 w-3.5" />
@@ -50,8 +52,11 @@ export function EditorBubbleMenu({ editor }: EditorBubbleMenuProps) {
             <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                className={cn("h-8 w-8 p-0", editor.isActive('italic') && "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100")}
+                onMouseDown={(e) => {
+                    e.preventDefault();
+                    editor.chain().focus().toggleItalic().run();
+                }}
+                className={cn("h-8 w-8 p-0", editor.isActive('italic') && "bg-green-600 text-white hover:bg-green-700 hover:text-white")}
                 title="Italic"
             >
                 <Italic className="h-3.5 w-3.5" />
@@ -59,8 +64,11 @@ export function EditorBubbleMenu({ editor }: EditorBubbleMenuProps) {
             <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-                className={cn("h-8 w-8 p-0", editor.isActive('strike') && "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100")}
+                onMouseDown={(e) => {
+                    e.preventDefault();
+                    editor.chain().focus().toggleStrike().run();
+                }}
+                className={cn("h-8 w-8 p-0", editor.isActive('strike') && "bg-green-600 text-white hover:bg-green-700 hover:text-white")}
                 title="Strike"
             >
                 <Strikethrough className="h-3.5 w-3.5" />

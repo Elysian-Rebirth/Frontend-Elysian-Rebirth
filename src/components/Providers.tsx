@@ -9,12 +9,12 @@ import { TelemetryProvider } from '@/components/providers/TelemetryProvider';
 import { I18nProvider } from '@/components/providers/I18nProvider';
 import { PermissionsProvider } from '@/components/providers/PermissionsProvider';
 import { FeatureFlagsProvider } from '@/components/providers/FeatureFlagsProvider';
-import { CrashRecoveryProvider } from '@/components/CrashRecoveryProvider';
 import { OfflineBanner } from '@/components/OfflineBanner';
 import { SessionTimeoutWarning } from '@/components/SessionTimeoutWarning';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { SiteFooter } from '@/components/SiteFooter';
 import { Toaster } from '@/components/ui/toaster';
+import { Toaster as SonnerToaster } from '@/components/ui/sonner';
 
 import { GlobalCommandDialog } from '@/components/command/GlobalCommandDialog';
 
@@ -40,32 +40,30 @@ export function Providers({ children }: { children: React.ReactNode }) {
                         <I18nProvider locale="id">
                             <PermissionsProvider permissions={['admin', 'editor']} roles={['admin']}>
                                 <FeatureFlagsProvider flags={{ advancedMode: true }}>
-                                    <CrashRecoveryProvider>
-                                        <SidebarProvider>
-                                            <OfflineBanner />
-                                            <SessionTimeoutWarning />
-                                            <GlobalCommandDialog />
-                                            <div className="pb-20 md:pb-0">
-                                                <SmoothScroll>
-                                                    {children}
-                                                </SmoothScroll>
-                                            </div>
-                                            <Toaster />
-                                            <Toaster />
+                                    <SidebarProvider>
+                                        <OfflineBanner />
+                                        <SessionTimeoutWarning />
+                                        <GlobalCommandDialog />
+                                        <div className="pb-20 md:pb-0">
+                                            <SmoothScroll>
+                                                {children}
+                                            </SmoothScroll>
+                                        </div>
+                                        <Toaster />
+                                        <SonnerToaster />
 
-                                            {/* Hide Bottom Nav on Auth Pages and Landing Page */}
-                                            {!['/login', '/register', '/forgot-password', '/'].includes(pathname) && (
-                                                <MobileBottomNav />
-                                            )}
-                                            {pathname === '/' && <SiteFooter />}
-                                        </SidebarProvider>
-                                    </CrashRecoveryProvider>
+                                        {/* Hide Bottom Nav on Auth Pages and Landing Page */}
+                                        {!['/login', '/register', '/forgot-password', '/'].includes(pathname) && (
+                                            <MobileBottomNav />
+                                        )}
+                                        {pathname === '/' && <SiteFooter />}
+                                    </SidebarProvider>
                                 </FeatureFlagsProvider>
                             </PermissionsProvider>
                         </I18nProvider>
                     </TelemetryProvider>
                 </ThemeProvider>
             </QueryProvider>
-        </MockProvider>
+        </MockProvider >
     );
 }
