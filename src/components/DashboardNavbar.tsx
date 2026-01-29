@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { User, Settings, LogOut, LayoutGrid, Infinity as InfinityIcon, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/';
@@ -83,7 +84,7 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                         <MobileSidebar />
                         <Link href="/dashboard">
                             <div className="relative w-8 h-8 flex items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-400 rounded-lg text-white shadow-blue-500/20">
-                                <InfinityIcon className="h-5 w-5 stroke-white" strokeWidth={2.5} />
+                                <Image src="/logo.svg" alt="Elysian Logo" width={28} height={28} className="scale-125 drop-shadow-md" />
                             </div>
                         </Link>
                     </div>

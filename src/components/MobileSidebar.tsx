@@ -88,8 +88,7 @@ export function MobileSidebar({ variant = 'dashboard' }: MobileSidebarProps) {
                             <div className="px-6 pt-10 pb-6">
                                 <div className="flex items-center gap-3 mb-1">
                                     <div className="relative w-10 h-10 flex items-center justify-center bg-gradient-to-tr from-blue-500 to-cyan-400 rounded-xl shadow-lg shadow-blue-500/20 text-white">
-                                        <Cloud className="h-6 w-6 text-white drop-shadow-sm" />
-                                        <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-yellow-200 animate-pulse" />
+                                        <Image src="/logo.svg" alt="Elysian Logo" width={32} height={32} className="scale-125 drop-shadow-md" />
                                     </div>
                                     <div>
                                         <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-cyan-600">

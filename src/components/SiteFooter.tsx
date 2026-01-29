@@ -1,7 +1,6 @@
 
 "use client";
 
-
 import { Separator } from '@/components/ui/separator';
 import {
     Facebook,
@@ -11,6 +10,7 @@ import {
     Send,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export function SiteFooter() {
     return (
@@ -23,14 +23,17 @@ export function SiteFooter() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
                     {/* Brand Column - Wider */}
                     <div className="lg:col-span-2 space-y-6">
-                        <div>
-                            <h3 className="text-3xl font-bold text-slate-900 dark:text-white mb-2 font-heading tracking-tighter">
+                        <div className="flex items-center gap-3 mb-2">
+                            <div className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white p-1.5 rounded-xl shadow-lg shadow-blue-500/20">
+                                <Image src="/logo.svg" alt="Elysian Logo" width={24} height={24} />
+                            </div>
+                            <h3 className="text-3xl font-bold text-slate-900 dark:text-white font-heading tracking-tighter">
                                 ELYSIAN
                             </h3>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-md font-medium">
-                                Asisten Operasional Cerdas terdepan di Indonesia yang didedikasikan untuk membantu UMKM. Kami menggabungkan kecerdasan buatan canggih untuk mengotomatiskan proses, memberikan wawasan mendalam, dan memacu pertumbuhan bisnis Anda.
-                            </p>
                         </div>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-md font-medium">
+                            Asisten Operasional Cerdas terdepan di Indonesia yang didedikasikan untuk membantu UMKM. Kami menggabungkan kecerdasan buatan canggih untuk mengotomatiskan proses, memberikan wawasan mendalam, dan memacu pertumbuhan bisnis Anda.
+                        </p>
                         <div className="flex gap-4">
                             <Link href="#" className="p-2 rounded-full bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 shadow-sm transition-all border border-slate-200 dark:border-slate-700">
                                 <Facebook className="h-5 w-5" />

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 import { NavigationMenu } from '@/components/NavigationMenu';
 import { GettingStartedWidget } from '@/components/GettingStartedWidget';
@@ -34,18 +35,22 @@ export function Sidebar() {
             )}>
                 {isOpen ? (
                     <div className="flex items-center gap-3">
-                        <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-400/30 ring-1 ring-white/30 backdrop-blur-md transition-all duration-500 group-hover:scale-[1.03] animate-[logo-pulse_1.5s_ease-out]">
-                            <InfinityIcon className="h-5 w-5 stroke-white" strokeWidth={2.5} />
-                            <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-white/90 animate-pulse fill-white/20" />
+                        <div className="relative h-14 w-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-105">
+                            {/* Glassmorphic Background */}
+                            <div className="absolute inset-0 bg-white/10 dark:bg-blue-900/10 backdrop-blur-xl border border-white/20 dark:border-blue-400/10 rounded-2xl shadow-lg" />
+                            <Image src="/logo.svg" alt="Elysian Logo" width={48} height={48} className="relative z-10 scale-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]" />
+                            <Sparkles className="absolute -top-1 -right-1 h-4 w-4 text-white/90 animate-pulse fill-white/20 z-20" />
                         </div>
                         <h1 className="text-lg font-semibold tracking-tight bg-gradient-to-r from-slate-800 to-blue-700 bg-clip-text text-transparent">
                             Elysian Rebirth
                         </h1>
                     </div>
                 ) : (
-                    <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-400/30 ring-1 ring-white/30 backdrop-blur-md mb-2 animate-[logo-pulse_1.5s_ease-out]">
-                        <InfinityIcon className="h-5 w-5 stroke-white" strokeWidth={2.5} />
-                        <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-white/90 animate-pulse fill-white/20" />
+                    <div className="relative h-12 w-12 rounded-xl flex items-center justify-center mb-2">
+                        {/* Glassmorphic Background */}
+                        <div className="absolute inset-0 bg-white/10 dark:bg-blue-900/10 backdrop-blur-lg border border-white/20 dark:border-blue-400/10 rounded-xl" />
+                        <Image src="/logo.svg" alt="Elysian Logo" width={40} height={40} className="relative z-10 scale-110 drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]" />
+                        <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-white/90 animate-pulse fill-white/20 z-20" />
                     </div>
                 )}
 

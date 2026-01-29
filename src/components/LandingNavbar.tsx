@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -93,7 +94,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                         boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.1)",
                     }
                 }}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                transition={{ type: "spring", stiffness: 300, damping: 40, mass: 1 }}
                 className={cn(
                     "fixed left-1/2 -translate-x-1/2 z-50 border border-transparent transition-all",
                     scrolled && "border-slate-200/50 dark:border-slate-700/50 md:max-w-5xl"
@@ -102,11 +103,19 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                 <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                     {/* Logo Area */}
                     <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2.5 group cursor-pointer focus:outline-none">
-                        <div className="relative bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white p-2 rounded-xl shadow-lg shadow-blue-500/25 group-hover:shadow-blue-500/45 group-hover:scale-105 transition-all duration-300">
-                            <InfinityIcon className="w-5 h-5 relative z-10" />
-                            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/20 rounded-xl" />
+                        <div className="relative w-14 h-14 flex items-center justify-center rounded-xl transition-all duration-300">
+                            {/* Simple Soft Background without heavy blur */}
+                            <div className="absolute inset-0 bg-blue-500/5 dark:bg-blue-400/10 rounded-xl border border-blue-500/10 group-hover:bg-blue-500/10 transition-colors duration-300" />
+
+                            <Image
+                                src="/logo.svg"
+                                alt="Elysian Logo"
+                                width={56}
+                                height={56}
+                                className="relative z-10 scale-110 transform transition-transform group-hover:scale-125"
+                            />
                         </div>
-                        <span className="font-bold text-xl tracking-wide font-heading bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-600 dark:from-blue-400 dark:via-blue-300 dark:to-cyan-300 bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(59,130,246,0.15)] dark:drop-shadow-[0_2px_6px_rgba(96,165,250,0.25)]">
+                        <span className="font-bold text-xl tracking-wide font-heading bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-600 dark:from-white dark:via-blue-100 dark:to-blue-200 bg-clip-text text-transparent">
                             ELYSIAN
                         </span>
                     </Link>
@@ -234,7 +243,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                                 <div className="p-6 flex items-center justify-between border-b border-slate-100/50 dark:border-slate-800/50">
                                     <div className="flex items-center gap-3">
                                         <div className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white p-1.5 rounded-xl shadow-lg shadow-blue-500/20 ring-1 ring-white/50">
-                                            <InfinityIcon className="w-5 h-5" />
+                                            <Image src="/logo.svg" alt="Elysian Logo" width={20} height={20} />
                                         </div>
                                         <span className="font-bold text-xl font-heading text-slate-900 dark:text-white tracking-wide">
                                             Menu

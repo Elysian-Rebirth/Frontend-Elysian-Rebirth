@@ -127,7 +127,7 @@ export const translationsID: TranslationKeys = {
             description: 'Semua operasional bisnis proyek, dokumen, dan insight AI  dalam satu sistem yang rapi dan terintegrasi.',
             ctaStart: 'Mulai Gratis',
             ctaDemo: 'Lihat Cara Kerjanya',
-            proof: 'Tanpa kartu kredit • Dibangun untuk UMKM Indonesia',
+            proof: 'Dibangun untuk UMKM Indonesia',
         },
         marquee: ['Retail', 'Logistik', 'Agency', 'Klinik', 'F&B', 'Manufaktur', 'Konsultan', 'Properti'],
         showcase: {
@@ -243,7 +243,7 @@ export const translationsID: TranslationKeys = {
             description: 'Bergabunglah dengan ribuan tim yang telah beralih ke cara kerja masa depan. Hemat waktu, kurangi stres.',
             btnStart: 'Mulai Uji Coba Gratis',
             btnConsult: 'Hubungi Sales',
-            foot: 'Tanpa kartu kredit. Batalkan kapan saja.'
+            foot: 'Dibuat Untuk Membantu UMKM Indonesia'
         },
         faq: {
             title: 'Pertanyaan Umum',

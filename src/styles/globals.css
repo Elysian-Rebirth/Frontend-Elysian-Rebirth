@@ -97,10 +97,10 @@
     [class*="text-"],
     [class*="border-"],
     [class*="shadow"] {
-        transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
-            color 600ms cubic-bezier(0.4, 0, 0.2, 1),
-            border-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
-            box-shadow 600ms cubic-bezier(0.4, 0, 0.2, 1);
+        transition: background-color 500ms cubic-bezier(0.4, 0, 0.2, 1),
+            color 500ms cubic-bezier(0.4, 0, 0.2, 1),
+            border-color 500ms cubic-bezier(0.4, 0, 0.2, 1),
+            box-shadow 500ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 }
 

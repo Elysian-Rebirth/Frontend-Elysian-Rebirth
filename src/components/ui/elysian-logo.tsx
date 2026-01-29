@@ -1,5 +1,4 @@
-
-import React from 'react';
+import Image from 'next/image';
 
 interface ElysianLogoProps {
     className?: string;
@@ -7,40 +6,23 @@ interface ElysianLogoProps {
     variant?: 'default' | 'white';
 }
 
-export function ElysianLogo({ className = "", size = 32, variant = 'default' }: ElysianLogoProps) {
-    const isWhite = variant === 'white';
-
+export function ElysianLogo({ className = "", size = 64 }: ElysianLogoProps) {
     return (
-        <svg
-            width={size}
-            height={size}
-            viewBox="0 0 50 50"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className={className}
-        >
-            <path
-                d="M25 2L48 14V36L25 48L2 36V14L25 2Z"
-                className={isWhite ? "fill-white stroke-slate-200" : "fill-blue-600 stroke-blue-700"}
-                strokeWidth="2"
+        <div className={`relative flex items-center justify-center p-4 ${className}`} style={{ width: size + 32, height: size + 32 }}>
+            {/* Softer Transparent Highlight Container */}
+            <div className="absolute inset-0 bg-white/10 dark:bg-blue-900/10 backdrop-blur-xl border border-white/20 dark:border-blue-400/10 rounded-[2rem] shadow-xl" />
+
+            {/* Logo Highlight Glow */}
+            <div className="absolute inset-0 bg-blue-400/20 blur-3xl opacity-50" />
+
+            <Image
+                src="/logo.svg"
+                alt="Elysian Logo"
+                width={size}
+                height={size}
+                className="relative z-10 w-full h-full object-contain scale-110 transform drop-shadow-[0_0_20px_rgba(255,255,255,0.65)]"
             />
-            <path
-                d="M25 25L2 14"
-                className={isWhite ? "stroke-slate-900/20" : "stroke-white/30"}
-                strokeWidth="2"
-            />
-            <path
-                d="M25 25L48 14"
-                className={isWhite ? "stroke-slate-900/20" : "stroke-white/30"}
-                strokeWidth="2"
-            />
-            <path
-                d="M25 25V48"
-                className={isWhite ? "stroke-slate-900/10" : "stroke-white/20"}
-                strokeWidth="2"
-            />
-            <circle cx="25" cy="25" r="8" className={isWhite ? "fill-slate-900/10 backdrop-blur-sm" : "fill-white/20 backdrop-blur-sm"} />
-        </svg>
+        </div>
     );
 }
 
