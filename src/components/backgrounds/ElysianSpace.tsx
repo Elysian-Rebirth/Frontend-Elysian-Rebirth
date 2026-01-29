@@ -96,9 +96,15 @@ export function ElysianSpace() {
 
             <Canvas
                 camera={{ position: [0, 0, 14], fov: 45 }}
-                dpr={[1, 1.75]}
-                gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-                style={{ position: 'absolute', inset: 0 }}
+                dpr={[1, 1.5]}
+                gl={{
+                    antialias: false, // Disabling antialias for significant performance boost
+                    alpha: true,
+                    powerPreference: 'high-performance',
+                    stencil: false,
+                    depth: true
+                }}
+                style={{ position: 'absolute', inset: 0, display: mounted && window.innerWidth < 768 ? 'none' : 'block' }}
             >
                 <Suspense fallback={null}>
                     <ElysianScene />

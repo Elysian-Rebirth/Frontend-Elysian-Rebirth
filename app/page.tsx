@@ -93,7 +93,7 @@ export default function ElysianLanding() {
             {/* Hero Section - Anti-Gravity + Floating Bento (Combined) */}
             <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden elysian-grid-light">
                 <motion.div
-                    style={{ opacity: heroOpacity, y: heroY }}
+                    style={{ opacity: heroOpacity, y: heroY, willChange: 'transform, opacity' }}
                     className="container mx-auto px-4 pt-20 pb-8 sm:py-12 lg:py-20 relative z-10"
                 >
                     <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-24">
@@ -285,8 +285,8 @@ function InfiniteMarquee() {
             <div className="flex gap-16">
                 <motion.div
                     animate={{ x: [0, -1000] }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="flex gap-16 whitespace-nowrap"
+                    transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                    className="flex gap-16 whitespace-nowrap will-change-transform"
                 >
                     {[...industries, ...industries].map((industry, i) => (
                         <span key={i} className="text-2xl font-bold text-slate-300 dark:text-slate-700">
@@ -517,7 +517,9 @@ function CTASection() {
     const vantaEffectRef = useRef<any>(null);
 
     useEffect(() => {
-        const loadScripts = async () => {
+        let observer: IntersectionObserver;
+
+        const initVanta = async () => {
             const loadScript = (src: string, id: string) => {
                 return new Promise((resolve, reject) => {
                     if (document.getElementById(id)) {
@@ -539,14 +541,14 @@ function CTASection() {
                     await loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js", "three-js");
                 }
 
-                // @ts-expect-error - VANTA is loaded from external CDN script and has no TypeScript types
+                // @ts-expect-error - VANTA is loaded from external CDN script
                 if (!window.VANTA || !window.VANTA.CLOUDS) {
                     await loadScript("https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js", "vanta-clouds");
                 }
 
-                // @ts-expect-error - VANTA global from CDN has no TypeScript definitions
+                // @ts-expect-error - VANTA global from CDN
                 if (vantaRef.current && window.VANTA && window.VANTA.CLOUDS && !vantaEffectRef.current) {
-                    // @ts-expect-error - VANTA.CLOUDS constructor from external script
+                    // @ts-expect-error - VANTA.CLOUDS constructor
                     vantaEffectRef.current = window.VANTA.CLOUDS({
                         el: vantaRef.current,
                         mouseControls: true,
@@ -568,10 +570,18 @@ function CTASection() {
             }
         };
 
-        const timeout = setTimeout(loadScripts, 100);
+        if (vantaRef.current) {
+            observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    initVanta();
+                    observer.disconnect();
+                }
+            }, { rootMargin: '200px' });
+            observer.observe(vantaRef.current);
+        }
 
         return () => {
-            clearTimeout(timeout);
+            if (observer) observer.disconnect();
             if (vantaEffectRef.current) {
                 vantaEffectRef.current.destroy();
                 vantaEffectRef.current = null;

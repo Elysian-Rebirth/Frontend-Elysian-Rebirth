@@ -29,7 +29,7 @@ export function FloatingBentoGrid() {
                     y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
                     rotate: { duration: 6, repeat: Infinity, ease: "easeInOut" }
                 }}
-                style={{ transform: 'translateZ(0)' }}
+                style={{ willChange: 'transform, opacity' }}
                 className="absolute left-0 top-10 md:left-10 z-20"
             >
                 <div className="w-64 glassmorphism-premium p-5 rounded-2xl shadow-xl">
@@ -70,7 +70,7 @@ export function FloatingBentoGrid() {
                     y: 0
                 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                style={{ transform: 'translateZ(0)' }}
+                style={{ willChange: 'transform, opacity' }}
                 className="absolute right-0 top-0 md:right-10 z-30"
             >
                 <div className="w-72 bg-[#0F172A] p-6 rounded-2xl shadow-2xl shadow-blue-900/20 border border-slate-700/50 text-white">
@@ -97,7 +97,7 @@ export function FloatingBentoGrid() {
                                     repeat: Infinity,
                                     ease: "easeInOut"
                                 }}
-                                className="flex-1 bg-gradient-to-t from-blue-600 to-cyan-400 rounded-t-sm opacity-80"
+                                className="flex-1 bg-gradient-to-t from-blue-600 to-cyan-400 rounded-t-sm opacity-80 will-change-[height]"
                             />
                         ))}
                     </div>
@@ -122,7 +122,7 @@ export function FloatingBentoGrid() {
                     y: { duration: 5, repeat: Infinity, ease: "easeInOut" },
                     rotate: { duration: 7, repeat: Infinity, ease: "easeInOut" }
                 }}
-                style={{ transform: 'translateZ(0)' }}
+                style={{ willChange: 'transform, opacity' }}
                 className="absolute bottom-0 left-20 z-10 hidden sm:block"
             >
                 <div className="w-56 glassmorphism-premium p-5 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700">
@@ -154,7 +154,7 @@ export function FloatingBentoGrid() {
                     times: [0, 0.1, 0.9, 1],
                     delay: 2
                 }}
-                style={{ transform: 'translateZ(0)' }}
+                style={{ willChange: 'transform, opacity, scale' }}
                 className="absolute top-[-20px] left-1/2 -translate-x-1/2 z-50 pointer-events-none"
             >
                 <div className="flex items-center gap-3 px-4 py-2 rounded-full glassmorphism-premium shadow-2xl border border-white/40 dark:border-white/10">

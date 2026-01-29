@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Infinity as InfinityIcon, ArrowRight, Sun, Moon, Search, Terminal, Monitor, Menu, X, Languages } from 'lucide-react';
+import { ArrowRight, Sun, Moon, Search, Terminal, Monitor, Menu, X, Languages } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface LandingNavbarProps {
@@ -96,25 +96,21 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 40, mass: 1 }}
                 className={cn(
-                    "fixed left-1/2 -translate-x-1/2 z-50 border border-transparent transition-all",
+                    "fixed left-1/2 -translate-x-1/2 z-50 border border-transparent transition-all will-change-[transform,opacity,width,border-radius,background-color,padding]",
                     scrolled && "border-slate-200/50 dark:border-slate-700/50 md:max-w-5xl"
                 )}
             >
                 <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                     {/* Logo Area */}
-                    <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2.5 group cursor-pointer focus:outline-none">
-                        <div className="relative w-14 h-14 flex items-center justify-center rounded-xl transition-all duration-300">
-                            {/* Simple Soft Background without heavy blur */}
-                            <div className="absolute inset-0 bg-blue-500/5 dark:bg-blue-400/10 rounded-xl border border-blue-500/10 group-hover:bg-blue-500/10 transition-colors duration-300" />
-
-                            <Image
-                                src="/logo.svg"
-                                alt="Elysian Logo"
-                                width={56}
-                                height={56}
-                                className="relative z-10 scale-110 transform transition-transform group-hover:scale-125"
-                            />
-                        </div>
+                    <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-3 group cursor-pointer focus:outline-none">
+                        <Image
+                            src="/logo.svg"
+                            alt="Elysian Logo"
+                            width={54}
+                            height={54}
+                            priority
+                            className="relative z-10 scale-100 transform transition-transform group-hover:scale-110"
+                        />
                         <span className="font-bold text-xl tracking-wide font-heading bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-600 dark:from-white dark:via-blue-100 dark:to-blue-200 bg-clip-text text-transparent">
                             ELYSIAN
                         </span>
@@ -242,9 +238,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                                 {/* Header */}
                                 <div className="p-6 flex items-center justify-between border-b border-slate-100/50 dark:border-slate-800/50">
                                     <div className="flex items-center gap-3">
-                                        <div className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white p-1.5 rounded-xl shadow-lg shadow-blue-500/20 ring-1 ring-white/50">
-                                            <Image src="/logo.svg" alt="Elysian Logo" width={20} height={20} />
-                                        </div>
+                                        <Image src="/logo.svg" alt="Elysian Logo" width={32} height={32} />
                                         <span className="font-bold text-xl font-heading text-slate-900 dark:text-white tracking-wide">
                                             Menu
                                         </span>
