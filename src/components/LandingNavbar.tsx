@@ -101,14 +101,12 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
             >
                 <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                     {/* Logo Area */}
-                    <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 group cursor-pointer focus:outline-none">
-                        <div className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white p-1.5 rounded-xl shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all duration-300">
-                            <InfinityIcon className="w-5 h-5" />
+                    <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2.5 group cursor-pointer focus:outline-none">
+                        <div className="relative bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white p-2 rounded-xl shadow-lg shadow-blue-500/25 group-hover:shadow-blue-500/45 group-hover:scale-105 transition-all duration-300">
+                            <InfinityIcon className="w-5 h-5 relative z-10" />
+                            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/20 rounded-xl" />
                         </div>
-                        <span className={cn(
-                            "font-bold text-xl tracking-wide transition-colors font-heading",
-                            isDark || scrolled ? "text-slate-900 dark:text-white" : "text-slate-900 dark:text-white"
-                        )}>
+                        <span className="font-bold text-xl tracking-wide font-heading bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-600 dark:from-blue-400 dark:via-blue-300 dark:to-cyan-300 bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(59,130,246,0.15)] dark:drop-shadow-[0_2px_6px_rgba(96,165,250,0.25)]">
                             ELYSIAN
                         </span>
                     </Link>

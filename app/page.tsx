@@ -35,7 +35,6 @@ const FloatingBentoGrid = dynamic(() => import('@/components/FloatingBentoGrid')
 });
 const ElysianSpace = dynamic(() => import('@/components/backgrounds/ElysianSpace').then(mod => mod.ElysianSpace), {
     ssr: false,
-    loading: () => <div className="absolute inset-0 bg-transparent" />,
 });
 
 // Eager imports (Above the fold components)
@@ -77,7 +76,8 @@ export default function ElysianLanding() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className={`min-h-screen mesh-gradient-bg font-sans overflow-x-hidden selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100`}
+            className={`min-h-screen font-sans overflow-x-hidden selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100 transition-colors duration-[600ms] ease-in-out ${isLandingDark ? 'bg-transparent' : 'bg-white'
+                }`}
         >
             {/* Floating Navigation - Custom SaaS Style */}
             <LandingNavbar
@@ -91,10 +91,10 @@ export default function ElysianLanding() {
             <ElysianSpace />
 
             {/* Hero Section - Anti-Gravity + Floating Bento (Combined) */}
-            <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+            <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden elysian-grid-light">
                 <motion.div
                     style={{ opacity: heroOpacity, y: heroY }}
-                    className="container mx-auto px-4 py-8 sm:py-12 lg:py-20 relative z-10"
+                    className="container mx-auto px-4 pt-20 pb-8 sm:py-12 lg:py-20 relative z-10"
                 >
                     <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-24">
                         {/* Left Content (Typography) */}
@@ -106,25 +106,80 @@ export default function ElysianLanding() {
                             >
                                 {/* Badge */}
                                 <motion.div
-                                    whileHover={{ scale: 1.05 }}
-                                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full glassmorphism-premium mb-8 mx-auto lg:mx-0 shadow-xl cursor-default dark:border-blue-500/20"
+                                    whileHover={{ scale: 1.02 }}
+                                    className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 border border-blue-200/60 dark:border-blue-500/20 mb-10 mx-auto lg:mx-0 shadow-lg shadow-blue-100/50 dark:shadow-blue-900/20 cursor-default backdrop-blur-sm"
                                 >
-                                    <Sparkles className="w-4 h-4 text-blue-500 fill-blue-500 animate-pulse" />
-                                    <span className="text-sm font-bold text-blue-900 dark:text-blue-100 tracking-wider uppercase font-heading">{t.landing.hero.badge}</span>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 animate-pulse" />
+                                    <span className="text-xs font-semibold bg-gradient-to-r from-blue-700 to-cyan-700 dark:from-blue-300 dark:to-cyan-300 bg-clip-text text-transparent tracking-wide uppercase">{t.landing.hero.badge}</span>
                                 </motion.div>
 
-                                {/* Headline - Optimized for LCP (immediate paint) */}
-                                <h1
-                                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-[1.1] tracking-tight text-slate-900 dark:text-white font-heading"
-                                >
-                                    {t.landing.hero.title1} <br />
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-indigo-600 to-cyan-600 animate-gradient-x">
-                                        {t.landing.hero.title2}
+                                {/* Headline - Enterprise Premium */}
+                                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-7 leading-[1.15] tracking-tight font-heading relative">
+                                    {/* Subtle Spotlight Glow */}
+                                    <div className="absolute inset-0 opacity-20 pointer-events-none"
+                                        style={{
+                                            background: 'radial-gradient(ellipse 500px 250px at 50% 30%, rgba(59, 130, 246, 0.15), transparent 60%)'
+                                        }}
+                                    />
+                                    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 dark:from-white dark:via-blue-200 dark:to-cyan-300 block mb-2">
+                                        {t.landing.hero.title1}
+                                    </span>
+                                    <span className="relative inline-block">
+                                        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 dark:from-blue-400 dark:via-blue-300 dark:to-cyan-300">
+                                            {t.landing.hero.title2}
+                                        </span>
+                                        {/* Organic Brush Stroke Underline */}
+                                        <div className="absolute -bottom-4 left-0 right-0 flex items-center justify-center opacity-70">
+                                            <svg
+                                                className="w-full max-w-[300px] h-4"
+                                                viewBox="0 0 300 16"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                preserveAspectRatio="none"
+                                            >
+                                                <defs>
+                                                    <linearGradient id="brushGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                        <stop offset="0%" className="text-blue-500/10 dark:text-blue-400/10" stopColor="currentColor" />
+                                                        <stop offset="20%" className="text-blue-600/80 dark:text-blue-400/80" stopColor="currentColor" />
+                                                        <stop offset="50%" className="text-blue-500 dark:text-blue-400" stopColor="currentColor" />
+                                                        <stop offset="80%" className="text-cyan-500/80 dark:text-cyan-400/80" stopColor="currentColor" />
+                                                        <stop offset="100%" className="text-cyan-500/10 dark:text-cyan-400/10" stopColor="currentColor" />
+                                                    </linearGradient>
+                                                </defs>
+
+                                                {/* Main thick stroke */}
+                                                <path
+                                                    d="M 10 8 Q 30 6, 60 7.5 T 120 8 Q 180 9, 240 7.5 T 290 8"
+                                                    stroke="url(#brushGradient)"
+                                                    strokeWidth="4.5"
+                                                    strokeLinecap="round"
+                                                    opacity="0.9"
+                                                />
+
+                                                {/* Upper texture stroke */}
+                                                <path
+                                                    d="M 15 6.5 Q 35 5, 65 6.5 T 125 7 Q 185 7.5, 245 6.5 T 285 7"
+                                                    stroke="url(#brushGradient)"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    opacity="0.45"
+                                                />
+
+                                                {/* Lower depth stroke */}
+                                                <path
+                                                    d="M 12 9.5 Q 32 8.5, 62 9.5 T 122 10 Q 182 10.5, 242 9.5 T 288 10"
+                                                    stroke="url(#brushGradient)"
+                                                    strokeWidth="2.5"
+                                                    strokeLinecap="round"
+                                                    opacity="0.3"
+                                                />
+                                            </svg>
+                                        </div>
                                     </span>
                                 </h1>
 
                                 <motion.p
-                                    className="text-base sm:text-lg text-slate-600 dark:text-slate-300 mb-6 sm:mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0 font-medium px-4 sm:px-0"
+                                    className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-300 mb-8 sm:mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0 px-4 sm:px-0"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.8, delay: 0.4 }}
@@ -134,27 +189,34 @@ export default function ElysianLanding() {
 
                                 {/* CTA Buttons */}
                                 <motion.div
-                                    className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0"
+                                    className="flex flex-col items-center lg:items-start gap-4 w-full sm:w-auto px-4 sm:px-0"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.8, delay: 0.5 }}
                                 >
-                                    <Link href="/dashboard" className="w-full sm:w-auto">
+                                    <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 w-full sm:w-auto">
+                                        <Link href="/dashboard" className="w-full sm:w-auto">
+                                            <motion.button
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                className="w-full sm:w-auto h-12 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 flex items-center justify-center gap-2 transition-all"
+                                            >
+                                                {t.landing.hero.ctaStart}
+                                            </motion.button>
+                                        </Link>
                                         <motion.button
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            className="w-full sm:w-auto h-12 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 flex items-center justify-center gap-2 transition-all"
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
+                                            className="w-full sm:w-auto h-12 px-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
                                         >
-                                            {t.landing.hero.ctaStart}
+                                            {t.landing.hero.ctaDemo}
                                         </motion.button>
-                                    </Link>
-                                    <motion.button
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        className="w-full sm:w-auto h-12 px-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all shadow-sm"
-                                    >
-                                        {t.landing.hero.ctaDemo}
-                                    </motion.button>
+                                    </div>
+                                    {/* Proof Point */}
+                                    <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-2 mt-1">
+                                        <CheckCircle2 className="w-4 h-4 text-blue-500" />
+                                        {t.landing.hero.proof}
+                                    </p>
                                 </motion.div>
                             </motion.div>
                         </div>

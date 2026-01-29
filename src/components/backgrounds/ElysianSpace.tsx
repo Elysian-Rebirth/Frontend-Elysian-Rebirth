@@ -76,7 +76,7 @@ export function ElysianSpace() {
     return (
         <div
             className={[
-                'fixed inset-0 z-0 pointer-events-none overflow-hidden transition-opacity duration-700',
+                'fixed inset-0 z-0 pointer-events-none overflow-hidden transition-opacity duration-[800ms] ease-in-out',
                 isDark ? 'opacity-100' : 'opacity-0',
             ].join(' ')}
             aria-hidden

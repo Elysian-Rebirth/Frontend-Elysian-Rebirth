@@ -127,6 +127,7 @@ export const translationsZH: TranslationKeys = {
             description: '现代团队的智能操作系统。将路线图、文档和 AI 和谐结合。',
             ctaStart: '开始使用',
             ctaDemo: '查看演示',
+            proof: '无需信用卡 • 专为印尼中小企业打造',
         },
         marquee: ['零售', '物流', '代理机构', '医疗', '餐饮', '制造业', '咨询', '房地产'],
         showcase: {

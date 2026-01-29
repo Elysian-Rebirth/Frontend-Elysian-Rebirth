@@ -121,12 +121,13 @@ export const translationsID: TranslationKeys = {
     },
     landing: {
         hero: {
-            badge: 'Elysian v2.0 Public Beta',
-            title1: 'Standar Baru untuk',
-            title2: 'Manajemen Produk.',
-            description: 'Sistem operasi cerdas untuk tim modern. Gabungkan roadmap, dokumen, dan AI dalam satu harmoni.',
-            ctaStart: 'Mulai Sekarang',
-            ctaDemo: 'Lihat Demo',
+            badge: 'Platform Operasi UMKM Indonesia',
+            title1: 'Kelola Bisnis UMKM',
+            title2: 'Tanpa Ribet',
+            description: 'Semua operasional bisnis proyek, dokumen, dan insight AI  dalam satu sistem yang rapi dan terintegrasi.',
+            ctaStart: 'Mulai Gratis',
+            ctaDemo: 'Lihat Cara Kerjanya',
+            proof: 'Tanpa kartu kredit • Dibangun untuk UMKM Indonesia',
         },
         marquee: ['Retail', 'Logistik', 'Agency', 'Klinik', 'F&B', 'Manufaktur', 'Konsultan', 'Properti'],
         showcase: {

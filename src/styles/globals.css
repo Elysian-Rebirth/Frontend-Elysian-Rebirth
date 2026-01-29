@@ -89,6 +89,19 @@
         font-family: var(--font-sans);
         -webkit-font-smoothing: antialiased;
     }
+
+    /* Optimized Theme Transition - Smooth & Buttery */
+    html,
+    body,
+    [class*="bg-"],
+    [class*="text-"],
+    [class*="border-"],
+    [class*="shadow"] {
+        transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+            color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+            border-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+            box-shadow 600ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
 }
 
 @layer utilities {
@@ -128,6 +141,54 @@
         background-image:
             radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
             radial-gradient(circle at 100% 0%, rgba(6, 182, 212, 0.15) 0%, transparent 50%);
+    }
+
+    /* Elysian Grid Pattern - Light Mode Only (Enterprise Grade) */
+    .elysian-grid-light {
+        background-color: #fafbfd;
+        background-image:
+            /* Premium grid lines - more subtle now */
+            repeating-linear-gradient(0deg,
+                rgba(96, 165, 250, 0.07) 0px,
+                rgba(96, 165, 250, 0.07) 1px,
+                transparent 1px,
+                transparent 40px),
+            repeating-linear-gradient(90deg,
+                rgba(96, 165, 250, 0.07) 0px,
+                rgba(96, 165, 250, 0.07) 1px,
+                transparent 1px,
+                transparent 40px),
+            /* Subtle diagonal flow - blue only */
+            linear-gradient(140deg,
+                rgba(147, 197, 253, 0.04) 0%,
+                rgba(96, 165, 250, 0.03) 30%,
+                transparent 60%),
+            /* Cyan accent from right - softer */
+            linear-gradient(220deg,
+                rgba(34, 211, 238, 0.04) 0%,
+                rgba(6, 182, 212, 0.02) 35%,
+                transparent 65%),
+            /* Gentle top wash */
+            linear-gradient(180deg,
+                rgba(239, 246, 255, 0.5) 0%,
+                rgba(255, 255, 255, 0.2) 50%,
+                transparent 100%),
+            /* Top center glow - refined */
+            radial-gradient(ellipse 1300px 550px at 50% -5%,
+                rgba(59, 130, 246, 0.08),
+                rgba(147, 197, 253, 0.04) 45%,
+                transparent 75%),
+            /* Right cyan hint - subtle */
+            radial-gradient(ellipse 850px 850px at 105% 35%,
+                rgba(6, 182, 212, 0.06),
+                rgba(103, 232, 249, 0.03) 50%,
+                transparent 75%);
+    }
+
+    /* Remove grid in dark mode - ElysianSpace handles the animation */
+    .dark .elysian-grid-light {
+        background-color: transparent;
+        background-image: none;
     }
 
     .animate-gradient-x {

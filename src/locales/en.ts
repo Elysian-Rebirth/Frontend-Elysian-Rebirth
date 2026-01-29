@@ -125,6 +125,7 @@ export const translationsEN = {
             description: 'Intelligent operating system for modern teams. Combine roadmap, documents, and AI in one harmony.',
             ctaStart: 'Get Started',
             ctaDemo: 'View Demo',
+            proof: 'No credit card required • Built for Indonesian SMEs',
         },
         marquee: ['Retail', 'Logistics', 'Agency', 'Medical', 'F&B', 'Manufacturing', 'Consulting', 'Real Estate'],
         showcase: {
