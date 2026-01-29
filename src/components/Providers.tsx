@@ -6,7 +6,7 @@ import { SidebarProvider } from '@/contexts/SidebarContext';
 import { SmoothScroll } from '@/components/providers/SmoothScroll';
 import { ThemeProvider } from 'next-themes';
 import { TelemetryProvider } from '@/components/providers/TelemetryProvider';
-import { I18nProvider } from '@/components/providers/I18nProvider';
+import { I18nProvider, Locale } from '@/components/providers/I18nProvider';
 import { PermissionsProvider } from '@/components/providers/PermissionsProvider';
 import { FeatureFlagsProvider } from '@/components/providers/FeatureFlagsProvider';
 import { OfflineBanner } from '@/components/OfflineBanner';
@@ -23,6 +23,8 @@ import { MockProvider } from '@/components/providers/MockProvider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const [locale, setLocale] = React.useState<Locale>('id');
+
     // Only allow dark mode on the specific landing page root '/'
     // All other pages (Dashboard, Settings, Chat, Auth, etc.) are forced to Light Mode
     const isLandingPage = pathname === '/';
@@ -37,7 +39,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                     forcedTheme={!isLandingPage ? 'light' : undefined}
                 >
                     <TelemetryProvider onEvent={() => { }}>
-                        <I18nProvider locale="id">
+                        <I18nProvider locale={locale} onLocaleChange={setLocale}>
                             <PermissionsProvider permissions={['admin', 'editor']} roles={['admin']}>
                                 <FeatureFlagsProvider flags={{ advancedMode: true }}>
                                     <SidebarProvider>

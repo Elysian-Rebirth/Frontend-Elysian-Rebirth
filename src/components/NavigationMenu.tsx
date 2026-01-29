@@ -97,17 +97,17 @@ export function NavigationMenu() {
                                     href={item.href}
                                     id={getOnboardingId(item.href)}
                                     className={cn(
-                                        'flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors relative',
+                                        'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group overflow-hidden',
                                         !isOpen && 'justify-center px-2',
                                         isActive
-                                            ? 'text-blue-700 bg-blue-50'
-                                            : 'text-slate-600 hover:bg-blue-50 hover:text-blue-700'
+                                            ? 'text-blue-700 dark:text-blue-300 bg-gradient-to-r from-blue-50 to-transparent dark:from-blue-900/20 dark:to-transparent shadow-sm shadow-blue-100/50 dark:shadow-none'
+                                            : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-300'
                                     )}
                                 >
                                     {isActive && (
-                                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-600 rounded-r-full" />
+                                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full shadow-[0_0_12px_rgba(59,130,246,0.5)]" />
                                     )}
-                                    <Icon className={cn("h-5 w-5", isActive ? "text-blue-600" : "text-slate-500")} />
+                                    <Icon className={cn("h-5 w-5 transition-colors", isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-500 dark:text-slate-500 group-hover:text-blue-500 dark:group-hover:text-blue-400")} />
                                     {isOpen && <span className="animate-in fade-in duration-200">{item.label}</span>}
                                 </Link>
                             );

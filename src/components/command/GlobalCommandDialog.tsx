@@ -14,11 +14,13 @@ import {
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from '@/components/ui/command';
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import { useAuthStore } from '@/store/authStore';
 
 export function GlobalCommandDialog() {
     const [open, setOpen] = React.useState(false);
     const router = useRouter();
     const { setTheme } = useTheme();
+    const { isAuthenticated } = useAuthStore();
 
     React.useEffect(() => {
         const down = (e: KeyboardEvent) => {
@@ -28,14 +30,31 @@ export function GlobalCommandDialog() {
             }
         };
 
+        const openDialog = () => setOpen(true);
+
         document.addEventListener("keydown", down);
-        return () => document.removeEventListener("keydown", down);
+        document.addEventListener("open-command-dialog", openDialog);
+
+        return () => {
+            document.removeEventListener("keydown", down);
+            document.removeEventListener("open-command-dialog", openDialog);
+        };
     }, []);
 
     const runCommand = React.useCallback((command: () => unknown) => {
         setOpen(false);
         command();
     }, []);
+
+    const handleNavigation = (path: string, isProtected: boolean = false) => {
+        runCommand(() => {
+            if (isProtected && !isAuthenticated) {
+                router.push('/login');
+            } else {
+                router.push(path);
+            }
+        });
+    };
 
     return (
         <CommandDialog open={open} onOpenChange={setOpen}>
@@ -44,26 +63,26 @@ export function GlobalCommandDialog() {
                 <CommandEmpty>No results found.</CommandEmpty>
 
                 <CommandGroup heading="Navigation">
-                    <CommandItem onSelect={() => runCommand(() => router.push("/dashboard"))}>
+                    <CommandItem onSelect={() => handleNavigation("/dashboard", true)}>
                         <LayoutDashboard className="mr-2 h-4 w-4" />
                         <span>Dashboard</span>
                         <CommandShortcut>⌘D</CommandShortcut>
                     </CommandItem>
-                    <CommandItem onSelect={() => runCommand(() => router.push("/chat"))}>
+                    <CommandItem onSelect={() => handleNavigation("/chat", true)}>
                         <Bot className="mr-2 h-4 w-4" />
                         <span>Chat AI</span>
                         <CommandShortcut>⌘C</CommandShortcut>
                     </CommandItem>
-                    <CommandItem onSelect={() => runCommand(() => router.push("/knowledge"))}>
+                    <CommandItem onSelect={() => handleNavigation("/knowledge", true)}>
                         <FileText className="mr-2 h-4 w-4" />
                         <span>Knowledge Base</span>
                     </CommandItem>
-                    <CommandItem onSelect={() => runCommand(() => router.push("/settings"))}>
+                    <CommandItem onSelect={() => handleNavigation("/settings", true)}>
                         <Settings className="mr-2 h-4 w-4" />
                         <span>Settings</span>
                         <CommandShortcut>⌘S</CommandShortcut>
                     </CommandItem>
-                    <CommandItem onSelect={() => runCommand(() => router.push("/"))}>
+                    <CommandItem onSelect={() => handleNavigation("/", false)}>
                         <Home className="mr-2 h-4 w-4" />
                         <span>Home</span>
                     </CommandItem>

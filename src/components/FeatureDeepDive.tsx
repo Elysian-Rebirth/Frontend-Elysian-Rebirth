@@ -2,8 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { ArrowUpRight, User } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function FeatureDeepDive() {
+    const { t } = useTranslation();
+
     return (
         <section className="py-16 md:py-24 bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
             {/* Soft background mesh for depth */}
@@ -20,7 +23,7 @@ export function FeatureDeepDive() {
                         className="flex items-center gap-2 mb-4"
                     >
                         <div className="h-px w-8 bg-blue-400" />
-                        <span className="text-blue-600 font-bold uppercase tracking-widest text-xs">Deep Dive</span>
+                        <span className="text-blue-600 font-bold uppercase tracking-widest text-xs">{t.landing.deepDive.badge}</span>
                     </motion.div>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
@@ -28,8 +31,8 @@ export function FeatureDeepDive() {
                         viewport={{ once: true }}
                         className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-6"
                     >
-                        Manajemen Proyek <br />
-                        <span className="text-slate-400 dark:text-slate-500">Tanpa Hambatan.</span>
+                        {t.landing.deepDive.title1} <br />
+                        <span className="text-slate-400 dark:text-slate-500">{t.landing.deepDive.title2}</span>
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
@@ -38,7 +41,7 @@ export function FeatureDeepDive() {
                         transition={{ delay: 0.1 }}
                         className="text-lg text-slate-500 dark:text-slate-400"
                     >
-                        Elysian memberikan visibilitas total dari ide hingga eksekusi.
+                        {t.landing.deepDive.description}
                     </motion.p>
                 </div>
 
@@ -53,8 +56,8 @@ export function FeatureDeepDive() {
                         className="bg-blue-50 dark:bg-blue-900/10 rounded-3xl p-6 md:p-8 border border-blue-100 dark:border-blue-800 shadow-xl shadow-blue-500/5 h-auto md:h-[400px] flex flex-col relative overflow-hidden group"
                     >
                         <div className="mb-6 md:mb-8 relative z-10">
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Automated Cycles</h3>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm">Lacak progress sprint tim Anda secara otomatis dengan grafik intuitif.</p>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{t.landing.deepDive.cards.cycles.title}</h3>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm">{t.landing.deepDive.cards.cycles.desc}</p>
                         </div>
 
                         {/* Graph Animation */}
@@ -75,8 +78,8 @@ export function FeatureDeepDive() {
                         className="bg-purple-50 dark:bg-purple-900/10 rounded-3xl p-6 md:p-8 border border-purple-100 dark:border-purple-800 shadow-xl shadow-purple-500/5 h-auto md:h-[400px] flex flex-col relative overflow-hidden group"
                     >
                         <div className="mb-6 md:mb-8 relative z-10">
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Smart Inbox</h3>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm">Review, approve, atau decline request yang masuk dengan cepat.</p>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{t.landing.deepDive.cards.inbox.title}</h3>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm">{t.landing.deepDive.cards.inbox.desc}</p>
                         </div>
 
                         {/* Inbox Animation */}
@@ -99,11 +102,11 @@ export function FeatureDeepDive() {
                 >
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 relative z-10">
                         <div className="max-w-md">
-                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Elysian Insights</h3>
-                            <p className="text-slate-500 dark:text-slate-400 text-sm">Prediksi bottleneck dan optimalkan performa tim dengan analitik data berbasis AI.</p>
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{t.landing.deepDive.cards.insights.title}</h3>
+                            <p className="text-slate-500 dark:text-slate-400 text-sm">{t.landing.deepDive.cards.insights.desc}</p>
                         </div>
                         <button className="mt-4 md:mt-0 px-4 py-2 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-sm font-medium hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
-                            View Report <ArrowUpRight className="w-4 h-4" />
+                            {t.landing.deepDive.cards.insights.action} <ArrowUpRight className="w-4 h-4" />
                         </button>
                     </div>
 

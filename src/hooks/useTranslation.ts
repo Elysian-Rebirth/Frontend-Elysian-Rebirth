@@ -5,11 +5,11 @@ import { getTranslations, type SupportedLocale } from '@/locales';
 import { useMemo } from 'react';
 
 export function useTranslation() {
-    const { locale } = useI18n();
+    const { locale, setLocale } = useI18n();
 
     const t = useMemo(() => {
         return getTranslations(locale as SupportedLocale);
     }, [locale]);
 
-    return { t, locale };
+    return { t, locale, setLocale };
 }

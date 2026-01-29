@@ -98,6 +98,25 @@ export const translationsEN = {
         telemetry: 'Enable Telemetry',
         saveSettings: 'Save Settings',
     },
+    landingNav: {
+        products: {
+            title: 'Products',
+        },
+        solutions: {
+            title: 'Solutions',
+        },
+        useCases: {
+            title: 'Use Cases',
+        },
+        faq: {
+            title: 'FAQ',
+        },
+        actions: {
+            startFree: 'Start Free',
+            search: 'Search',
+            microCopy: 'Takes only 30 seconds.'
+        }
+    },
     landing: {
         hero: {
             badge: 'Elysian v2.0 Public Beta',
@@ -107,64 +126,133 @@ export const translationsEN = {
             ctaStart: 'Get Started',
             ctaDemo: 'View Demo',
         },
+        marquee: ['Retail', 'Logistics', 'Agency', 'Medical', 'F&B', 'Manufacturing', 'Consulting', 'Real Estate'],
+        showcase: {
+            badge: 'Power of Elysian',
+            title1: 'One Platform.',
+            title2: 'Three Core Strengths.',
+            description: 'Combining automation, intelligent document processing, and AI assistants into one seamless ecosystem.',
+            cards: {
+                dev: { title: 'Developer Integration', desc: 'Advanced technology working behind the scenes for your business.' },
+                docs: { title: 'Document Analysis (RAG)', desc: 'Advanced technology working behind the scenes for your business.' },
+                insights: { title: 'Business Insights', desc: 'Advanced technology working behind the scenes for your business.' }
+            }
+        },
+        deepDive: {
+            badge: 'Deep Dive',
+            title1: 'Project Management',
+            title2: 'Without Barriers.',
+            description: 'Elysian gives total visibility from idea to execution.',
+            cards: {
+                cycles: { title: 'Automated Cycles', desc: "Track your team's sprint progress automatically with intuitive charts." },
+                inbox: { title: 'Smart Inbox', desc: 'Review, approve, or decline incoming requests quickly.' },
+                insights: { title: 'Elysian Insights', desc: 'Predict bottlenecks and optimize team performance with AI-driven data analytics.', action: 'View Report' }
+            }
+        },
+        integration: {
+            badge: 'Ecosystem',
+            title1: 'Connect with',
+            title2: 'Your Favorite Tools.',
+            description: 'Elysian integrates with hundreds of apps to keep your team flow smooth.',
+            hint: 'Swipe to see more',
+            items: {
+                slack: { title: 'Slack Notification', desc: 'Get real-time updates directly in your team channel.' },
+                figma: { title: 'Figma Sync', desc: 'Pull design assets and comments directly into task manager.' },
+                github: { title: 'GitHub Actions', desc: 'Automate deployment and sync issue status.' },
+                drive: { title: 'Google Drive', desc: 'Access and attach cloud documents without switching tabs.' },
+                notion: { title: 'Notion Pages', desc: 'Embed internal wiki and knowledge base pages.' },
+                postgres: { title: 'PostgreSQL', desc: 'Connect your database for custom analytics.' },
+                gmail: { title: 'Gmail Add-on', desc: 'Turn emails into tasks or support tickets in one click.' },
+                cta: 'Learn more'
+            }
+        },
+        agents: {
+            badge: 'Elysian Neural Network',
+            title1: 'Delegate tasks to',
+            title2: 'Specialist AI Agents.',
+            description: 'Choose the right agent for every job. From data analysts to security auditors, all ready to work 24/7.',
+            demo: {
+                assign: 'Assign to...',
+                processing: 'Processing context...',
+                available: '4 Agents available'
+            },
+            items: {
+                analyst: { name: 'Data Analyst AI', role: 'Financial Insights' },
+                editor: { name: 'Content Editor', role: 'SEO & Copywriting' },
+                compliance: { name: 'Compliance Bot', role: 'Legal & Audit' },
+                coder: { name: 'Dev Assistant', role: 'Code Review' }
+            }
+        },
+        terminal: {
+            logs: {
+                system: 'Starting Elysian platform... (IAM | MDM | Compliance)',
+                scan: 'Validating security modules and workflow orchestration...',
+                ready: 'Intelligent workflow orchestration enabled.',
+                success: 'System Connected. Waiting for operator instructions.',
+                compliance: 'SOC 2 Controls Verified ✓ CC1 (Entity) ✓ CC2 (Communication) ✓ CC3 (Risk)',
+                operational: 'All systems operational.',
+                welcome: 'Welcome to Elysian System Console.',
+                help: "Type 'help' to see list of commands, or click terminal icon above to return to visual mode."
+            }
+        },
         problem: {
             title1: 'Why Businesses',
             title2: 'Often Get Stuck?',
-            description: 'Many business owners get stuck being "employees" in their own business. Time is spent on technical issues, not strategic ones.',
+            description: 'Many teams get stuck in manual operations that kill innovation. Time is spent on technical issues, not strategic ones.',
             items: [
-                'Important documents scattered in WhatsApp & Email',
-                'Slow decisions due to unorganized data',
-                'SOPs just become wall decorations',
-                'Burnout managing daily operations'
+                'Documents scattered across platforms',
+                'Slow decisions due to centralized data lack',
+                'SOPs are hard to access and execute',
+                'Manual workflows prone to human error'
             ],
             solutionTitle: 'Elysian Solution',
             solutionItems: [
-                { title: 'Automate 80% Admin Work', desc: 'Save 20+ hours per week' },
-                { title: 'Centralized Knowledge Hub', desc: 'SOPs & Documents in one access' },
-                { title: 'Local Context AI', desc: 'Understands your business language' }
+                { title: 'Intelligent Automation', desc: 'Reduce manual workload by up to 80%' },
+                { title: 'Single Source of Truth', desc: 'All documents and data in one access' },
+                { title: 'Integrated AI Assistant', desc: 'Work faster with contextual AI assistance' }
             ],
-            cta: 'Transform Business Now'
+            cta: 'Transform Your Workflow'
         },
         features: {
             title: 'Features that Elevate Business',
-            subtitle: 'All-in-one platform for modern business operations',
+            subtitle: 'All-in-one platform for modern operations',
             items: {
-                ai: { title: 'AI Assistant 24/7', desc: 'Answer team questions anytime' },
-                docs: { title: 'Document Hub', desc: 'All files in one place' },
-                security: { title: 'Advanced Security', desc: 'Banking standard security' },
-                automation: { title: 'Workflow Automation', desc: 'Automate repetitive tasks' }
+                ai: { title: 'AI Assistant', desc: 'Intelligent partner for every decision' },
+                docs: { title: 'Document Hub', desc: 'Real-time document collaboration' },
+                security: { title: 'Enterprise Security', desc: 'Advanced data security' },
+                automation: { title: 'Workflow Engine', desc: 'Execute business processes automatically' }
             }
         },
         useCases: {
-            title: 'Who Needs Elysian?',
-            subtitle: 'Flexible platform that adapts to your business model',
+            title: 'Built for Any Scale',
+            subtitle: 'Flexible to adapt to your team needs, from startup to enterprise.',
             items: {
-                retail: { title: 'Retail & Store', items: ['Auto stock check', 'Customer chat reply', 'Product description'] },
-                logistics: { title: 'Logistics', items: ['Shipment tracking', 'Waybill recap', 'Route optimization'] },
-                agency: { title: 'Agency', items: ['Instant content ideas', 'Proposal drafts', 'Brief analysis'] },
-                clinic: { title: 'Clinic', items: ['Medical recap', 'Doctor schedule', 'Patient reminders'] }
+                retail: { title: 'Product Teams', items: ['Roadmap management', 'PRD Automation', 'User Feedback'] },
+                logistics: { title: 'Operations Teams', items: ['SOP Management', 'Incident Reporting', 'Resource Planning'] },
+                agency: { title: 'Engineering Teams', items: ['Tech Specs', 'Sprint Planning', 'Knowledge Base'] },
+                clinic: { title: 'HR & Legal Teams', items: ['Onboarding Flow', 'Contract Management', 'Compliance'] }
             }
         },
         cta: {
             badge: 'Join the AI Revolution',
             title1: 'Ready to Make Your Business',
             title2: 'Lighter?',
-            description: 'Join 500+ business owners who have switched to the future of work. Save time, reduce stress.',
+            description: 'Join thousands of teams who have switched to the future of work. Save time, reduce stress.',
             btnStart: 'Start Free Trial',
-            btnConsult: 'Team Consultation',
+            btnConsult: 'Contact Sales',
             foot: 'No credit card. Cancel anytime.'
         },
         faq: {
             title: 'Frequently Asked Questions',
             subtitle: 'Answers to your doubts',
             q1: 'Is my business data safe?',
-            a1: 'Very safe. We use banking standard encryption (AES-256) and isolated servers for each client.',
-            q2: 'Can it integrate with WhatsApp?',
-            a2: 'Yes! Elysian has official WhatsApp Business API integration features for auto-reply and order management.',
-            q3: 'Is there usage training?',
-            a3: 'We provide complete video tutorials and 1-on-1 onboarding sessions for the Premium package.',
-            q4: 'What if I want to stop?',
-            a4: 'You can unsubscribe at any time. Your data can be fully exported.'
+            a1: 'Very safe. We use industry-standard encryption (AES-256) and SOC2 compliance.',
+            q2: 'Can it integrate with other tools?',
+            a2: 'Yes! Elysian integrates with Slack, Jira, GitHub, and thousands of other apps via API.',
+            q3: 'Is there a trial period?',
+            a3: 'Sure. You can try the Pro plan for free for 14 days with no commitment.',
+            q4: 'How about Enterprise?',
+            a4: 'We provide private cloud, custom SLAs, and dedicated support for Enterprise clients.'
         }
     }
 };

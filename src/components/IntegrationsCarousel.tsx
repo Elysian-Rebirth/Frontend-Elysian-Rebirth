@@ -3,8 +3,10 @@
 import { motion } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { Slack, Figma, Github, Mail, Database, Cloud, ChevronRight, Zap } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function IntegrationsCarousel() {
+    const { t } = useTranslation();
     const carouselRef = useRef<HTMLDivElement>(null);
     const [width, setWidth] = useState(0);
 
@@ -13,6 +15,51 @@ export function IntegrationsCarousel() {
             setWidth(carouselRef.current.scrollWidth - carouselRef.current.offsetWidth);
         }
     }, []);
+
+    const integrations = [
+        {
+            title: t.landing.integration.items.slack.title,
+            desc: t.landing.integration.items.slack.desc,
+            icon: <Slack className="w-8 h-8 text-[#4A154B]" />,
+            color: "group-hover:shadow-[#4A154B]/5"
+        },
+        {
+            title: t.landing.integration.items.figma.title,
+            desc: t.landing.integration.items.figma.desc,
+            icon: <Figma className="w-8 h-8 text-[#F24E1E]" />,
+            color: "group-hover:shadow-[#F24E1E]/5"
+        },
+        {
+            title: t.landing.integration.items.github.title,
+            desc: t.landing.integration.items.github.desc,
+            icon: <Github className="w-8 h-8 text-black dark:text-white" />,
+            color: "group-hover:shadow-black/5 dark:group-hover:shadow-white/5"
+        },
+        {
+            title: t.landing.integration.items.drive.title,
+            desc: t.landing.integration.items.drive.desc,
+            icon: <Cloud className="w-8 h-8 text-[#4285F4]" />,
+            color: "group-hover:shadow-[#4285F4]/5"
+        },
+        {
+            title: t.landing.integration.items.notion.title,
+            desc: t.landing.integration.items.notion.desc,
+            icon: <FileTextIcon className="w-8 h-8 text-slate-800 dark:text-slate-200" />,
+            color: "group-hover:shadow-slate-800/5 dark:group-hover:shadow-slate-200/5"
+        },
+        {
+            title: t.landing.integration.items.postgres.title,
+            desc: t.landing.integration.items.postgres.desc,
+            icon: <Database className="w-8 h-8 text-[#336791]" />,
+            color: "group-hover:shadow-[#336791]/5"
+        },
+        {
+            title: t.landing.integration.items.gmail.title,
+            desc: t.landing.integration.items.gmail.desc,
+            icon: <Mail className="w-8 h-8 text-[#EA4335]" />,
+            color: "group-hover:shadow-[#EA4335]/5"
+        },
+    ];
 
     return (
         <section className="py-24 bg-white dark:bg-slate-900 relative overflow-hidden">
@@ -27,7 +74,7 @@ export function IntegrationsCarousel() {
                             className="flex items-center gap-2 mb-4"
                         >
                             <div className="h-px w-8 bg-blue-400" />
-                            <span className="text-blue-600 font-bold uppercase tracking-widest text-xs">Ecosystem</span>
+                            <span className="text-blue-600 font-bold uppercase tracking-widest text-xs">{t.landing.integration.badge}</span>
                         </motion.div>
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
@@ -35,11 +82,11 @@ export function IntegrationsCarousel() {
                             viewport={{ once: true }}
                             className="text-4xl font-bold text-slate-900 dark:text-white leading-tight mb-4"
                         >
-                            Terhubung dengan <br />
-                            <span className="text-slate-400">Tools Favorit Anda.</span>
+                            {t.landing.integration.title1} <br />
+                            <span className="text-slate-400">{t.landing.integration.title2}</span>
                         </motion.h2>
                         <p className="text-slate-500 dark:text-slate-400">
-                            Elysian terintegrasi dengan ratusan aplikasi untuk menjaga alur kerja tim Anda tetap lancar.
+                            {t.landing.integration.description}
                         </p>
                     </div>
 
@@ -52,7 +99,7 @@ export function IntegrationsCarousel() {
                         {/* Navigation hints could go here, but drag is intuitive enough */}
                         <div className="flex items-center gap-2 text-sm text-slate-400">
                             <Zap className="w-4 h-4 text-amber-500" />
-                            <span>Geser untuk melihat lebih banyak</span>
+                            <span>{t.landing.integration.hint}</span>
                         </div>
                     </motion.div>
                 </div>
@@ -68,7 +115,7 @@ export function IntegrationsCarousel() {
                     whileTap={{ cursor: "grabbing" }}
                 >
                     {integrations.map((item, index) => (
-                        <CarouselCard key={index} item={item} index={index} />
+                        <CarouselCard key={index} item={item} index={index} cta={t.landing.integration.items.cta} />
                     ))}
                 </motion.div>
             </div>
@@ -76,51 +123,7 @@ export function IntegrationsCarousel() {
     );
 }
 
-const integrations = [
-    {
-        title: "Slack Notification",
-        desc: "Dapatkan update real-time langsung di channel tim Anda.",
-        icon: <Slack className="w-8 h-8 text-[#4A154B]" />,
-        color: "group-hover:shadow-[#4A154B]/5"
-    },
-    {
-        title: "Figma Sync",
-        desc: "Tarik aset desain dan komentar langsung ke task manager.",
-        icon: <Figma className="w-8 h-8 text-[#F24E1E]" />,
-        color: "group-hover:shadow-[#F24E1E]/5"
-    },
-    {
-        title: "GitHub Actions",
-        desc: "Otomatisasi deployment dan sync status issue.",
-        icon: <Github className="w-8 h-8 text-black dark:text-white" />,
-        color: "group-hover:shadow-black/5 dark:group-hover:shadow-white/5"
-    },
-    {
-        title: "Google Drive",
-        desc: "Akses dan lampirkan dokumen cloud tanpa berpindah tab.",
-        icon: <Cloud className="w-8 h-8 text-[#4285F4]" />,
-        color: "group-hover:shadow-[#4285F4]/5"
-    },
-    {
-        title: "Notion Pages",
-        desc: "Embed halaman wiki dan knowledge base internal.",
-        icon: <FileTextIcon className="w-8 h-8 text-slate-800 dark:text-slate-200" />,
-        color: "group-hover:shadow-slate-800/5 dark:group-hover:shadow-slate-200/5"
-    },
-    {
-        title: "PostgreSQL",
-        desc: "Hubungkan database Anda untuk analytics custom.",
-        icon: <Database className="w-8 h-8 text-[#336791]" />,
-        color: "group-hover:shadow-[#336791]/5"
-    },
-    {
-        title: "Gmail Add-on",
-        desc: "Ubah email menjadi task atau tiket support dalam satu klik.",
-        icon: <Mail className="w-8 h-8 text-[#EA4335]" />,
-        color: "group-hover:shadow-[#EA4335]/5"
-    },
-];
-
+// interfaces removed or moved local if needed
 interface IntegrationItem {
     title: string;
     desc: string;
@@ -128,7 +131,7 @@ interface IntegrationItem {
     color: string;
 }
 
-function CarouselCard({ item, index }: { item: IntegrationItem, index: number }) {
+function CarouselCard({ item, index, cta }: { item: IntegrationItem, index: number, cta: string }) {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -155,7 +158,7 @@ function CarouselCard({ item, index }: { item: IntegrationItem, index: number })
 
             <div className="relative z-10 pt-6 border-t border-slate-200/50 dark:border-slate-700/50">
                 <button className="flex items-center gap-2 text-sm font-semibold text-slate-400 group-hover:text-blue-600 transition-colors">
-                    Pelajari lebih lanjut <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {cta} <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
             </div>
         </motion.div>

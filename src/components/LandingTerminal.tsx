@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const ASCII_ART = `
                       -------   ----     ---- ---=  ------   ---=     ----     ----  ---            
@@ -19,17 +20,7 @@ interface LogLine {
     isMultiLine?: boolean;
 }
 
-const INITIAL_LOGS: LogLine[] = [
-    { prefix: '[SYSTEM]', text: 'Memulai platform Elysian... (IAM | MDM | Compliance)', color: 'text-blue-600' },
-    { prefix: '[SCAN]', text: 'Memvalidasi modul keamanan dan orkestrasi workflow...', color: 'text-indigo-600' },
-    { prefix: '[SIAP]', text: 'Orkestrasi workflow cerdas diaktifkan.', color: 'text-emerald-500 font-bold' },
-    { prefix: '[SUCCESS]', text: 'Sistem Terhubung. Menunggu instruksi operator.', color: 'text-emerald-600' },
-    { prefix: '[COMPLIANCE]', text: 'SOC 2 Controls Verified ✓ CC1 (Entitas) ✓ CC2 (Komunikasi) ✓ CC3 (Risiko)', color: 'text-emerald-600' },
-    { text: 'Semua sistem operasional.', color: 'text-slate-600 dark:text-slate-400' },
-    { text: 'Selamat datang di Konsol Sistem Elysian.', color: 'text-slate-900 dark:text-white font-bold mt-2' },
-    { text: 'Ketik "help" untuk melihat daftar perintah, atau klik icon terminal di atas untuk kembali ke mode visual.', color: 'text-slate-500 dark:text-slate-400' },
-];
-
+// Command Data kept outside for now or can be moved in if needed
 type CommandDetail = {
     name: string;
     usage?: string;
@@ -118,10 +109,22 @@ const COMMAND_DATA: Record<string, CommandDetail> = {
 };
 
 export function LandingTerminal() {
+    const { t } = useTranslation();
     const [history, setHistory] = useState<LogLine[]>([]);
     const [input, setInput] = useState('');
     const [isInitialized, setIsInitialized] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    const INITIAL_LOGS: LogLine[] = [
+        { prefix: '[SYSTEM]', text: t.landing.terminal.logs.system, color: 'text-blue-600' },
+        { prefix: '[SCAN]', text: t.landing.terminal.logs.scan, color: 'text-indigo-600' },
+        { prefix: '[SIAP]', text: t.landing.terminal.logs.ready, color: 'text-emerald-500 font-bold' },
+        { prefix: '[SUCCESS]', text: t.landing.terminal.logs.success, color: 'text-emerald-600' },
+        { prefix: '[COMPLIANCE]', text: t.landing.terminal.logs.compliance, color: 'text-emerald-600' },
+        { text: t.landing.terminal.logs.operational, color: 'text-slate-600 dark:text-slate-400' },
+        { text: t.landing.terminal.logs.welcome, color: 'text-slate-900 dark:text-white font-bold mt-2' },
+        { text: t.landing.terminal.logs.help, color: 'text-slate-500 dark:text-slate-400' },
+    ];
 
     // Initialization Effect
     useEffect(() => {

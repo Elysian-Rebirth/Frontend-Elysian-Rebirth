@@ -11,45 +11,7 @@ import {
     Search,
     Loader2
 } from 'lucide-react';
-
-const AGENTS = [
-    {
-        id: 'analyst',
-        name: 'Data Analyst AI',
-        role: 'Financial Insights',
-        icon: <TrendingIcon className="w-5 h-5 text-blue-500" />,
-        color: 'bg-blue-50 text-blue-600',
-        ring: 'ring-blue-100',
-        avatar: '/assets/avatars/analyst.png'
-    },
-    {
-        id: 'editor',
-        name: 'Content Editor',
-        role: 'SEO & Copywriting',
-        icon: <Wand2 className="w-5 h-5 text-purple-500" />,
-        color: 'bg-purple-50 text-purple-600',
-        ring: 'ring-purple-100',
-        avatar: '/assets/avatars/editor.png'
-    },
-    {
-        id: 'compliance',
-        name: 'Compliance Bot',
-        role: 'Legal & Audit',
-        icon: <ShieldCheck className="w-5 h-5 text-emerald-500" />,
-        color: 'bg-emerald-50 text-emerald-600',
-        ring: 'ring-emerald-100',
-        avatar: '/assets/avatars/compliance.png'
-    },
-    {
-        id: 'coder',
-        name: 'Dev Assistant',
-        role: 'Code Review',
-        icon: <Code2 className="w-5 h-5 text-amber-500" />,
-        color: 'bg-amber-50 text-amber-600',
-        ring: 'ring-amber-100',
-        avatar: '/assets/avatars/dev.png'
-    }
-];
+import { useTranslation } from '@/hooks/useTranslation';
 
 function TrendingIcon({ className }: { className?: string }) {
     return (
@@ -61,7 +23,47 @@ function TrendingIcon({ className }: { className?: string }) {
 }
 
 export function AiAgentsSection() {
+    const { t } = useTranslation();
     const [activeIndex, setActiveIndex] = useState(0);
+
+    const AGENTS = [
+        {
+            id: 'analyst',
+            name: t.landing.agents.items.analyst.name,
+            role: t.landing.agents.items.analyst.role,
+            icon: <TrendingIcon className="w-5 h-5 text-blue-500" />,
+            color: 'bg-blue-50 text-blue-600',
+            ring: 'ring-blue-100',
+            avatar: '/assets/avatars/analyst.png'
+        },
+        {
+            id: 'editor',
+            name: t.landing.agents.items.editor.name,
+            role: t.landing.agents.items.editor.role,
+            icon: <Wand2 className="w-5 h-5 text-purple-500" />,
+            color: 'bg-purple-50 text-purple-600',
+            ring: 'ring-purple-100',
+            avatar: '/assets/avatars/editor.png'
+        },
+        {
+            id: 'compliance',
+            name: t.landing.agents.items.compliance.name,
+            role: t.landing.agents.items.compliance.role,
+            icon: <ShieldCheck className="w-5 h-5 text-emerald-500" />,
+            color: 'bg-emerald-50 text-emerald-600',
+            ring: 'ring-emerald-100',
+            avatar: '/assets/avatars/compliance.png'
+        },
+        {
+            id: 'coder',
+            name: t.landing.agents.items.coder.name,
+            role: t.landing.agents.items.coder.role,
+            icon: <Code2 className="w-5 h-5 text-amber-500" />,
+            color: 'bg-amber-50 text-amber-600',
+            ring: 'ring-amber-100',
+            avatar: '/assets/avatars/dev.png'
+        }
+    ];
 
     // Auto cycle through agents
     useEffect(() => {
@@ -69,7 +71,7 @@ export function AiAgentsSection() {
             setActiveIndex((prev) => (prev + 1) % AGENTS.length);
         }, 3000);
         return () => clearInterval(interval);
-    }, []);
+    }, [AGENTS.length]);
 
     return (
         <section className="py-16 lg:py-32 bg-white dark:bg-transparent relative overflow-hidden">
@@ -85,7 +87,7 @@ export function AiAgentsSection() {
                         className="flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-600 dark:text-slate-300"
                     >
                         <Sparkles className="w-4 h-4 text-blue-500" />
-                        <span>Elysian Neural Network</span>
+                        <span>{t.landing.agents.badge}</span>
                     </motion.div>
 
                     <motion.h2
@@ -95,11 +97,11 @@ export function AiAgentsSection() {
                         transition={{ duration: 0.8, ease: "easeOut" }}
                         className="text-3xl sm:text-4xl lg:text-6xl font-bold text-slate-900 dark:text-white leading-tight mb-6"
                     >
-                        Delegasikan tugas ke <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">AI Agents Spesialis.</span>
+                        {t.landing.agents.title1} <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{t.landing.agents.title2}</span>
                     </motion.h2>
                     <p className="text-lg sm:text-xl text-slate-500 dark:text-slate-400 max-w-2xl">
-                        Pilih agent yang tepat untuk setiap pekerjaan. Dari analis data hingga auditor keamanan, semua siap bekerja 24/7.
+                        {t.landing.agents.description}
                     </p>
                 </div>
 
@@ -119,7 +121,7 @@ export function AiAgentsSection() {
                             <div className="w-4 h-4 text-slate-400">
                                 <Search className="w-4 h-4" />
                             </div>
-                            <span className="text-slate-400 text-base font-medium">Assign to...</span>
+                            <span className="text-slate-400 text-base font-medium">{t.landing.agents.demo.assign}</span>
                             <div className="ml-auto flex gap-2">
                                 <kbd className="hidden sm:inline-flex h-6 items-center gap-1 rounded border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-2 font-mono text-[10px] font-medium text-slate-500 dark:text-slate-400">
                                     <span className="text-xs">⌘</span>K
@@ -180,9 +182,9 @@ export function AiAgentsSection() {
                         <div className="bg-slate-50/50 dark:bg-slate-900/50 px-6 py-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                             <div className="flex items-center gap-2">
                                 <Loader2 className="w-3 h-3 animate-spin text-blue-500" />
-                                <span>Processing context...</span>
+                                <span>{t.landing.agents.demo.processing}</span>
                             </div>
-                            <span>4 Agents available</span>
+                            <span>{t.landing.agents.demo.available}</span>
                         </div>
                     </motion.div>
 

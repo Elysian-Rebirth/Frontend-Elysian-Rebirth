@@ -45,13 +45,13 @@ const ElysianSpace = dynamic(() => import('@/components/backgrounds/ElysianSpace
 // import { CollaborationSection } from '@/components/CollaborationSection'; // Converted to dynamic
 // import { AiAgentsSection } from '@/components/AiAgentsSection'; // Converted to dynamic
 // import { FloatingBentoGrid } from '@/components/FloatingBentoGrid'; // Converted to dynamic
+// Eager imports (Above the fold components)
 import { LandingNavbar } from '@/components/LandingNavbar';
 import { LandingTerminal } from '@/components/LandingTerminal';
+// import { PricingSection } from '@/components/PricingSection';
 
 export default function ElysianLanding() {
-    const { t } = useTranslation();
-    // mobileMenuOpen state removed as it was only for the old Navbar
-    // const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { t, locale } = useTranslation();
     const heroRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: heroRef,
@@ -79,7 +79,6 @@ export default function ElysianLanding() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className={`min-h-screen mesh-gradient-bg font-sans overflow-x-hidden selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100`}
         >
-            {/* Floating Navigation - Custom SaaS Style */}
             {/* Floating Navigation - Custom SaaS Style */}
             <LandingNavbar
                 showTerminal={showTerminal}
@@ -163,7 +162,7 @@ export default function ElysianLanding() {
                         {/* Right: The Elysian System Console OR Bento Grid */}
                         <div className="hidden lg:flex w-full lg:w-1/2 relative min-h-[500px] items-center justify-center">
                             {showTerminal ? (
-                                <LandingTerminal />
+                                <LandingTerminal key={locale} />
                             ) : (
                                 <FloatingBentoGrid />
                             )}
@@ -176,9 +175,13 @@ export default function ElysianLanding() {
             {/* Infinite Marquee - Key visual, keep eager or high margin */}
             <InfiniteMarquee />
 
-            <ProductShowcase />
+            <div id="product">
+                <ProductShowcase />
+            </div>
 
-            <FeatureDeepDive />
+            <div id="solutions">
+                <FeatureDeepDive />
+            </div>
 
             <AiAgentsSection />
 
@@ -190,11 +193,18 @@ export default function ElysianLanding() {
 
             <SolutionSection />
 
-            <UseCasesSection />
+            <div id="use-cases">
+                <UseCasesSection />
+            </div>
+
+            {/* Pricing Section removed for MVP */}
+            {/* <PricingSection /> */}
 
             <CTASection />
 
-            <FAQSection />
+            <div id="faq">
+                <FAQSection />
+            </div>
 
             {/* Global footer is handled by Providers/SiteFooter, avoiding double footer here */}
         </motion.div>
@@ -205,7 +215,8 @@ export default function ElysianLanding() {
 
 // Infinite Marquee
 function InfiniteMarquee() {
-    const industries = ['Retail', 'Logistik', 'Agency', 'Klinik', 'F&B', 'Manufaktur', 'Konsultan', 'Properti'];
+    const { t } = useTranslation();
+    const industries = t.landing.marquee || ['Retail', 'Logistik', 'Agency', 'Klinik', 'F&B', 'Manufaktur', 'Konsultan', 'Properti'];
 
     return (
         <div className="relative py-12 overflow-hidden bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-y border-slate-100 dark:border-slate-800">

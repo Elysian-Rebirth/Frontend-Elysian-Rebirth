@@ -2,8 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { Bot, Cpu, ArrowUpRight } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function ProductShowcase() {
+    const { t } = useTranslation();
+
     return (
         <section className="py-20 md:py-32 bg-white dark:bg-slate-900 relative overflow-hidden">
             {/* Background Gradients */}
@@ -21,7 +24,7 @@ export function ProductShowcase() {
                         className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-blue-600 dark:text-blue-300 text-xs font-bold uppercase tracking-wider mb-6"
                     >
                         <Cpu className="w-3 h-3" />
-                        Power of Elysian
+                        {t.landing.showcase.badge}
                     </motion.div>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
@@ -30,9 +33,9 @@ export function ProductShowcase() {
                         transition={{ delay: 0.1 }}
                         className="text-4xl md:text-5xl font-bold mb-6 text-slate-900 dark:text-white tracking-tight"
                     >
-                        Satu Platform. <br />
+                        {t.landing.showcase.title1} <br />
                         <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-                            Tiga Kekuatan Utama.
+                            {t.landing.showcase.title2}
                         </span>
                     </motion.h2>
                     <motion.p
@@ -42,23 +45,38 @@ export function ProductShowcase() {
                         transition={{ delay: 0.2 }}
                         className="text-lg text-slate-500 leading-relaxed"
                     >
-                        Gabungan kekuatan otomatisasi, pemrosesan dokumen cerdas, dan asisten AI dalam satu ekosistem yang mulus.
+                        {t.landing.showcase.description}
                     </motion.p>
                 </div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Card 1: White Terminal / Integration (Yellow/Amber Theme) */}
-                    <ShowcaseCard delay={0.3} title="Integrasi Developer" bg="bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50">
+                    <ShowcaseCard
+                        delay={0.3}
+                        title={t.landing.showcase.cards.dev.title}
+                        description={t.landing.showcase.cards.dev.desc}
+                        bg="bg-amber-50 dark:bg-amber-950/30 border border-amber-100 dark:border-amber-900/50"
+                    >
                         <WhiteTerminalAnimation />
                     </ShowcaseCard>
 
                     {/* Card 2: AI Editor / Document (Blue Theme) */}
-                    <ShowcaseCard delay={0.4} title="Analisis Dokumen (RAG)" bg="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50">
+                    <ShowcaseCard
+                        delay={0.4}
+                        title={t.landing.showcase.cards.docs.title}
+                        description={t.landing.showcase.cards.docs.desc}
+                        bg="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50"
+                    >
                         <AiEditorAnimation />
                     </ShowcaseCard>
 
                     {/* Card 3: Analytics Graph (Green/Emerald Theme) */}
-                    <ShowcaseCard delay={0.5} title="Wawasan Bisnis" bg="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
+                    <ShowcaseCard
+                        delay={0.5}
+                        title={t.landing.showcase.cards.insights.title}
+                        description={t.landing.showcase.cards.insights.desc}
+                        bg="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50"
+                    >
                         <AnalyticsGraphAnimation />
                     </ShowcaseCard>
                 </div>
@@ -67,7 +85,7 @@ export function ProductShowcase() {
     );
 }
 
-function ShowcaseCard({ children, title, delay, bg }: { children: React.ReactNode, title: string, delay: number, bg: string }) {
+function ShowcaseCard({ children, title, description, delay, bg }: { children: React.ReactNode, title: string, description: string, delay: number, bg: string }) {
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -82,7 +100,7 @@ function ShowcaseCard({ children, title, delay, bg }: { children: React.ReactNod
             <div className="relative z-10 p-6 md:p-8 pt-0">
                 <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{title}</h3>
                 <p className="text-slate-600 dark:text-slate-400 text-sm font-medium">
-                    Teknologi canggih yang bekerja di belakang layar untuk bisnis Anda.
+                    {description}
                 </p>
             </div>
         </motion.div>

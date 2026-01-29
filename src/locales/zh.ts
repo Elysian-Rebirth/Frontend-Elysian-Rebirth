@@ -100,6 +100,46 @@ export const translationsZH: TranslationKeys = {
         telemetry: '启用遥测',
         saveSettings: '保存设置',
     },
+    landingNav: {
+        products: {
+            title: '产品',
+            subtitle: '能力中心',
+            editor: { title: '智能编辑器', desc: '编写文档，AI润色。' },
+            knowledge: { title: '知识中心', desc: '将PDF转化为业务大脑。' },
+            workflow: { title: '自动化工作流', desc: '自动创建SPK，零拼写错误。' },
+            copy: '理解您工作方式的技术。'
+        },
+        solutions: {
+            title: '解决方案',
+            subtitle: '行业专家',
+            case1: { title: '印刷店主', desc: '确保利润，防止定价错误。' },
+            case2: { title: '运营管理员', desc: '报价速度提升10倍。' },
+            copy: '针对中小企业的精准解决方案。'
+        },
+        company: {
+            title: '公司',
+            subtitle: '信任层',
+            security: '安全与合规',
+            securityDesc: '银行级加密。',
+            about: '关于我们',
+            careers: '职业生涯',
+            copy: '您的业务增长伙伴。'
+        },
+        pricing: {
+            title: '价格',
+            subtitle: '灵活性',
+            monthly: '月付',
+            yearly: '年付 (省20%)',
+            custom: '定制 / 企业',
+            copy: '诚实定价，无隐形费用。'
+        },
+        actions: {
+            startFree: '免费开始',
+            login: '登录',
+            search: '搜索',
+            microCopy: '只需30秒。'
+        }
+    },
     landing: {
         hero: {
             badge: 'Elysian v2.0 公测版',
