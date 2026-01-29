@@ -115,19 +115,19 @@ export function LandingTerminal() {
     const [isInitialized, setIsInitialized] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    const INITIAL_LOGS: LogLine[] = [
-        { prefix: '[SYSTEM]', text: t.landing.terminal.logs.system, color: 'text-blue-600' },
-        { prefix: '[SCAN]', text: t.landing.terminal.logs.scan, color: 'text-indigo-600' },
-        { prefix: '[SIAP]', text: t.landing.terminal.logs.ready, color: 'text-emerald-500 font-bold' },
-        { prefix: '[SUCCESS]', text: t.landing.terminal.logs.success, color: 'text-emerald-600' },
-        { prefix: '[COMPLIANCE]', text: t.landing.terminal.logs.compliance, color: 'text-emerald-600' },
-        { text: t.landing.terminal.logs.operational, color: 'text-slate-600 dark:text-slate-400' },
-        { text: t.landing.terminal.logs.welcome, color: 'text-slate-900 dark:text-white font-bold mt-2' },
-        { text: t.landing.terminal.logs.help, color: 'text-slate-500 dark:text-slate-400' },
-    ];
-
     // Initialization Effect
     useEffect(() => {
+        const INITIAL_LOGS: LogLine[] = [
+            { prefix: '[SYSTEM]', text: t.landing.terminal.logs.system, color: 'text-blue-600' },
+            { prefix: '[SCAN]', text: t.landing.terminal.logs.scan, color: 'text-indigo-600' },
+            { prefix: '[SIAP]', text: t.landing.terminal.logs.ready, color: 'text-emerald-500 font-bold' },
+            { prefix: '[SUCCESS]', text: t.landing.terminal.logs.success, color: 'text-emerald-600' },
+            { prefix: '[COMPLIANCE]', text: t.landing.terminal.logs.compliance, color: 'text-emerald-600' },
+            { text: t.landing.terminal.logs.operational, color: 'text-slate-600 dark:text-slate-400' },
+            { text: t.landing.terminal.logs.welcome, color: 'text-slate-900 dark:text-white font-bold mt-2' },
+            { text: t.landing.terminal.logs.help, color: 'text-slate-500 dark:text-slate-400' },
+        ];
+
         let currentIndex = 0;
         const interval = setInterval(() => {
             setHistory(prev => {
@@ -142,7 +142,7 @@ export function LandingTerminal() {
             });
         }, 800);
         return () => clearInterval(interval);
-    }, []);
+    }, [t]); // Added t dependency just in case, though component remounts on locale change
 
     // Auto-scroll
     useEffect(() => {

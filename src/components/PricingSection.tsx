@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check, Info } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useTranslation } from '@/hooks/useTranslation';
+// import { useTranslation } from '@/hooks/useTranslation';
 
 export function PricingSection() {
-    const { t } = useTranslation();
+    // const { t } = useTranslation();
     const [isYearly, setIsYearly] = useState(true);
 
     const plans = [

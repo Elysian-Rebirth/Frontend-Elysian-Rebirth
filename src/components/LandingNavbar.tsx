@@ -101,7 +101,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
             >
                 <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
                     {/* Logo Area */}
-                    <Link href="/" onClick={(e) => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 group cursor-pointer focus:outline-none">
+                    <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 group cursor-pointer focus:outline-none">
                         <div className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white p-1.5 rounded-xl shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all duration-300">
                             <InfinityIcon className="w-5 h-5" />
                         </div>

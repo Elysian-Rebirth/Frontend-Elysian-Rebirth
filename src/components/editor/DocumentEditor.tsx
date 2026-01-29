@@ -162,7 +162,7 @@ export function DocumentEditor({
             } else {
                 toast.warning("Gagal", { description: result.message });
             }
-        } catch (_error) {
+        } catch {
             toast.error("Error", { description: "Gagal menghubungkan ke RAG pipeline." });
         }
     };
