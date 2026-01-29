@@ -94,9 +94,9 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                         boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.1)",
                     }
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 40, mass: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 30, mass: 0.8 }}
                 className={cn(
-                    "fixed left-1/2 -translate-x-1/2 z-50 border border-transparent transition-all will-change-[transform,opacity,width,border-radius,background-color,padding]",
+                    "fixed left-1/2 -translate-x-1/2 z-50 border border-transparent will-change-[transform,opacity,width,border-radius,background-color,padding]",
                     scrolled && "border-slate-200/50 dark:border-slate-700/50 md:max-w-5xl"
                 )}
             >
@@ -220,7 +220,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                             initial={{ x: "100%" }}
                             animate={{ x: 0 }}
                             exit={{ x: "100%" }}
-                            transition={{ type: "spring", stiffness: 90, damping: 20, mass: 0.8 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 30, mass: 0.8 }}
                             className="fixed right-0 top-0 bottom-0 w-[85%] max-w-sm z-50 md:hidden flex flex-col overflow-hidden border-l border-white/20 dark:border-slate-700/30 shadow-2xl"
                         >
                             {/* Liquid Glass Background Layer - Optimized Blur */}
