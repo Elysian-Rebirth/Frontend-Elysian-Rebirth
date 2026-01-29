@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Sun, Moon, Search, Terminal, Monitor, Menu, X, Languages } from 'lucide-react';
@@ -13,6 +13,30 @@ interface LandingNavbarProps {
     isDark?: boolean;
     toggleTheme?: () => void;
 }
+
+const navContainerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.08,
+            delayChildren: 0.1
+        }
+    }
+};
+
+const navItemVariants: Variants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            type: "spring",
+            stiffness: 400,
+            damping: 30
+        }
+    }
+};
 
 export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleTheme }: LandingNavbarProps) {
     const { t, locale, setLocale } = useTranslation();
@@ -117,10 +141,16 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                     </Link>
 
                     {/* Desktop Navigation - Simple Links */}
-                    <nav className="hidden md:flex items-center gap-1 bg-slate-100/50 dark:bg-slate-800/50 p-1 rounded-full border border-slate-200/50 dark:border-slate-700/50">
+                    <motion.nav
+                        variants={navContainerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="hidden md:flex items-center gap-1 bg-slate-100/50 dark:bg-slate-800/50 p-1 rounded-full border border-slate-200/50 dark:border-slate-700/50"
+                    >
                         {navLinks.map((item) => (
-                            <a
+                            <motion.a
                                 key={item.name}
+                                variants={navItemVariants}
                                 href={`#${item.id}`}
                                 onClick={(e) => scrollToSection(e, item.id)}
                                 className={cn(
@@ -131,33 +161,41 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                                 )}
                             >
                                 {item.name}
-                            </a>
+                            </motion.a>
                         ))}
-                    </nav>
+                    </motion.nav>
 
                     {/* Right Side Actions */}
-                    <div className="flex items-center gap-2">
+                    <motion.div
+                        variants={navContainerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="flex items-center gap-2"
+                    >
                         {/* Quick Search - Desktop */}
-                        <button
+                        <motion.button
+                            variants={navItemVariants}
                             onClick={openGlobalCommand}
-                            className="hidden md:flex p-2 rounded-full text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+                            className="hidden md:flex p-2 rounded-full text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all font-medium text-xs uppercase"
                             title="Search (Cmd+K)"
                         >
                             <Search className="w-5 h-5" />
-                        </button>
+                        </motion.button>
 
                         {/* Language Toggle - Desktop */}
-                        <button
+                        <motion.button
+                            variants={navItemVariants}
                             onClick={toggleLanguage}
                             className="hidden md:flex p-2 rounded-full text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all gap-1 items-center font-medium text-xs uppercase"
                             title="Switch Language"
                         >
                             <Languages className="w-4 h-4" />
                             <span>{locale}</span>
-                        </button>
+                        </motion.button>
 
                         {/* Terminal Toggle - Hidden on mobile */}
-                        <button
+                        <motion.button
+                            variants={navItemVariants}
                             onClick={() => setShowTerminal && setShowTerminal(!showTerminal)}
                             className={cn(
                                 "hidden md:flex p-2 rounded-full transition-all duration-200",
@@ -169,37 +207,41 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                         >
                             <span className="sr-only">Toggle Terminal</span>
                             {showTerminal ? <Monitor className="w-5 h-5" /> : <Terminal className="w-5 h-5" />}
-                        </button>
+                        </motion.button>
 
                         {/* Theme Toggle - Hidden on Mobile (moved to sidebar) */}
-                        <button
+                        <motion.button
+                            variants={navItemVariants}
                             onClick={toggleTheme}
                             className="hidden md:flex p-2 rounded-full text-slate-500 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
                         >
                             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                        </button>
+                        </motion.button>
 
                         {/* Mobile Menu Toggle */}
-                        <button
+                        <motion.button
+                            variants={navItemVariants}
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                             className="md:hidden p-2 rounded-full text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all focus:outline-none"
                         >
                             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-                        </button>
+                        </motion.button>
 
                         {/* Start Free Button - Hidden on mobile */}
-                        <Link href="/register" className="hidden md:block">
-                            <Button
-                                className={cn(
-                                    "rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white border-0 transition-all shadow-lg shadow-blue-500/20",
-                                    scrolled ? "h-9 px-4 text-sm" : "h-10 px-6 text-base"
-                                )}
-                            >
-                                <span className="font-semibold">{t.landingNav.actions.startFree || "Mulai Gratis"}</span>
-                                <ArrowRight className="w-4 h-4 ml-1" />
-                            </Button>
-                        </Link>
-                    </div>
+                        <motion.div variants={navItemVariants} className="hidden md:block">
+                            <Link href="/register">
+                                <Button
+                                    className={cn(
+                                        "rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white border-0 transition-all shadow-lg shadow-blue-500/20",
+                                        scrolled ? "h-9 px-4 text-sm" : "h-10 px-6 text-base"
+                                    )}
+                                >
+                                    <span className="font-semibold">{t.landingNav.actions.startFree || "Mulai Gratis"}</span>
+                                    <ArrowRight className="w-4 h-4 ml-1" />
+                                </Button>
+                            </Link>
+                        </motion.div>
+                    </motion.div>
                 </div>
             </motion.header>
             {/* Mobile Navigation Sidebar - Liquid Glass Design */}
@@ -252,12 +294,15 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                                 </div>
 
                                 {/* Menu Items */}
-                                <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-2">
-                                    {navLinks.map((item, i) => (
+                                <motion.div
+                                    variants={navContainerVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    className="flex-1 overflow-y-auto p-6 flex flex-col gap-2"
+                                >
+                                    {navLinks.map((item) => (
                                         <motion.a
-                                            initial={{ opacity: 0, x: 20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: i * 0.05 }}
+                                            variants={navItemVariants}
                                             key={item.name}
                                             href={`#${item.id}`}
                                             onClick={(e) => scrollToSection(e, item.id)}
@@ -276,13 +321,14 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                                         </motion.a>
                                     ))}
 
-                                    <div className="mt-6 space-y-4">
-                                        <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent" />
+                                    <motion.div variants={navContainerVariants} className="mt-6 space-y-4">
+                                        <motion.div variants={navItemVariants} className="h-px w-full bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent" />
 
                                         {/* Settings Grid */}
                                         <div className="grid grid-cols-2 gap-3">
                                             {/* Language */}
-                                            <button
+                                            <motion.button
+                                                variants={navItemVariants}
                                                 onClick={toggleLanguage}
                                                 className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-white/40 dark:bg-slate-800/40 border border-white/50 dark:border-slate-700/50 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-all group"
                                             >
@@ -292,10 +338,11 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                                                     <span className="text-slate-300">/</span>
                                                     <span className={locale === 'en' ? "text-blue-600 dark:text-blue-400" : "text-slate-400"}>EN</span>
                                                 </div>
-                                            </button>
+                                            </motion.button>
 
                                             {/* Theme */}
-                                            <button
+                                            <motion.button
+                                                variants={navItemVariants}
                                                 onClick={toggleTheme}
                                                 className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-white/40 dark:bg-slate-800/40 border border-white/50 dark:border-slate-700/50 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-all group"
                                             >
@@ -307,19 +354,20 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                                                 <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
                                                     {isDark ? "Dark" : "Light"}
                                                 </span>
-                                            </button>
+                                            </motion.button>
                                         </div>
 
                                         {/* Search */}
-                                        <button
+                                        <motion.button
+                                            variants={navItemVariants}
                                             onClick={openGlobalCommand}
                                             className="flex items-center gap-3 w-full px-5 py-4 text-slate-600 dark:text-slate-400 font-medium bg-white/40 dark:bg-slate-800/40 border border-white/50 dark:border-slate-700/50 hover:bg-white/60 dark:hover:bg-slate-800/60 rounded-2xl transition-all group"
                                         >
                                             <Search className="w-5 h-5 group-hover:text-blue-500 transition-colors" />
                                             {t.landingNav.actions.search || "Cari..."}
-                                        </button>
-                                    </div>
-                                </div>
+                                        </motion.button>
+                                    </motion.div>
+                                </motion.div>
 
                                 {/* Footer Action */}
                                 <div className="p-6 border-t border-slate-100/50 dark:border-slate-800/50 bg-white/30 dark:bg-slate-900/30 backdrop-blur-sm">
