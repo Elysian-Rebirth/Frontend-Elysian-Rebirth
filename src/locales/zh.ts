@@ -128,6 +128,75 @@ export const translationsZH: TranslationKeys = {
             ctaStart: '开始使用',
             ctaDemo: '查看演示',
         },
+        marquee: ['零售', '物流', '代理机构', '医疗', '餐饮', '制造业', '咨询', '房地产'],
+        showcase: {
+            badge: 'Elysian 的力量',
+            title1: '一个平台。',
+            title2: '三大核心优势。',
+            description: '将自动化、智能文档处理和 AI 助手结合在一个无缝的生态系统中。',
+            cards: {
+                dev: { title: '开发者集成', desc: '在幕后为您的业务工作的先进技术。' },
+                docs: { title: '文档分析 (RAG)', desc: '在幕后为您的业务工作的先进技术。' },
+                insights: { title: '商业洞察', desc: '在幕后为您的业务工作的先进技术。' }
+            }
+        },
+        deepDive: {
+            badge: '深入了解',
+            title1: '项目管理',
+            title2: '无障碍。',
+            description: 'Elysian 提供从创意到执行的全面可视化。',
+            cards: {
+                cycles: { title: '自动周期', desc: "通过直观的图表自动跟踪团队的冲刺进度。" },
+                inbox: { title: '智能收件箱', desc: '快速审核、批准或拒绝收到的请求。' },
+                insights: { title: 'Elysian 洞察', desc: '利用 AI 驱动的数据分析预测瓶颈并优化团队绩效。', action: '查看报告' }
+            }
+        },
+        integration: {
+            badge: '生态系统',
+            title1: '连接',
+            title2: '您最喜欢的工具。',
+            description: 'Elysian 与数百个应用程序集成，保持您团队的工作流程顺畅。',
+            hint: '滑动查看更多',
+            items: {
+                slack: { title: 'Slack 通知', desc: '直接在团队频道中获取实时更新。' },
+                figma: { title: 'Figma 同步', desc: '将设计资产和评论直接拉入任务管理器。' },
+                github: { title: 'GitHub Actions', desc: '自动部署和同步问题状态。' },
+                drive: { title: 'Google Drive', desc: '无需切换标签即可访问和附加云文档。' },
+                notion: { title: 'Notion 页面', desc: '嵌入内部 wiki 和知识库页面。' },
+                postgres: { title: 'PostgreSQL', desc: '连接数据库进行自定义分析。' },
+                gmail: { title: 'Gmail 插件', desc: '一键将电子邮件转换为任务或支持工单。' },
+                cta: '了解更多'
+            }
+        },
+        agents: {
+            badge: 'Elysian 神经网络',
+            title1: '将任务委派给',
+            title2: '专业 AI 代理。',
+            description: '为每项工作选择合适的代理。从数据分析师到安全审计员，随时待命。',
+            demo: {
+                assign: '分配给...',
+                processing: '处理上下文...',
+                available: '4 个代理可用'
+            },
+            items: {
+                analyst: { name: '数据分析 AI', role: '财务洞察' },
+                editor: { name: '内容编辑', role: 'SEO & 文案与写作' },
+                compliance: { name: '合规机器', role: '法律与审计' },
+                coder: { name: '开发助手', role: '代码审查' }
+            }
+        },
+        terminal: {
+            logs: {
+                system: '正在启动 Elysian 平台... (IAM | MDM | Compliance)',
+                scan: '正在验证安全模块和工作流编排...',
+                ready: '智能工作流编排已启用。',
+                success: '系统已连接。等待操作员指令。',
+                compliance: 'SOC 2 控制已验证 ✓ CC1 (实体) ✓ CC2 (通信) ✓ CC3 (风险)',
+                operational: '所有系统运行正常。',
+                welcome: '欢迎来到 Elysian 系统控制台。',
+                help: "输入 'help' 查看命令列表，或点击上方的终端图标返回视觉模式。"
+            }
+        },
         problem: {
             title1: '为什么企业',
             title2: '经常陷入困境？',
