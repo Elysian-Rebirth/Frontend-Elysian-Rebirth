@@ -20,9 +20,9 @@ import { NotificationPopover } from '@/components/NotificationPopover';
 
 // Placeholder for user avatar
 const UserAvatar = () => (
-    <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-blue-500 to-cyan-400 p-[2px] cursor-pointer hover:shadow-md transition-shadow">
+    <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-300 p-[2px] cursor-pointer hover:shadow-md transition-shadow">
         <div className="h-full w-full rounded-full bg-white flex items-center justify-center overflow-hidden">
-            <User className="h-5 w-5 text-blue-500" />
+            <User className="h-5 w-5 text-blue-400" />
         </div>
     </div>
 );
@@ -59,6 +59,8 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
         if (pathname === '/editor') return 'Smart Editor';
         if (pathname === '/workflow') return 'Workflow';
         if (pathname === '/settings') return 'Settings';
+        if (pathname === '/getting-started') return 'Panduan Memulai';
+        if (pathname === '/help') return 'Pusat Bantuan';
         return 'Elysian';
     };
 
@@ -83,9 +85,7 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                     <div className="flex items-center gap-2 md:hidden">
                         <MobileSidebar />
                         <Link href="/dashboard">
-                            <div className="relative w-8 h-8 flex items-center justify-center bg-gradient-to-br from-blue-600 to-cyan-400 rounded-lg text-white shadow-blue-500/20">
-                                <Image src="/logo.svg" alt="Elysian Logo" width={28} height={28} className="scale-125 drop-shadow-md" />
-                            </div>
+                            <Image src="/logo.svg" alt="Elysian Logo" width={54} height={54} className="scale-100 drop-shadow-md" />
                         </Link>
                     </div>
 

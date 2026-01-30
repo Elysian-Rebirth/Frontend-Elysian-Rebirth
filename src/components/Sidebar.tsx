@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import { NavigationMenu } from '@/components/NavigationMenu';
 import { GettingStartedWidget } from '@/components/GettingStartedWidget';
-import { User, Infinity as InfinityIcon, Sparkles, ChevronsLeft, HelpCircle } from 'lucide-react';
+import { User, Infinity as InfinityIcon, Sparkles, ChevronsLeft, HelpCircle, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/';
 import { useSidebar } from '@/contexts/SidebarContext';
 import { cn } from '@/lib/utils';
@@ -35,22 +35,14 @@ export function Sidebar() {
             )}>
                 {isOpen ? (
                     <div className="flex items-center gap-3">
-                        <div className="relative h-14 w-14 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-105">
-                            {/* Glassmorphic Background */}
-                            <div className="absolute inset-0 bg-white/10 dark:bg-blue-900/10 backdrop-blur-xl border border-white/20 dark:border-blue-400/10 rounded-2xl shadow-lg" />
-                            <Image src="/logo.svg" alt="Elysian Logo" width={48} height={48} className="relative z-10 scale-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]" />
-                            <Sparkles className="absolute -top-1 -right-1 h-4 w-4 text-white/90 animate-pulse fill-white/20 z-20" />
-                        </div>
-                        <h1 className="text-lg font-semibold tracking-tight bg-gradient-to-r from-slate-800 to-blue-700 bg-clip-text text-transparent">
-                            Elysian Rebirth
+                        <Image src="/logo.svg" alt="Elysian Logo" width={54} height={54} className="relative z-10 scale-100 drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]" />
+                        <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-[#338DB0] to-[#479BBA] dark:from-blue-100 dark:via-blue-200 dark:to-white bg-clip-text text-transparent font-heading drop-shadow-sm">
+                            Elysian
                         </h1>
                     </div>
                 ) : (
-                    <div className="relative h-12 w-12 rounded-xl flex items-center justify-center mb-2">
-                        {/* Glassmorphic Background */}
-                        <div className="absolute inset-0 bg-white/10 dark:bg-blue-900/10 backdrop-blur-lg border border-white/20 dark:border-blue-400/10 rounded-xl" />
-                        <Image src="/logo.svg" alt="Elysian Logo" width={40} height={40} className="relative z-10 scale-110 drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]" />
-                        <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-white/90 animate-pulse fill-white/20 z-20" />
+                    <div className="flex justify-center mb-2">
+                        <Image src="/logo.svg" alt="Elysian Logo" width={48} height={48} className="relative z-10 scale-100 drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]" />
                     </div>
                 )}
 
@@ -85,6 +77,27 @@ export function Sidebar() {
                 {/* Getting Started Widget - Moved to Bottom */}
                 {isOpen && <GettingStartedWidget />}
 
+                {/* Admin Dashboard Link (For Super Admins) */}
+                {isOpen ? (
+                    <Link href="/admin" className="w-full">
+                        <Button variant="outline" className="w-full justify-start gap-2 bg-gradient-to-r from-sky-50 to-white hover:from-sky-100 hover:to-sky-50 border-sky-200 text-sky-700 h-9 rounded-lg text-sm font-semibold shadow-sm animate-in fade-in duration-300 group">
+                            <Shield className="h-4 w-4 text-sky-500 group-hover:text-sky-600 transition-colors" />
+                            Admin Panel
+                        </Button>
+                    </Link>
+                ) : (
+                    <div className="flex justify-center mb-2">
+                        <Link href="/admin">
+                            <Button variant="ghost" size="icon" className="text-sky-600 hover:bg-sky-50 h-9 w-9 relative group">
+                                <Shield className="h-5 w-5" />
+                                <span className="absolute left-10 bg-white text-sky-700 border border-sky-100 shadow-md text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">
+                                    Admin Panel
+                                </span>
+                            </Button>
+                        </Link>
+                    </div>
+                )}
+
                 {/* Bantuan Button (Reference Image 2) */}
                 {isOpen ? (
                     <Link href="/help" className="w-full">
@@ -108,7 +121,7 @@ export function Sidebar() {
                     "flex items-center gap-3 p-2 rounded-lg hover:bg-white/80 transition-all duration-200 cursor-pointer group border border-transparent hover:border-blue-100 hover:shadow-sm",
                     !isOpen && "justify-center"
                 )}>
-                    <div className="h-8 w-8 min-w-[2rem] rounded-full bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center text-white shadow-md">
+                    <div className="h-8 w-8 min-w-[2rem] rounded-full bg-gradient-to-tr from-blue-400 to-cyan-300 flex items-center justify-center text-white shadow-md">
                         <User className="h-4 w-4" />
                     </div>
                     {isOpen && (

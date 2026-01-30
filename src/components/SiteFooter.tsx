@@ -24,27 +24,27 @@ export function SiteFooter() {
                     {/* Brand Column - Wider */}
                     <div className="lg:col-span-2 space-y-6">
                         <div className="flex items-center gap-3 mb-2">
-                            <div className="bg-gradient-to-br from-blue-600 to-cyan-500 text-white p-1.5 rounded-xl shadow-lg shadow-blue-500/20">
+                            <div className="bg-gradient-to-br from-blue-400 to-cyan-300 text-white p-1.5 rounded-xl shadow-lg shadow-blue-400/20">
                                 <Image src="/logo.svg" alt="Elysian Logo" width={24} height={24} />
                             </div>
-                            <h3 className="text-3xl font-bold text-slate-900 dark:text-white font-heading tracking-tighter">
-                                ELYSIAN
+                            <h3 className="text-3xl font-bold tracking-tighter bg-gradient-to-r from-[#338DB0] to-[#479BBA] dark:from-blue-100 dark:via-blue-200 dark:to-white bg-clip-text text-transparent font-heading drop-shadow-sm transition-all text-left">
+                                Elysian
                             </h3>
                         </div>
                         <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed max-w-md font-medium">
                             Asisten Operasional Cerdas terdepan di Indonesia yang didedikasikan untuk membantu UMKM. Kami menggabungkan kecerdasan buatan canggih untuk mengotomatiskan proses, memberikan wawasan mendalam, dan memacu pertumbuhan bisnis Anda.
                         </p>
                         <div className="flex gap-4">
-                            <Link href="#" className="p-2 rounded-full bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 shadow-sm transition-all border border-slate-200 dark:border-slate-700">
+                            <Link href="#" className="p-2 rounded-full bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-slate-700 shadow-sm transition-all border border-slate-200 dark:border-slate-700">
                                 <Facebook className="h-5 w-5" />
                             </Link>
-                            <Link href="#" className="p-2 rounded-full bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-sky-500 dark:hover:text-sky-400 hover:bg-sky-50 dark:hover:bg-slate-700 shadow-sm transition-all border border-slate-200 dark:border-slate-700">
+                            <Link href="#" className="p-2 rounded-full bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-sky-400 dark:hover:text-sky-300 hover:bg-sky-50 dark:hover:bg-slate-700 shadow-sm transition-all border border-slate-200 dark:border-slate-700">
                                 <Twitter className="h-5 w-5" />
                             </Link>
                             <Link href="#" className="p-2 rounded-full bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-pink-600 dark:hover:text-pink-400 hover:bg-pink-50 dark:hover:bg-slate-700 shadow-sm transition-all border border-slate-200 dark:border-slate-700">
                                 <Instagram className="h-5 w-5" />
                             </Link>
-                            <Link href="#" className="p-2 rounded-full bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-700 dark:hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-slate-700 shadow-sm transition-all border border-slate-200 dark:border-slate-700">
+                            <Link href="#" className="p-2 rounded-full bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700 shadow-sm transition-all border border-slate-200 dark:border-slate-700">
                                 <Linkedin className="h-5 w-5" />
                             </Link>
                         </div>
@@ -54,11 +54,11 @@ export function SiteFooter() {
                     <div className="space-y-4">
                         <h4 className="font-bold text-slate-900 dark:text-white">Solusi Bisnis</h4>
                         <ul className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
-                            <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-blue-400" />Otomatisasi Dokumen</Link></li>
-                            <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-blue-400" />Analisis Keuangan AI</Link></li>
-                            <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-blue-400" />Manajemen Inventaris</Link></li>
-                            <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-blue-400" />Prediksi Tren Pasar</Link></li>
-                            <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-blue-400" />Integrasi ERP</Link></li>
+                            <li><Link href="#" className="hover:text-blue-400 dark:hover:text-blue-300 transition-colors flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-blue-300" />Otomatisasi Dokumen</Link></li>
+                            <li><Link href="#" className="hover:text-blue-400 dark:hover:text-blue-300 transition-colors flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-blue-300" />Analisis Keuangan AI</Link></li>
+                            <li><Link href="#" className="hover:text-blue-400 dark:hover:text-blue-300 transition-colors flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-blue-300" />Manajemen Inventaris</Link></li>
+                            <li><Link href="#" className="hover:text-blue-400 dark:hover:text-blue-300 transition-colors flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-blue-300" />Prediksi Tren Pasar</Link></li>
+                            <li><Link href="#" className="hover:text-blue-400 dark:hover:text-blue-300 transition-colors flex items-center gap-2"><div className="w-1 h-1 rounded-full bg-blue-300" />Integrasi ERP</Link></li>
                         </ul>
                     </div>
 
@@ -66,11 +66,11 @@ export function SiteFooter() {
                     <div className="space-y-4">
                         <h4 className="font-bold text-slate-900 dark:text-white">Dukungan</h4>
                         <ul className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
-                            <li><Link href="/help" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Pusat Bantuan</Link></li>
-                            <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Dokumentasi API</Link></li>
-                            <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Status Server</Link></li>
-                            <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Komunitas Pengguna</Link></li>
-                            <li><Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Hubungi Sales</Link></li>
+                            <li><Link href="/help" className="hover:text-blue-400 dark:hover:text-blue-300 transition-colors">Pusat Bantuan</Link></li>
+                            <li><Link href="#" className="hover:text-blue-400 dark:hover:text-blue-300 transition-colors">Dokumentasi API</Link></li>
+                            <li><Link href="#" className="hover:text-blue-400 dark:hover:text-blue-300 transition-colors">Status Server</Link></li>
+                            <li><Link href="#" className="hover:text-blue-400 dark:hover:text-blue-300 transition-colors">Komunitas Pengguna</Link></li>
+                            <li><Link href="#" className="hover:text-blue-400 dark:hover:text-blue-300 transition-colors">Hubungi Sales</Link></li>
                         </ul>
                     </div>
 
@@ -79,15 +79,15 @@ export function SiteFooter() {
                         <h4 className="font-bold text-slate-900 dark:text-white">Hubungi Kami</h4>
                         <ul className="space-y-3 text-sm text-slate-600 dark:text-slate-400">
                             <li className="flex items-start gap-3">
-                                <div className="mt-1 bg-blue-100 dark:bg-blue-900/30 p-1 rounded text-blue-600 dark:text-blue-400"><Send className="h-3 w-3" /></div>
+                                <div className="mt-1 bg-blue-50 dark:bg-blue-900/20 p-1 rounded text-blue-400 dark:text-blue-300"><Send className="h-3 w-3" /></div>
                                 <span>Jl. Jend. Sudirman Kav. 52-53, Jakarta Selatan SCBD, Indonesia</span>
                             </li>
                             <li className="flex items-center gap-3">
-                                <div className="bg-blue-100 dark:bg-blue-900/30 p-1 rounded text-blue-600 dark:text-blue-400"><Twitter className="h-3 w-3" /></div>
+                                <div className="bg-blue-50 dark:bg-blue-900/20 p-1 rounded text-blue-400 dark:text-blue-300"><Twitter className="h-3 w-3" /></div>
                                 <span>hello@elysian.ai</span>
                             </li>
                             <li className="flex items-center gap-3">
-                                <div className="bg-blue-100 dark:bg-blue-900/30 p-1 rounded text-blue-600 dark:text-blue-400"><Facebook className="h-3 w-3" /></div>
+                                <div className="bg-blue-50 dark:bg-blue-900/20 p-1 rounded text-blue-400 dark:text-blue-300"><Facebook className="h-3 w-3" /></div>
                                 <span>+62 21 5555 8888</span>
                             </li>
                         </ul>
@@ -97,7 +97,7 @@ export function SiteFooter() {
                 <Separator className="bg-slate-200 dark:bg-slate-800" />
 
                 <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 dark:text-slate-500">
-                    <p>© 2024 Elysian Rebirth Intelligence. Terdaftar di PSE Kominfo.</p>
+                    <p>© 2024 Elysian. Terdaftar di PSE Kominfo.</p>
                     <div className="flex gap-6">
                         <Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Kebijakan Privasi</Link>
                         <Link href="#" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Syarat & Ketentuan</Link>

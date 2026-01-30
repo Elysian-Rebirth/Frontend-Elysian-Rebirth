@@ -121,11 +121,11 @@ export default function ElysianLanding() {
                                             background: 'radial-gradient(ellipse 500px 250px at 50% 30%, rgba(59, 130, 246, 0.15), transparent 60%)'
                                         }}
                                     />
-                                    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 dark:from-white dark:via-blue-200 dark:to-cyan-300 block mb-2">
+                                    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-[#2294B3] to-[#34AED1] dark:from-white dark:via-blue-100 dark:to-blue-200 block mb-2 font-heading tracking-tight drop-shadow-sm">
                                         {t.landing.hero.title1}
                                     </span>
                                     <span className="relative inline-block">
-                                        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 dark:from-blue-400 dark:via-blue-300 dark:to-cyan-300">
+                                        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#2294B3] to-[#34AED1] dark:from-blue-300 dark:via-blue-200 dark:to-cyan-100">
                                             {t.landing.hero.title2}
                                         </span>
                                         {/* Organic Brush Stroke Underline */}
@@ -199,7 +199,7 @@ export default function ElysianLanding() {
                                             <motion.button
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
-                                                className="w-full sm:w-auto h-12 px-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 flex items-center justify-center gap-2 transition-all"
+                                                className="w-full sm:w-auto h-12 px-8 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 text-white font-semibold shadow-lg shadow-blue-400/25 hover:shadow-blue-400/40 flex items-center justify-center gap-2 transition-all"
                                             >
                                                 {t.landing.hero.ctaStart}
                                             </motion.button>
@@ -405,10 +405,10 @@ function ProblemSection() {
 function SolutionSection() {
     const { t } = useTranslation();
     const features = [
-        { icon: Bot, title: t.landing.features.items.ai.title, desc: t.landing.features.items.ai.desc, color: 'from-blue-500 to-cyan-500', bg: 'bg-blue-50 dark:bg-blue-900/10 border-blue-100 dark:border-blue-800' },
-        { icon: FileText, title: t.landing.features.items.docs.title, desc: t.landing.features.items.docs.desc, color: 'from-indigo-500 to-purple-500', bg: 'bg-indigo-50 dark:bg-indigo-900/10 border-indigo-100 dark:border-indigo-800' },
-        { icon: Shield, title: t.landing.features.items.security.title, desc: t.landing.features.items.security.desc, color: 'from-emerald-500 to-teal-500', bg: 'bg-emerald-50 dark:bg-emerald-900/10 border-emerald-100 dark:border-emerald-800' },
-        { icon: Zap, title: t.landing.features.items.automation.title, desc: t.landing.features.items.automation.desc, color: 'from-orange-500 to-amber-500', bg: 'bg-orange-50 dark:bg-orange-900/10 border-orange-100 dark:border-orange-800' }
+        { icon: Bot, title: t.landing.features.items.ai.title, desc: t.landing.features.items.ai.desc, color: 'from-blue-400 to-cyan-300', bg: 'bg-blue-50 dark:bg-blue-900/10 border-blue-100 dark:border-blue-800' },
+        { icon: FileText, title: t.landing.features.items.docs.title, desc: t.landing.features.items.docs.desc, color: 'from-sky-400 to-blue-300', bg: 'bg-sky-50 dark:bg-sky-900/10 border-sky-100 dark:border-sky-800' },
+        { icon: Shield, title: t.landing.features.items.security.title, desc: t.landing.features.items.security.desc, color: 'from-emerald-400 to-teal-300', bg: 'bg-emerald-50 dark:bg-emerald-900/10 border-emerald-100 dark:border-emerald-800' },
+        { icon: Zap, title: t.landing.features.items.automation.title, desc: t.landing.features.items.automation.desc, color: 'from-cyan-400 to-blue-300', bg: 'bg-cyan-50 dark:bg-cyan-900/10 border-cyan-100 dark:border-cyan-800' }
     ];
 
     return (
@@ -456,10 +456,10 @@ function SolutionSection() {
 function UseCasesSection() {
     const { t } = useTranslation();
     const cases = [
-        { icon: Store, title: t.landing.useCases.items.retail.title, items: t.landing.useCases.items.retail.items, color: 'from-orange-500 to-red-500', bg: 'bg-orange-50 dark:bg-orange-900/10 border-orange-100 dark:border-orange-800' },
-        { icon: Truck, title: t.landing.useCases.items.logistics.title, items: t.landing.useCases.items.logistics.items, color: 'from-blue-500 to-cyan-500', bg: 'bg-blue-50 dark:bg-blue-900/10 border-blue-100 dark:border-blue-800' },
-        { icon: PenTool, title: t.landing.useCases.items.agency.title, items: t.landing.useCases.items.agency.items, color: 'from-pink-500 to-purple-500', bg: 'bg-pink-50 dark:bg-pink-900/10 border-pink-100 dark:border-pink-800' },
-        { icon: Stethoscope, title: t.landing.useCases.items.clinic.title, items: t.landing.useCases.items.clinic.items, color: 'from-emerald-500 to-teal-500', bg: 'bg-emerald-50 dark:bg-emerald-900/10 border-emerald-100 dark:border-emerald-800' }
+        { icon: Store, title: t.landing.useCases.items.retail.title, items: t.landing.useCases.items.retail.items, color: 'from-cyan-400 to-blue-300', bg: 'bg-cyan-50 dark:bg-cyan-900/10 border-cyan-100 dark:border-cyan-800' },
+        { icon: Truck, title: t.landing.useCases.items.logistics.title, items: t.landing.useCases.items.logistics.items, color: 'from-blue-400 to-cyan-300', bg: 'bg-blue-50 dark:bg-blue-900/10 border-blue-100 dark:border-blue-800' },
+        { icon: PenTool, title: t.landing.useCases.items.agency.title, items: t.landing.useCases.items.agency.items, color: 'from-sky-400 to-blue-400', bg: 'bg-sky-50 dark:bg-sky-900/10 border-sky-100 dark:border-sky-800' },
+        { icon: Stethoscope, title: t.landing.useCases.items.clinic.title, items: t.landing.useCases.items.clinic.items, color: 'from-emerald-400 to-teal-300', bg: 'bg-emerald-50 dark:bg-emerald-900/10 border-emerald-100 dark:border-emerald-800' }
     ];
 
     return (
@@ -507,7 +507,7 @@ function UseCasesSection() {
 }
 
 
-// CTA Section - Elysian Rebirth Style
+// CTA Section - Elysian Style
 function CTASection() {
     const { t } = useTranslation();
     const vantaRef = useRef<HTMLDivElement>(null);
@@ -677,9 +677,9 @@ function CTASection() {
                             >
                                 <Link href="/dashboard">
                                     <motion.button
-                                        whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(37, 99, 235, 0.25)" }}
+                                        whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(96, 165, 250, 0.25)" }}
                                         whileTap={{ scale: 0.98 }}
-                                        className="h-16 px-10 rounded-full bg-blue-600 text-white font-bold text-lg shadow-xl shadow-blue-500/30 flex items-center gap-3 group relative overflow-hidden"
+                                        className="h-16 px-10 rounded-full bg-blue-500 text-white font-bold text-lg shadow-xl shadow-blue-400/30 flex items-center gap-3 group relative overflow-hidden"
                                     >
                                         <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                                         <span>{t.landing.cta.btnStart}</span>

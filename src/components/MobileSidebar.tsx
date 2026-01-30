@@ -87,14 +87,12 @@ export function MobileSidebar({ variant = 'dashboard' }: MobileSidebarProps) {
                             {/* Header */}
                             <div className="px-6 pt-10 pb-6">
                                 <div className="flex items-center gap-3 mb-1">
-                                    <div className="relative w-10 h-10 flex items-center justify-center bg-gradient-to-tr from-blue-500 to-cyan-400 rounded-xl shadow-lg shadow-blue-500/20 text-white">
-                                        <Image src="/logo.svg" alt="Elysian Logo" width={32} height={32} className="scale-125 drop-shadow-md" />
-                                    </div>
+                                    <Image src="/logo.svg" alt="Elysian Logo" width={54} height={54} className="scale-100 drop-shadow-md" />
                                     <div>
-                                        <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-cyan-600">
+                                        <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#338DB0] to-[#479BBA] dark:from-blue-100 dark:via-blue-200 dark:to-white font-heading drop-shadow-sm">
                                             Elysian
                                         </h2>
-                                        <p className="text-[10px] text-blue-400 font-semibold tracking-wide uppercase">Enterprise Platform</p>
+                                        <p className="text-[10px] text-blue-300 font-semibold tracking-wide uppercase">Enterprise Platform</p>
                                     </div>
                                 </div>
                             </div>

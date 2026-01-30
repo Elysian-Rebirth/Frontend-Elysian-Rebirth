@@ -23,8 +23,8 @@ export function FeaturesSection() {
             <div className="container mx-auto px-4">
                 {/* Section Header */}
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight text-slate-900 dark:text-white">
-                        Apa yang Bisa Dilakukan Elysian Rebirth?
+                    <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight text-slate-900 dark:text-white font-heading">
+                        Apa yang Bisa Dilakukan Elysian?
                     </h2>
                     <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto font-light">
                         Solusi lengkap untuk modernisasi bisnis Anda
@@ -68,8 +68,8 @@ export function FeaturesSection() {
                     />
                     <FeatureCard
                         icon={Database}
-                        color="text-purple-500"
-                        bgColor="bg-purple-500/10"
+                        color="text-blue-400"
+                        bgColor="bg-blue-400/10"
                         title="Manajemen Pengetahuan"
                         items={[
                             "Sentralisasi dokumen penting",
@@ -80,8 +80,8 @@ export function FeaturesSection() {
                     <div className="lg:col-span-2 lg:w-2/3 lg:mx-auto">
                         <FeatureCard
                             icon={Users}
-                            color="text-rose-500"
-                            bgColor="bg-rose-500/10"
+                            color="text-cyan-400"
+                            bgColor="bg-cyan-400/10"
                             title="Human-In-The-Loop (HIL)"
                             items={[
                                 "AI bekerja cepat, manusia tetap pegang kendali.",
@@ -148,7 +148,7 @@ export function FeaturesSection() {
                         {/* Abstract Background Blobs */}
                         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen opacity-70 animate-blob"></div>
                         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-teal-400/20 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen opacity-70 animate-blob animation-delay-2000"></div>
-                        <div className="absolute -bottom-8 left-20 w-80 h-80 bg-purple-400/20 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen opacity-70 animate-blob animation-delay-4000"></div>
+                        <div className="absolute -bottom-8 left-20 w-80 h-80 bg-cyan-400/20 rounded-full blur-3xl mix-blend-multiply dark:mix-blend-screen opacity-70 animate-blob animation-delay-4000"></div>
 
                         {/* Interactive Card Mockup */}
                         <div className="relative rounded-2xl border border-white/20 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl shadow-2xl p-6 md:p-10 aspect-square md:aspect-video flex flex-col items-center justify-center group overflow-hidden hover:shadow-blue-500/10 transition-shadow duration-500">
@@ -189,7 +189,7 @@ export function FeaturesSection() {
                 {/* Komitmen Nyata Stats Section */}
                 <div className="mt-24 pt-16 border-t border-slate-200 dark:border-slate-800">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-sky-500 dark:from-blue-400 dark:to-sky-300 mb-4">
+                        <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-200 to-white dark:from-white dark:via-blue-100 dark:to-blue-200 font-heading drop-shadow-sm mb-4">
                             Komitmen Nyata Kami Bantu Bisnis Lebih Maju
                         </h2>
                     </div>

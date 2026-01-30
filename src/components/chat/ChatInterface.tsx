@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import NextImage from 'next/image'; // Import Next.js Image
 import { Sender } from './Sender';
 import { ChatBubble } from './ChatBubble';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { MessageSquarePlus, History, Settings2, PanelRightClose, PanelRightOpen, BarChart2, Code, Mail, Sparkles, Bot, Map, Image, Workflow } from 'lucide-react';
+import { MessageSquarePlus, History, Settings2, PanelRightClose, PanelRightOpen, BarChart2, Code, Mail, Sparkles, Bot, Map, Image as LucideImage, Workflow } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ChatSidebarContent } from './ChatSidebarContent';
@@ -36,7 +37,7 @@ export function ChatInterface() {
     const modes = [
         { id: 'agent', label: 'Agent', icon: Bot },
         { id: 'planning', label: 'Planning', icon: Map },
-        { id: 'images', label: 'Images', icon: Image },
+        { id: 'images', label: 'Images', icon: LucideImage },
         { id: 'workflow', label: 'Workflow', icon: Workflow }
     ];
 
@@ -131,12 +132,9 @@ export function ChatInterface() {
                             </Button>
                             <div className="flex items-center gap-3">
                                 {/* Desktop Logo */}
-                                <div className="hidden md:flex h-9 w-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 items-center justify-center shadow-lg shadow-blue-500/20">
-                                    <Bot className="h-5 w-5 text-white" />
-                                </div>
                                 {/* Mobile Logo (Smaller) */}
-                                <div className="md:hidden h-8 w-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-md">
-                                    <Bot className="h-4 w-4 text-white" />
+                                <div className="md:hidden h-9 w-9 rounded-lg bg-white/40 backdrop-blur-lg border border-white/50 flex items-center justify-center shadow-md">
+                                    <NextImage src="/logo.svg" alt="Elysian" width={20} height={20} className="drop-shadow-sm" />
                                 </div>
                                 <div>
                                     <h2 className="text-sm font-bold text-slate-800 tracking-tight">Elysian Assistant</h2>
@@ -159,10 +157,8 @@ export function ChatInterface() {
 
                                 {/* Hero Greeting */}
                                 <div className="space-y-4 max-w-2xl px-4 mt-8 md:mt-0">
-                                    <div className="h-14 w-14 md:h-16 md:w-16 bg-white rounded-2xl shadow-xl shadow-blue-500/10 flex items-center justify-center mx-auto mb-6 transform hover:scale-105 transition-transform duration-300">
-                                        <div className="h-8 w-8 md:h-10 md:w-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white">
-                                            <MessageSquarePlus className="h-5 w-5 md:h-6 md:w-6" />
-                                        </div>
+                                    <div className="h-20 w-20 bg-white/40 backdrop-blur-2xl border border-white/50 rounded-3xl shadow-2xl flex items-center justify-center mx-auto mb-6 transform hover:scale-105 transition-transform duration-300">
+                                        <NextImage src="/logo.svg" alt="Elysian" width={48} height={48} className="drop-shadow-lg" />
                                     </div>
                                     <h1 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">
                                         Apa yang bisa saya bantu?

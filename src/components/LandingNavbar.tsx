@@ -133,10 +133,10 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                             width={54}
                             height={54}
                             priority
-                            className="relative z-10 scale-100 transform transition-transform group-hover:scale-110"
+                            className="relative z-10 scale-100 transform transition-transform group-hover:scale-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]"
                         />
-                        <span className="font-bold text-xl tracking-wide font-heading bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-600 dark:from-white dark:via-blue-100 dark:to-blue-200 bg-clip-text text-transparent">
-                            ELYSIAN
+                        <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-[#338DB0] to-[#479BBA] dark:from-blue-100 dark:via-blue-200 dark:to-white bg-clip-text text-transparent font-heading drop-shadow-sm transition-all hover:brightness-110">
+                            Elysian
                         </span>
                     </Link>
 

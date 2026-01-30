@@ -293,7 +293,7 @@ export function RegisterCard({ isModal = false }: RegisterCardProps) {
 
                     <Button
                         type="submit"
-                        className="w-full h-12 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98] mt-2"
+                        className="w-full h-12 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-medium shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98] mt-2"
                         disabled={isLoading}
                     >
                         {isLoading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}

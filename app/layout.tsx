@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import '@/styles/globals.css';
 import { Providers } from '@/components/Providers';
 import { APP_NAME, APP_DESCRIPTION } from '@/lib/config';
+import { GhostModeIndicator } from '@/components/admin/GhostModeIndicator';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' });
@@ -29,6 +30,7 @@ export default function RootLayout({
             </head>
             <body className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans`}>
                 <Providers>
+                    <GhostModeIndicator />
                     {children}
                 </Providers>
             </body>
