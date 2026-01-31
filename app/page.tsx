@@ -36,6 +36,8 @@ const FloatingBentoGrid = dynamic(() => import('@/components/FloatingBentoGrid')
 const ElysianSpace = dynamic(() => import('@/components/backgrounds/ElysianSpace').then(mod => mod.ElysianSpace), {
     ssr: false,
 });
+import { CTASection } from '@/components/CTASection';
+
 
 // Eager imports (Above the fold components)
 // import { ProductShowcase } from '@/components/ProductShowcase'; // Converted to dynamic
@@ -64,6 +66,14 @@ export default function ElysianLanding() {
         setShowTerminal(value);
     };
 
+    const [showBackground, setShowBackground] = useState(false);
+
+    useEffect(() => {
+        // Delayed load of heavy background to prioritize TTI
+        const timer = setTimeout(() => setShowBackground(true), 2000);
+        return () => clearTimeout(timer);
+    }, []);
+
     const { theme, setTheme } = useTheme();
     const isLandingDark = theme === 'dark';
     const toggleTheme = () => setTheme(isLandingDark ? 'light' : 'dark');
@@ -87,8 +97,8 @@ export default function ElysianLanding() {
                 toggleTheme={toggleTheme}
             />
 
-            {/* 3D Space Background - Fixed Global Overlay (Dark Mode Only) */}
-            <ElysianSpace />
+            {/* 3D Space Background - Fixed Global Overlay (Dark Mode Only) - Lazy Loaded */}
+            {showBackground && <ElysianSpace />}
 
             {/* Hero Section - Anti-Gravity + Floating Bento (Combined) */}
             <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden elysian-grid-light">
@@ -507,214 +517,8 @@ function UseCasesSection() {
 }
 
 
-// CTA Section - Elysian Style
-function CTASection() {
-    const { t } = useTranslation();
-    const vantaRef = useRef<HTMLDivElement>(null);
+// CTASection moved to dedicated component
 
-    // Use ref to track effect instance without triggering re-renders
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const vantaEffectRef = useRef<any>(null);
-
-    useEffect(() => {
-        let observer: IntersectionObserver;
-
-        const initVanta = async () => {
-            const loadScript = (src: string, id: string) => {
-                return new Promise((resolve, reject) => {
-                    if (document.getElementById(id)) {
-                        resolve(true);
-                        return;
-                    }
-                    const script = document.createElement("script");
-                    script.src = src;
-                    script.id = id;
-                    script.async = true;
-                    script.onload = () => resolve(true);
-                    script.onerror = () => reject(new Error(`Failed to load ${src}`));
-                    document.body.appendChild(script);
-                });
-            };
-
-            try {
-                if (!window.THREE) {
-                    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js", "three-js");
-                }
-
-                // @ts-expect-error - VANTA is loaded from external CDN script
-                if (!window.VANTA || !window.VANTA.CLOUDS) {
-                    await loadScript("https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js", "vanta-clouds");
-                }
-
-                // @ts-expect-error - VANTA global from CDN
-                if (vantaRef.current && window.VANTA && window.VANTA.CLOUDS && !vantaEffectRef.current) {
-                    // @ts-expect-error - VANTA.CLOUDS constructor
-                    vantaEffectRef.current = window.VANTA.CLOUDS({
-                        el: vantaRef.current,
-                        mouseControls: true,
-                        touchControls: true,
-                        gyroControls: false,
-                        minHeight: 200.00,
-                        minWidth: 200.00,
-                        skyColor: 0x47a9d4,
-                        cloudColor: 0x6178a0,
-                        cloudShadowColor: 0x183550,
-                        sunColor: 0xff9919,
-                        sunGlareColor: 0xff6633,
-                        sunlightColor: 0xff9933,
-                        speed: 1.0
-                    });
-                }
-            } catch (error) {
-                console.error("Vanta initialization failed:", error);
-            }
-        };
-
-        if (vantaRef.current) {
-            observer = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) {
-                    initVanta();
-                    observer.disconnect();
-                }
-            }, { rootMargin: '200px' });
-            observer.observe(vantaRef.current);
-        }
-
-        return () => {
-            if (observer) observer.disconnect();
-            if (vantaEffectRef.current) {
-                vantaEffectRef.current.destroy();
-                vantaEffectRef.current = null;
-            }
-        };
-    }, []);
-
-    return (
-        <section className="py-32 relative overflow-hidden">
-
-
-            {/* Ambient Background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white via-blue-50/30 to-white dark:from-slate-950 dark:via-blue-900/10 dark:to-slate-950 pointer-events-none" />
-
-            {/* Animated Blobs */}
-            <motion.div
-                animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.3, 0.5, 0.3]
-                }}
-                transition={{ duration: 10, repeat: Infinity }}
-                className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-blue-400/20 blur-[100px] rounded-full -translate-y-1/2"
-            />
-            <motion.div
-                animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [0.3, 0.5, 0.3]
-                }}
-                transition={{ duration: 15, repeat: Infinity, delay: 2 }}
-                className="absolute top-1/2 right-1/4 w-[500px] h-[500px] bg-cyan-400/20 blur-[100px] rounded-full -translate-y-1/2"
-            />
-
-            <div className="container mx-auto px-4 relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95, y: 30 }}
-                    whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, type: "spring", bounce: 0.2 }}
-                    className="max-w-5xl mx-auto"
-                >
-                    <div className="relative isolate rounded-[3rem] overflow-hidden dark:shadow-2xl dark:ring-1 dark:ring-white/10">
-                        {/* Background: Invisible/White in Light, Dark in Dark */}
-                        <div ref={vantaRef} className="absolute inset-0 z-0 bg-white dark:bg-slate-950/80" />
-
-                        {/* Overlay: Removed for cleaner light mode, subtle in dark */}
-                        <div className="absolute inset-0 dark:bg-slate-900/40 z-10 pointer-events-none" />
-
-                        {/* Inner Gradient Reflection: Dark mode only */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-blue-900/20 opacity-0 dark:opacity-30 z-10 pointer-events-none" />
-
-                        <div className="relative p-12 md:p-24 text-center z-20">
-                            {/* Floating Badge */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.2 }}
-                                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-white/10 border border-slate-200 dark:border-white/20 mb-10 mx-auto shadow-sm"
-                            >
-                                <Sparkles className="w-4 h-4 text-blue-600 dark:text-sky-200 fill-blue-600 dark:fill-sky-200 animate-pulse" />
-                                <span className="text-sm font-bold text-blue-900 dark:text-white tracking-wider uppercase font-heading">{t.landing.cta.badge}</span>
-                            </motion.div>
-
-                            <motion.h2
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.3 }}
-                                className="text-4xl md:text-6xl font-bold mb-8 leading-tight tracking-tight text-slate-900 dark:text-white font-heading"
-                            >
-                                {t.landing.cta.title1} <br />
-                                <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-500 dark:from-sky-200 dark:via-white dark:to-sky-200 bg-clip-text text-transparent drop-shadow-sm">
-                                    {t.landing.cta.title2}
-                                </span>
-                            </motion.h2>
-
-                            <motion.p
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.4 }}
-                                className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 mb-12 max-w-2xl mx-auto leading-relaxed font-medium"
-                            >
-                                {t.landing.cta.description}
-                            </motion.p>
-
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.5 }}
-                                className="flex flex-col sm:flex-row items-center justify-center gap-6"
-                            >
-                                <Link href="/dashboard">
-                                    <motion.button
-                                        whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(96, 165, 250, 0.25)" }}
-                                        whileTap={{ scale: 0.98 }}
-                                        className="h-16 px-10 rounded-full bg-blue-500 text-white font-bold text-lg shadow-xl shadow-blue-400/30 flex items-center gap-3 group relative overflow-hidden"
-                                    >
-                                        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                                        <span>{t.landing.cta.btnStart}</span>
-                                        <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
-                                    </motion.button>
-                                </Link>
-
-                                <motion.button
-                                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.9)" }}
-                                    whileTap={{ scale: 0.98 }}
-                                    className="h-16 px-10 rounded-full bg-white dark:bg-slate-800/70 border-2 border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-bold text-lg hover:border-blue-500 dark:hover:border-blue-400 transition-all shadow-lg flex items-center gap-3"
-                                >
-                                    <span className="relative flex h-3 w-3">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                                    </span>
-                                    {t.landing.cta.btnConsult}
-                                </motion.button>
-                            </motion.div>
-
-                            <motion.p
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                transition={{ delay: 0.7 }}
-                                className="mt-8 text-sm text-slate-500 dark:text-slate-400 font-medium"
-                            >
-                                {t.landing.cta.foot}
-                            </motion.p>
-                        </div>
-                    </div>
-                </motion.div>
-            </div>
-        </section>
-    );
-}
 
 // FAQ Section
 function FAQSection() {

@@ -5,6 +5,8 @@ import { Canvas } from '@react-three/fiber';
 import { Sparkles } from '@react-three/drei';
 import { useTheme } from 'next-themes';
 
+import { useIsMobile } from '@/hooks/useIsMobile';
+
 function ElysianScene() {
     const colors = useMemo(() => ({
         near: '#e0f2fe',     // blue-100 (bright stars)
@@ -23,9 +25,9 @@ function ElysianScene() {
             {/* DEPTH */}
             <fog attach="fog" args={['#020617', 14, 38]} />
 
-            {/* FAR STAR FIELD (tiny + many) */}
+            {/* FAR STAR FIELD (Reduced Count) */}
             <Sparkles
-                count={2000}
+                count={800} // Reduced from 2000
                 scale={[80, 40, 80]}
                 size={0.6}
                 speed={0.02}
@@ -33,9 +35,9 @@ function ElysianScene() {
                 color={colors.far}
             />
 
-            {/* MID STAR FIELD */}
+            {/* MID STAR FIELD (Reduced Count) */}
             <Sparkles
-                count={1200}
+                count={500} // Reduced from 1200
                 scale={[60, 30, 60]}
                 size={0.9}
                 speed={0.05}
@@ -43,9 +45,9 @@ function ElysianScene() {
                 color={colors.mid}
             />
 
-            {/* NEAR STAR FIELD (brighter but still small) */}
+            {/* NEAR STAR FIELD (Reduced Count) */}
             <Sparkles
-                count={700}
+                count={200} // Reduced from 700
                 scale={[40, 20, 40]}
                 size={1.3}
                 speed={0.12}
@@ -55,7 +57,7 @@ function ElysianScene() {
 
             {/* RARE ACCENT STARS (cyan glow) */}
             <Sparkles
-                count={120}
+                count={50} // Reduced from 120
                 scale={[30, 16, 30]}
                 size={1.6}
                 speed={0.18}
@@ -69,6 +71,7 @@ function ElysianScene() {
 export function ElysianSpace() {
     const { theme, resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
+    const isMobile = useIsMobile(); // Use the hook
 
     useEffect(() => setMounted(true), []);
     const isDark = mounted && (resolvedTheme ?? theme) === 'dark';
@@ -94,22 +97,25 @@ export function ElysianSpace() {
             {/* Grain (cinematic) */}
             <div className="absolute inset-0 opacity-[0.05] mix-blend-overlay [background-image:radial-gradient(rgba(255,255,255,0.25)_1px,transparent_1px)] [background-size:3px_3px]" />
 
-            <Canvas
-                camera={{ position: [0, 0, 14], fov: 45 }}
-                dpr={[1, 1.5]}
-                gl={{
-                    antialias: false, // Disabling antialias for significant performance boost
-                    alpha: true,
-                    powerPreference: 'high-performance',
-                    stencil: false,
-                    depth: true
-                }}
-                style={{ position: 'absolute', inset: 0, display: mounted && window.innerWidth < 768 ? 'none' : 'block' }}
-            >
-                <Suspense fallback={null}>
-                    <ElysianScene />
-                </Suspense>
-            </Canvas>
+            {/* Only render Canvas if mounted AND not mobile */}
+            {mounted && !isMobile && (
+                <Canvas
+                    camera={{ position: [0, 0, 14], fov: 45 }}
+                    dpr={[1, 1.5]}
+                    gl={{
+                        antialias: false, // Disabling antialias for significant performance boost
+                        alpha: true,
+                        powerPreference: 'high-performance',
+                        stencil: false,
+                        depth: true
+                    }}
+                    style={{ position: 'absolute', inset: 0 }}
+                >
+                    <Suspense fallback={null}>
+                        <ElysianScene />
+                    </Suspense>
+                </Canvas>
+            )}
         </div>
     );
 }

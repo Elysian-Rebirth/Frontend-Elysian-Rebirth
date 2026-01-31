@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { motion, AnimatePresence, Variants, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ArrowRight, Sun, Moon, Search, Terminal, Monitor, Menu, X, Languages } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useScrollSpy } from '@/hooks/useScrollSpy';
 
 interface LandingNavbarProps {
     showTerminal?: boolean;
@@ -40,40 +41,32 @@ const navItemVariants: Variants = {
 
 export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleTheme }: LandingNavbarProps) {
     const { t, locale, setLocale } = useTranslation();
+
+    // 1. SCROLL DETECTION (No Reflow)
     const [scrolled, setScrolled] = useState(false);
-    const [activeSection, setActiveSection] = useState('');
+    const { scrollY } = useScroll();
+
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        const isScrolled = latest > 20;
+        if (scrolled !== isScrolled) {
+            setScrolled(isScrolled);
+        }
+    });
+
+    // 2. ACTIVE SECTION (Off-Main-Thread Calculation)
+    const activeSection = useScrollSpy(['product', 'solutions', 'use-cases', 'faq'], 100);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const toggleLanguage = () => {
         setLocale(locale === 'id' ? 'en' : 'id');
     };
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
-
-            // Update active section based on scroll position
-            const sections = ['product', 'solutions', 'use-cases', 'faq'];
-            const current = sections.find(section => {
-                const element = document.getElementById(section);
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    return rect.top >= 0 && rect.top <= 300;
-                }
-                return false;
-            });
-            if (current) setActiveSection(current);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
     const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
         e.preventDefault();
         const element = document.getElementById(id);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            setActiveSection(id);
+            // Active section will be updated by observer
             setMobileMenuOpen(false);
         }
     };
@@ -97,55 +90,48 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                 animate={scrolled ? "scrolled" : "initial"}
                 variants={{
                     initial: {
-                        top: 0,
-                        width: "100%",
-                        borderRadius: "0px",
                         backgroundColor: isDark ? "rgba(15, 23, 42, 0)" : "rgba(255, 255, 255, 0)",
-                        borderBottomColor: "rgba(0,0,0,0)",
-                        paddingTop: "24px",
-                        paddingBottom: "24px",
                         backdropFilter: "blur(0px)",
+                        boxShadow: "none",
+                        paddingTop: "12px", // Fixed padding
+                        paddingBottom: "12px", // Fixed padding
                     },
                     scrolled: {
-                        top: 16,
-                        width: "90%",
-                        borderRadius: "9999px",
                         backgroundColor: isDark ? "rgba(15, 23, 42, 0.85)" : "rgba(255, 255, 255, 0.9)",
-                        borderBottomColor: isDark ? "rgba(30, 41, 59, 0.5)" : "rgba(226, 232, 240, 0.8)",
-                        paddingTop: "12px",
-                        paddingBottom: "12px",
                         backdropFilter: "blur(12px)",
                         boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.1)",
+                        paddingTop: "12px", // Keep padding constant
+                        paddingBottom: "12px", // Keep padding constant
                     }
                 }}
-                transition={{ type: "spring", stiffness: 400, damping: 30, mass: 0.8 }}
+                transition={{ duration: 0.2, ease: "easeInOut" }}
                 className={cn(
-                    "fixed left-1/2 -translate-x-1/2 z-50 border border-transparent will-change-[transform,opacity,width,border-radius,background-color,padding]",
-                    scrolled && "border-slate-200/50 dark:border-slate-700/50 md:max-w-5xl"
+                    "fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] md:max-w-6xl rounded-full border border-transparent transition-all",
+                    scrolled ? "border-slate-200/50 dark:border-slate-700/50" : ""
                 )}
             >
-                <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-                    {/* Logo Area */}
-                    <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-3 group cursor-pointer focus:outline-none">
+                <div className="relative w-full h-full px-4 md:px-6 flex items-center justify-between">
+                    {/* Logo Area - Left */}
+                    <Link href="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-2 group cursor-pointer focus:outline-none">
                         <Image
                             src="/logo.svg"
                             alt="Elysian Logo"
-                            width={54}
-                            height={54}
+                            width={40}
+                            height={40}
                             priority
                             className="relative z-10 scale-100 transform transition-transform group-hover:scale-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]"
                         />
-                        <span className="font-bold text-xl tracking-tight bg-gradient-to-r from-[#338DB0] to-[#479BBA] dark:from-blue-100 dark:via-blue-200 dark:to-white bg-clip-text text-transparent font-heading drop-shadow-sm transition-all hover:brightness-110">
+                        <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-[#338DB0] to-[#479BBA] dark:from-blue-100 dark:via-blue-200 dark:to-white bg-clip-text text-transparent font-heading drop-shadow-sm transition-all hover:brightness-110">
                             Elysian
                         </span>
                     </Link>
 
-                    {/* Desktop Navigation - Simple Links */}
+                    {/* Desktop Navigation - Absolute Center */}
                     <motion.nav
                         variants={navContainerVariants}
                         initial="hidden"
                         animate="visible"
-                        className="hidden md:flex items-center gap-1 bg-slate-100/50 dark:bg-slate-800/50 p-1 rounded-full border border-slate-200/50 dark:border-slate-700/50"
+                        className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-1 bg-slate-100/50 dark:bg-slate-800/50 p-1 rounded-full border border-slate-200/50 dark:border-slate-700/50"
                     >
                         {navLinks.map((item) => (
                             <motion.a
@@ -165,12 +151,12 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                         ))}
                     </motion.nav>
 
-                    {/* Right Side Actions */}
+                    {/* Right Side Actions - Right */}
                     <motion.div
                         variants={navContainerVariants}
                         initial="hidden"
                         animate="visible"
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-1.5"
                     >
                         {/* Quick Search - Desktop */}
                         <motion.button
@@ -179,7 +165,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                             className="hidden md:flex p-2 rounded-full text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all font-medium text-xs uppercase"
                             title="Search (Cmd+K)"
                         >
-                            <Search className="w-5 h-5" />
+                            <Search className="w-4 h-4" />
                         </motion.button>
 
                         {/* Language Toggle - Desktop */}
@@ -190,7 +176,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                             title="Switch Language"
                         >
                             <Languages className="w-4 h-4" />
-                            <span>{locale}</span>
+                            <span className="text-[10px] sm:text-xs">{locale}</span>
                         </motion.button>
 
                         {/* Terminal Toggle - Hidden on mobile */}
@@ -206,7 +192,7 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                             title={showTerminal ? "Switch to Visual View" : "Switch to System Console"}
                         >
                             <span className="sr-only">Toggle Terminal</span>
-                            {showTerminal ? <Monitor className="w-5 h-5" /> : <Terminal className="w-5 h-5" />}
+                            {showTerminal ? <Monitor className="w-4 h-4" /> : <Terminal className="w-4 h-4" />}
                         </motion.button>
 
                         {/* Theme Toggle - Hidden on Mobile (moved to sidebar) */}
@@ -215,16 +201,16 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                             onClick={toggleTheme}
                             className="hidden md:flex p-2 rounded-full text-slate-500 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
                         >
-                            {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                         </motion.button>
 
                         {/* Mobile Menu Toggle */}
                         <motion.button
                             variants={navItemVariants}
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                            className="md:hidden p-2 rounded-full text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all focus:outline-none"
+                            className="md:hidden p-2 rounded-full text-slate-500 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all focus:outline-none ml-auto"
                         >
-                            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                         </motion.button>
 
                         {/* Start Free Button - Hidden on mobile */}
@@ -233,11 +219,11 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                                 <Button
                                     className={cn(
                                         "rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white border-0 transition-all shadow-lg shadow-blue-500/20",
-                                        scrolled ? "h-9 px-4 text-sm" : "h-10 px-6 text-base"
+                                        scrolled ? "h-8 px-4 text-xs" : "h-9 px-5 text-sm"
                                     )}
                                 >
                                     <span className="font-semibold">{t.landingNav.actions.startFree || "Mulai Gratis"}</span>
-                                    <ArrowRight className="w-4 h-4 ml-1" />
+                                    <ArrowRight className="w-3.5 h-3.5 ml-1" />
                                 </Button>
                             </Link>
                         </motion.div>

@@ -16,7 +16,7 @@ export default function DashboardLayout({
                 <Sidebar />
             </div>
 
-            <main className="flex-1 flex flex-col min-h-screen relative">
+            <main className="flex-1 flex flex-col min-h-screen relative w-full overflow-x-hidden">
                 {/* Navbar is strictly static here to push content down */}
                 <div className="flex-none">
                     <DashboardNavbar staticMode />

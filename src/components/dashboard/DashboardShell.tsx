@@ -34,7 +34,7 @@ export function DashboardShell({ stats: _initialStats }: { stats: DashboardStats
     return (
         <>
             <OnboardingWidget />
-            <div className="p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto space-y-4 md:space-y-6 lg:space-y-8">
+            <div className="w-full overflow-hidden p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto space-y-4 md:space-y-6 lg:space-y-8">
                 {/* Header */}
                 <div id="dashboard-header" className="pt-2 md:pt-0">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
@@ -49,12 +49,12 @@ export function DashboardShell({ stats: _initialStats }: { stats: DashboardStats
                 {/* Top Section: Charts & Promo */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
                     {/* Left: Chart */}
-                    <div className="lg:col-span-2">
+                    <div className="lg:col-span-2 min-w-0">
                         <TokenUsageChart />
                     </div>
 
                     {/* Right: Widgets */}
-                    <div className="space-y-4 md:space-y-6">
+                    <div className="space-y-4 md:space-y-6 min-w-0">
                         <div className="min-h-[180px] md:min-h-[200px]">
                             <TryElysianWidget />
                         </div>
@@ -72,15 +72,23 @@ export function DashboardShell({ stats: _initialStats }: { stats: DashboardStats
                 />
 
                 {/* Active Pipelines Table */}
-                <div className="rounded-xl border bg-white dark:bg-zinc-900 shadow-sm p-4 md:p-6">
-                    <div className="mb-6">
-                        <h3 className="font-bold text-lg">{t.dashboard.activePipelines}</h3>
+                <div className="rounded-xl border bg-white dark:bg-zinc-900 shadow-sm overflow-hidden">
+                    <div className="p-4 md:p-6">
+                        <div className="mb-6">
+                            <h3 className="font-bold text-lg">{t.dashboard.activePipelines}</h3>
+                        </div>
+                        <div className="w-full overflow-x-auto">
+                            <div className="min-w-[600px]">
+                                <ActivePipelinesList />
+                            </div>
+                        </div>
                     </div>
-                    <ActivePipelinesList />
                 </div>
 
                 {/* Bottom: Business Needs */}
-                <BusinessNeedsSection />
+                <div className="min-w-0">
+                    <BusinessNeedsSection />
+                </div>
             </div>
         </>
     );

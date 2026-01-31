@@ -10,6 +10,7 @@ import { MessageSquarePlus, History, Settings2, PanelRightClose, PanelRightOpen,
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ChatSidebarContent } from './ChatSidebarContent';
+import { useAuthStore } from '@/store/authStore';
 
 interface Message {
     id: string;
@@ -18,18 +19,20 @@ interface Message {
     timestamp: Date;
 }
 
-
-
 export function ChatInterface() {
+    const { user } = useAuthStore();
+    // Fallback name for the mock if user is not logged in, or use "User"
+    const displayName = user?.name?.split(' ')[0] || 'User';
+
     const [messages, setMessages] = useState<Message[]>([]);
     const [selectedMode, setSelectedMode] = useState('agent');
     const [isTyping, setIsTyping] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    // Auto-scroll to bottom
+    // Auto-scroll to bottom only if there are messages
     useEffect(() => {
-        if (scrollRef.current) {
+        if (scrollRef.current && messages.length > 0) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, [messages, isTyping]);
@@ -153,18 +156,25 @@ export function ChatInterface() {
                         className="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 scroll-smooth"
                     >
                         {messages.length === 0 ? (
-                            <div className="h-full flex flex-col items-center justify-center text-center space-y-12 animate-in fade-in slide-in-from-bottom-5 duration-700 fill-mode-forwards pb-20">
+                            <div className="min-h-full flex flex-col items-center justify-start md:justify-center text-center space-y-8 md:space-y-12 animate-in fade-in slide-in-from-bottom-5 duration-700 fill-mode-forwards pb-32 md:pb-20 pt-10 md:pt-0">
 
                                 {/* Hero Greeting */}
-                                <div className="space-y-4 max-w-2xl px-4 mt-8 md:mt-0">
-                                    <div className="h-20 w-20 bg-white/40 backdrop-blur-2xl border border-white/50 rounded-3xl shadow-2xl flex items-center justify-center mx-auto mb-6 transform hover:scale-105 transition-transform duration-300">
-                                        <NextImage src="/logo.svg" alt="Elysian" width={48} height={48} className="drop-shadow-lg" />
+                                <div className="space-y-4 md:space-y-6 max-w-3xl px-4 mt-4 md:mt-0 text-center">
+                                    <div className="h-16 w-16 md:h-24 md:w-24 bg-white/60 backdrop-blur-2xl border border-white/50 rounded-2xl md:rounded-[2rem] shadow-xl flex items-center justify-center mx-auto mb-6 md:mb-8 transform hover:scale-105 transition-transform duration-500">
+                                        <NextImage src="/logo.svg" alt="Elysian" width={56} height={56} className="drop-shadow-sm w-10 h-10 md:w-14 md:h-14" />
                                     </div>
-                                    <h1 className="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">
-                                        Apa yang bisa saya bantu?
-                                    </h1>
-                                    <p className="text-base md:text-lg text-slate-500 max-w-lg mx-auto leading-relaxed">
-                                        Saya siap membantu Anda dengan analisis data, penulisan kode, atau perencanaan strategis.
+
+                                    <div className="space-y-2">
+                                        <h1 className="text-2xl md:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
+                                            Selamat datang, <span className="text-slate-700">{displayName}</span>
+                                        </h1>
+                                        <p className="text-lg md:text-2xl font-medium text-slate-600">
+                                            Ada yang bisa saya bantu hari ini?
+                                        </p>
+                                    </div>
+
+                                    <p className="text-sm md:text-base text-slate-500 max-w-lg mx-auto leading-relaxed pt-2 hidden md:block">
+                                        Saya siap membantu Anda dengan analisis data, penulisan kode, atau perencanaan strategis tingkat enterprise.
                                     </p>
                                 </div>
 

@@ -11,8 +11,10 @@ import * as LucideIcons from 'lucide-react';
 // Icon mapping from string names to Lucide components
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const iconMap: Record<string, any> = {
-    Home: LucideIcons.LayoutDashboard, // More distinct dashboard icon
-    Message: LucideIcons.MessageCircle, // Requested change
+    Home: LucideIcons.LayoutDashboard,
+    dashboard: LucideIcons.LayoutDashboard, // Fix for nav.ts key
+    chat: LucideIcons.Bot, // Fix for nav.ts key
+    Message: LucideIcons.Bot,
     Book: LucideIcons.Book,
     Settings: LucideIcons.Settings,
     Workflow: LucideIcons.Workflow,
@@ -21,6 +23,7 @@ const iconMap: Record<string, any> = {
     Activity: LucideIcons.Activity,
     Users: LucideIcons.Users,
     Database: LucideIcons.Database,
+
 };
 
 export function NavigationMenu() {

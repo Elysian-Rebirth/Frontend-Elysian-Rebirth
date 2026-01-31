@@ -1,179 +1,125 @@
 'use client';
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
+import { Menu, LogOut, Settings, User as UserIcon, X, Shield, HelpCircle } from 'lucide-react';
+import { NavigationMenu } from '@/components/NavigationMenu';
 import Image from 'next/image';
-import {
-    Menu,
-    Home,
-    MessageSquare,
-    BookOpen,
-    FileText,
-    GitMerge,
-    Settings,
-    Search,
-    LogOut,
-    Sparkles,
-    Cloud,
-    User
-} from 'lucide-react';
+import Link from 'next/link';
+import { useSidebar } from '@/contexts/SidebarContext';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
+import { GettingStartedWidget } from '@/components/GettingStartedWidget';
 
-const dashboardItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: Home },
-    { href: '/chat', label: 'Chat Assistant', icon: MessageSquare },
-    { href: '/knowledge', label: 'Knowledge Base', icon: BookOpen },
-    { href: '/editor', label: 'Smart Editor', icon: FileText },
-    { href: '/workflow', label: 'Workflow', icon: GitMerge },
-    { href: '/settings', label: 'Settings', icon: Settings },
-];
-
-const landingItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: Home },
-    { href: '/#features', label: 'Produk & Fitur', icon: FileText },
-    { href: '/#solutions', label: 'Solusi AI', icon: Sparkles }, // Zap replaced by Sparkles for consistency
-    { href: '#', label: 'Peringatan', icon: Menu }, // Bell/Menu placeholder
-    { href: '#', label: 'Bantuan', icon: Cloud }, // LifeBuoy placeholder
-];
-
-interface MobileSidebarProps {
-    variant?: 'dashboard' | 'landing';
-}
-
-export function MobileSidebar({ variant = 'dashboard' }: MobileSidebarProps) {
-    const pathname = usePathname();
-    const [isOpen, setIsOpen] = useState(false);
-
-    const items = variant === 'landing' ? landingItems : dashboardItems;
+export function MobileSidebar() {
+    // Kita gunakan context untuk state sidebar agar sinkron
+    const { isMobileOpen, setMobileOpen } = useSidebar();
 
     return (
-        <div className="md:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                {/* Embedded Hamburger Button */}
-                <SheetTrigger asChild>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="mr-2 bg-transparent hover:bg-slate-100 text-slate-600 rounded-lg transition-all"
-                    >
-                        <Menu className="h-6 w-6" />
-                    </Button>
-                </SheetTrigger>
+        <Sheet open={isMobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden text-slate-500 hover:text-blue-600 hover:bg-blue-50">
+                    <Menu className="h-6 w-6" />
+                </Button>
+            </SheetTrigger>
 
-                {/* Sidebar Content (Elysian Liquid Glass) */}
-                <SheetContent
-                    side="left"
-                    className="w-[85vw] max-w-[320px] p-0 border-none bg-transparent shadow-2xl"
-                    onOpenAutoFocus={(e) => e.preventDefault()}
-                >
-                    <div className="relative flex flex-col h-full overflow-hidden bg-white/80 backdrop-blur-2xl border-r border-white/40 rounded-r-3xl">
+            {/* THE ELYSIAN GLASS CONTAINER */}
+            <SheetContent side="left" className="w-[270px] sm:w-[300px] p-0 border-r border-white/20 shadow-2xl bg-gradient-to-b from-sky-50/80 via-white/90 to-blue-50/80 dark:from-slate-900/90 dark:via-slate-950/90 dark:to-slate-950/90 backdrop-blur-xl [&>button]:hidden data-[state=open]:duration-600 data-[state=open]:ease-in-out will-change-transform">
 
-                        {/* Background Textures (Clouds/Waves) */}
-                        <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
-                            <Image
-                                src="/elysian_banner_waves.png"
-                                alt="Background Pattern"
-                                fill
-                                className="object-cover object-left-top mix-blend-overlay"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-b from-blue-100/30 via-white/50 to-white/80" />
+                {/* 1. AMBIENT BACKGROUND (The "Elysian Soul") */}
+                <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <div className="absolute top-[-10%] left-[-20%] w-64 h-64 bg-blue-400/20 rounded-full blur-[80px]" />
+                    <div className="absolute bottom-[-10%] right-[-20%] w-64 h-64 bg-cyan-400/20 rounded-full blur-[80px]" />
+                </div>
+
+                <div className="relative z-10 flex flex-col h-full">
+                    {/* 2. HEADER: Brand Identity */}
+                    <div className="p-6 pb-4 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="relative">
+                                <div className="absolute inset-0 bg-blue-400 blur-lg opacity-20 rounded-full" />
+                                <Image
+                                    src="/logo.svg"
+                                    alt="Elysian"
+                                    width={42}
+                                    height={42}
+                                    className="relative z-10"
+                                />
+                            </div>
+                            <div>
+                                <h2 className="font-bold text-xl tracking-tight bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent font-heading">
+                                    Elysian
+                                </h2>
+                                <p className="text-[10px] text-slate-500 font-medium tracking-wider uppercase">Dashboard</p>
+                            </div>
+                        </div>
+                        {/* Close Button yang lebih elegan */}
+                        <div
+                            onClick={() => setMobileOpen(false)}
+                            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 transition-colors cursor-pointer"
+                        >
+                            <X className="w-5 h-5" />
+                        </div>
+                    </div>
+
+                    <Separator className="bg-gradient-to-r from-transparent via-blue-100 to-transparent dark:via-slate-800 opacity-50" />
+
+                    {/* 3. NAVIGATION AREA - Scrollable including Widgets */}
+                    <div className="flex-1 overflow-y-auto py-6 px-4 space-y-6 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-700">
+                        {/* Getting Started Widget */}
+                        <GettingStartedWidget />
+
+                        {/* Main Menu */}
+                        <div className="space-y-1">
+                            <NavigationMenu />
                         </div>
 
-                        {/* Content Container */}
-                        <div className="relative z-10 flex flex-col h-full">
+                        {/* WIDGETS SECTION (Restored & Styled) */}
+                        <div className="space-y-2 pt-1">
+                            {/* Admin Panel */}
+                            <Link href="/admin" onClick={() => setMobileOpen(false)} className='block'>
+                                <Button variant="outline" className="w-full justify-start gap-2 bg-gradient-to-r from-sky-50 to-white/60 hover:from-sky-100 hover:to-sky-50 border-sky-200 text-sky-700 h-9 rounded-lg text-sm font-semibold shadow-sm">
+                                    <Shield className="h-4 w-4 text-sky-500" />
+                                    Admin Panel
+                                </Button>
+                            </Link>
 
-                            {/* Header */}
-                            <div className="px-6 pt-10 pb-6">
-                                <div className="flex items-center gap-3 mb-1">
-                                    <Image src="/logo.svg" alt="Elysian Logo" width={54} height={54} className="scale-100 drop-shadow-md" />
-                                    <div>
-                                        <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#338DB0] to-[#479BBA] dark:from-blue-100 dark:via-blue-200 dark:to-white font-heading drop-shadow-sm">
-                                            Elysian
-                                        </h2>
-                                        <p className="text-[10px] text-blue-300 font-semibold tracking-wide uppercase">Enterprise Platform</p>
-                                    </div>
+                            {/* Help Button */}
+                            <Link href="/help" onClick={() => setMobileOpen(false)} className='block'>
+                                <Button variant="outline" className="w-full justify-start gap-2 bg-blue-50/50 hover:bg-blue-100 border-blue-200 text-blue-700 h-9 rounded-lg text-sm font-semibold shadow-sm">
+                                    <HelpCircle className="h-4 w-4" />
+                                    Bantuan
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* 4. FOOTER: User Profile Card */}
+                    <div className="p-4 mt-auto z-20 pb-24">
+                        <div className="rounded-2xl bg-gradient-to-br from-white/60 to-white/30 dark:from-slate-800/60 dark:to-slate-900/30 border border-white/50 dark:border-slate-700 shadow-lg backdrop-blur-md p-4 group hover:border-blue-200 transition-all duration-300">
+                            <div className="flex items-center gap-3 mb-3">
+                                <Avatar className="h-10 w-10 border-2 border-white dark:border-slate-700 shadow-sm">
+                                    <AvatarImage src="https://github.com/shadcn.png" />
+                                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-400 text-white">AD</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-blue-600 transition-colors">
+                                        Admin User
+                                    </p>
+                                    <p className="text-xs text-slate-500 truncate">admin@elysian.ai</p>
                                 </div>
                             </div>
 
-                            {/* Search Bar */}
-                            <div className="px-6 mb-6">
-                                <div className="relative group">
-                                    <div className="absolute inset-0 bg-blue-400/10 rounded-2xl blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
-                                    <div className="relative flex items-center bg-white/60 border border-blue-100 rounded-2xl px-4 py-3 shadow-sm focus-within:ring-2 focus-within:ring-blue-200 focus-within:border-blue-300 transition-all">
-                                        <Search className="h-4 w-4 text-blue-400 mr-3" />
-                                        <input
-                                            type="text"
-                                            placeholder="Cari fitur..."
-                                            className="bg-transparent border-none outline-none text-sm text-slate-700 placeholder-blue-300/70 w-full font-medium"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Navigation Links */}
-                            <div className="flex-1 overflow-y-auto px-4 space-y-2 pb-4 scrollbar-hide">
-                                {items.map((item) => {
-                                    const isActive = pathname === item.href;
-                                    return (
-                                        <Link
-                                            key={item.label}
-                                            href={item.href}
-                                            onClick={() => setIsOpen(false)}
-                                            className={`relative overflow-hidden flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 group ${isActive
-                                                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
-                                                : 'text-slate-500 hover:bg-blue-50 hover:text-blue-600'
-                                                }`}
-                                        >
-                                            {/* Active background shine */}
-                                            {isActive && (
-                                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] animate-shimmer" />
-                                            )}
-
-                                            <item.icon className={`h-5 w-5 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-blue-500'}`} />
-                                            <span className={`font-medium text-sm ${isActive ? 'font-semibold tracking-wide' : ''}`}>
-                                                {item.label}
-                                            </span>
-                                        </Link>
-                                    );
-                                })}
-                            </div>
-
-                            {/* Footer Profile or Login */}
-                            <div className="p-6 mt-auto">
-                                {variant === 'landing' ? (
-                                    <div className="space-y-3">
-                                        <Link href="/login" onClick={() => setIsOpen(false)}>
-                                            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 rounded-xl py-6">
-                                                <User className="mr-2 h-4 w-4" /> Masuk Akun
-                                            </Button>
-                                        </Link>
-                                        <div className="bg-white/60 backdrop-blur-md border border-white/50 rounded-2xl p-4 shadow-sm text-center">
-                                            <p className="text-xs text-slate-500">Belum punya akun? <Link href="/register" className="text-blue-600 font-bold hover:underline" onClick={() => setIsOpen(false)}>Daftar</Link></p>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="bg-white/60 backdrop-blur-md border border-white/50 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
-                                        <div className="flex items-center gap-3">
-                                            <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-blue-100 to-white border-2 border-white shadow-sm flex items-center justify-center">
-                                                <span className="font-bold text-blue-600 text-xs">AD</span>
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <h4 className="text-sm font-bold text-slate-800 truncate">Admin User</h4>
-                                                <p className="text-xs text-slate-500 truncate">admin@elysian.ai</p>
-                                            </div>
-                                            <Button size="icon" variant="ghost" className="h-8 w-8 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg">
-                                                <LogOut className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                    </div>
-                                )}
+                            <div className="mt-3">
+                                <Button variant="outline" size="sm" className="w-full h-8 text-xs border-slate-200 bg-white/50 hover:bg-red-50 hover:text-red-600 hover:border-red-200 transition-all">
+                                    <LogOut className="w-3.5 h-3.5 mr-1.5" />
+                                    Logout
+                                </Button>
                             </div>
                         </div>
                     </div>
-                </SheetContent>
-            </Sheet>
-        </div>
+                </div>
+            </SheetContent>
+        </Sheet>
     );
 }
