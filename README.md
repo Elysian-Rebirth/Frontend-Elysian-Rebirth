@@ -1,4 +1,4 @@
-🌌 Elysian Rebirth 
+Frontend  Elysian Rebirth 
 
 Algorithm: Intelligent Document Processing (IDP) & RAG Platform Frontend
 
