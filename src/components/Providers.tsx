@@ -34,8 +34,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <QueryProvider>
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme="system"
-                    enableSystem
+                    defaultTheme={isLandingPage ? 'system' : 'light'}
+                    enableSystem={isLandingPage}
                     disableTransitionOnChange
                     storageKey={isLandingPage ? 'landing-theme' : 'elysian-theme'}
                 >
