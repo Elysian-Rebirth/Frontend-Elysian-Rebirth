@@ -7,7 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { User, Smartphone, Save, Shield } from 'lucide-react';
+
+import Link from 'next/link';
+import { ChevronLeft, User, Smartphone, Save, Shield } from 'lucide-react';
 
 // Mock User Data Interface
 interface UserProfile {
@@ -71,8 +73,11 @@ export default function ProfilePage() {
         <div className="max-w-7xl mx-auto md:mx-0">
 
             {/* Header (Back Button on Mobile) */}
-            <div className="flex items-center gap-4 md:hidden mb-4">
-                {/* Back button logic would go here if not handled by layout */}
+            <div className="flex items-center gap-4 md:hidden mb-6">
+                <Link href="/dashboard" className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors">
+                    <ChevronLeft className="w-5 h-5" />
+                    <span className="text-sm font-medium">Back to Dashboard</span>
+                </Link>
             </div>
 
             {/* 3-Column Layout: [Sidebar (handled by layout)] [Main Content] [Context Panel] */}
@@ -201,15 +206,15 @@ export default function ProfilePage() {
                             <p className="text-xs text-slate-500 mt-1">This is how your profile looks to others.</p>
                         </div>
 
-                        {/* Glassmorphism Card */}
-                        <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-[2rem] p-1 shadow-2xl">
-                            <div className="bg-white/95 dark:bg-slate-900/95 backdrop-blur-3xl rounded-[1.8rem] p-6 text-center h-full relative overflow-hidden">
-                                {/* Decor */}
-                                <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-blue-50/50 to-transparent dark:from-blue-900/20 pointer-events-none" />
+                        {/* Static Professional Card */}
+                        <div className="border border-slate-200 dark:border-slate-700 rounded-[1.5rem] p-1 bg-white dark:bg-slate-900 shadow-sm">
+                            <div className="bg-slate-50 dark:bg-slate-900/50 rounded-[1.3rem] p-6 text-center h-full relative overflow-hidden">
+                                {/* Decor - Static & Subtle */}
+                                <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-blue-100/50 to-transparent dark:from-blue-900/20 pointer-events-none" />
 
                                 <div className="relative">
-                                    <div className="mx-auto w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-blue-500 to-purple-500 mb-4 shadow-lg">
-                                        <Avatar className="w-full h-full border-4 border-white dark:border-slate-900">
+                                    <div className="mx-auto w-24 h-24 rounded-full p-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mb-4 shadow-sm">
+                                        <Avatar className="w-full h-full">
                                             <AvatarImage src={formData.avatar || ''} className="object-cover" />
                                             <AvatarFallback className="bg-slate-100 text-2xl">{formData.name?.charAt(0) || 'U'}</AvatarFallback>
                                         </Avatar>
@@ -226,10 +231,10 @@ export default function ProfilePage() {
                                 </div>
 
                                 <div className="mt-6 flex justify-center gap-3">
-                                    <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:scale-110 transition-transform cursor-pointer">
+                                    <div className="h-8 w-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400">
                                         <Smartphone className="w-4 h-4" />
                                     </div>
-                                    <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:scale-110 transition-transform cursor-pointer">
+                                    <div className="h-8 w-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500 dark:text-slate-400">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
                                     </div>
                                 </div>
