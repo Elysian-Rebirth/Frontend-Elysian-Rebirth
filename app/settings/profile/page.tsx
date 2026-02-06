@@ -218,9 +218,11 @@ export default function ProfilePage() {
                                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">{formData.name || 'Your Name'}</h3>
                                     <p className="text-sm text-blue-600 font-medium mb-4">Product Manager</p>
 
-                                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-4 italic">
-                                        &quot;{formData.bio || 'No bio yet...'}&quot;
-                                    </p>
+                                    <div className="max-w-[200px] mx-auto">
+                                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-4 italic">
+                                            &quot;{formData.bio || 'No bio yet...'}&quot;
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <div className="mt-6 flex justify-center gap-3">
