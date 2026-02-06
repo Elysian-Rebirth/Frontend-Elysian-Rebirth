@@ -245,85 +245,84 @@ export const translationsZH: TranslationKeys = {
             btnConsult: '团队咨询',
             foot: '无需信用卡。随时取消。'
         },
-    },
-    collaboration: {
-        badge: '增强您的工作流程',
-        title1: '团队协作',
-        title2: '无界限。',
-        description: '一个统一的平台，整合创意、执行和结果。告别孤岛，开启正确的协作方式。',
-        cards: {
-            project: {
-                title: '项目管理',
-                desc: '在一个直观的可视化仪表板中整合里程碑、任务和截止日期。'
-            },
-            updates: {
-                title: '状态更新',
-                desc: '自动化进度报告。通过异步更新节省会议时间。'
-            },
-            workflow: {
-                title: 'AI 工作流编排',
-                desc: '可视化设计和自动化智能 AI 代理。无限制连接逻辑路由器、推理引擎和知识库。',
-                cta: '试用工作流'
+        collaboration: {
+            badge: '增强您的工作流程',
+            title1: '团队协作',
+            title2: '无界限。',
+            description: '一个统一的平台，整合创意、执行和结果。告别孤岛，开启正确的协作方式。',
+            cards: {
+                project: {
+                    title: '项目管理',
+                    desc: '在一个直观的可视化仪表板中整合里程碑、任务和截止日期。'
+                },
+                updates: {
+                    title: '状态更新',
+                    desc: '自动化进度报告。通过异步更新节省会议时间。'
+                },
+                workflow: {
+                    title: 'AI 工作流编排',
+                    desc: '可视化设计和自动化智能 AI 代理。无限制连接逻辑路由器、推理引擎和知识库。',
+                    cta: '试用工作流'
+                }
             }
+        },
+        faq: {
+            title: '常见问题',
+            subtitle: '为您答疑解惑',
+            q1: '我的业务数据安全吗？',
+            a1: '非常安全。我们使用银行级加密（AES-256），并为每个客户提供隔离的服务环境。',
+            q2: '可以与 WhatsApp 集成吗？',
+            a2: '可以！Elysian 拥有官方 WhatsApp Business API 集成功能，支持自动回复和订单管理。',
+            q3: '有使用培训吗？',
+            a3: '我们为高级套餐提供完整的视频教程和一对一入职培训。',
+            q4: '如果我想停止使用怎么办？',
+            a4: '您可以随时取消订阅。您的数据可以完全导出。'
+        },
+        cta_section: {
+            title1: '第一步',
+            title2: '助力业务增长',
+            description: '从中小型企业到大型企业，每个人都可以享受 Elysian 带来的业务便利。',
+            btn: '立即尝试'
+        },
+        footer: {
+            description: '印尼领先的智能运营助手，致力于帮助中小企业。我们将先进的人工智能相结合，以自动化流程、提供深刻见解并推动您的业务增长。',
+            solutions: {
+                title: '商业解决方案',
+                items: {
+                    docs: '文档自动化',
+                    finance: 'AI 财务分析',
+                    inventory: '库存管理',
+                    trends: '市场趋势预测',
+                    erp: 'ERP 集成'
+                }
+            },
+            support: {
+                title: '支持',
+                items: {
+                    help: '帮助中心',
+                    community: '社区论坛',
+                    status: '服务状态',
+                    contact: '联系我们'
+                }
+            },
+            company: {
+                title: '公司',
+                items: {
+                    about: '关于我们',
+                    blog: '博客',
+                    careers: '职业生涯',
+                    brand: '品牌指南'
+                }
+            },
+            legal: {
+                title: '法律',
+                items: {
+                    privacy: '隐私政策',
+                    terms: '服务条款',
+                    security: '安全'
+                }
+            },
+            copyright: '© 2024 Elysian. 保留所有权利。'
         }
-    },
-    faq: {
-        title: '常见问题',
-        subtitle: '为您答疑解惑',
-        q1: '我的业务数据安全吗？',
-        a1: '非常安全。我们使用银行级加密（AES-256），并为每个客户提供隔离的服务环境。',
-        q2: '可以与 WhatsApp 集成吗？',
-        a2: '可以！Elysian 拥有官方 WhatsApp Business API 集成功能，支持自动回复和订单管理。',
-        q3: '有使用培训吗？',
-        a3: '我们为高级套餐提供完整的视频教程和一对一入职培训。',
-        q4: '如果我想停止使用怎么办？',
-        a4: '您可以随时取消订阅。您的数据可以完全导出。'
-    },
-    cta_section: {
-        title1: '第一步',
-        title2: '助力业务增长',
-        description: '从中小型企业到大型企业，每个人都可以享受 Elysian 带来的业务便利。',
-        btn: '立即尝试'
-    },
-    footer: {
-        description: '印尼领先的智能运营助手，致力于帮助中小企业。我们将先进的人工智能相结合，以自动化流程、提供深刻见解并推动您的业务增长。',
-        solutions: {
-            title: '商业解决方案',
-            items: {
-                docs: '文档自动化',
-                finance: 'AI 财务分析',
-                inventory: '库存管理',
-                trends: '市场趋势预测',
-                erp: 'ERP 集成'
-            }
-        },
-        support: {
-            title: '支持',
-            items: {
-                help: '帮助中心',
-                community: '社区论坛',
-                status: '服务状态',
-                contact: '联系我们'
-            }
-        },
-        company: {
-            title: '公司',
-            items: {
-                about: '关于我们',
-                blog: '博客',
-                careers: '职业生涯',
-                brand: '品牌指南'
-            }
-        },
-        legal: {
-            title: '法律',
-            items: {
-                privacy: '隐私政策',
-                terms: '服务条款',
-                security: '安全'
-            }
-        },
-        copyright: '© 2024 Elysian. 保留所有权利。'
     }
-}
 };
