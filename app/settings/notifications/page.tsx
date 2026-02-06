@@ -142,7 +142,7 @@ export default function NotificationsPage() {
                 <div className="w-full lg:w-[320px] flex-shrink-0 space-y-6">
                     <div className="sticky top-6 space-y-4">
                         {/* Summary Card */}
-                        <div className="bg-white dark:bg-slate-900/50 p-6 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
+                        <div className="bg-white dark:bg-slate-900 p-6 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Summary</h3>
                             <div className="flex items-center justify-between mb-2">
                                 <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Active Channels</span>

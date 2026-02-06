@@ -91,7 +91,7 @@ export default function ProfilePage() {
                         <p className="text-sm text-slate-500 mt-1">Update your personal details that will be displayed on your public profile.</p>
                     </div>
 
-                    <div className="bg-white dark:bg-slate-900/50 p-0 md:p-8 md:border md:border-slate-200 md:dark:border-slate-800 md:rounded-2xl md:shadow-sm">
+                    <div className="bg-white dark:bg-slate-900 p-0 md:p-8 md:border md:border-slate-200 md:dark:border-slate-800 md:rounded-2xl md:shadow-sm">
                         {/* Compact Avatar Row for Layout Efficiency */}
                         <div className="flex items-center gap-6 mb-8 pb-8 border-b border-slate-100 dark:border-slate-800">
                             <Avatar className="h-20 w-20 border-2 border-slate-100 dark:border-slate-700">
@@ -208,7 +208,7 @@ export default function ProfilePage() {
 
                         {/* Static Professional Card */}
                         <div className="border border-slate-200 dark:border-slate-700 rounded-[1.5rem] p-1 bg-white dark:bg-slate-900 shadow-sm">
-                            <div className="bg-slate-50 dark:bg-slate-900/50 rounded-[1.3rem] p-6 text-center h-full relative overflow-hidden">
+                            <div className="bg-slate-50 dark:bg-slate-900 rounded-[1.3rem] p-6 text-center h-full relative overflow-hidden">
                                 {/* Decor - Static & Subtle */}
                                 <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-blue-100/50 to-transparent dark:from-blue-900/20 pointer-events-none" />
 
@@ -242,7 +242,7 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-                    <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                    <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
                         <h4 className="text-xs font-bold text-slate-500 uppercase mb-2">Completion</h4>
                         <div className="flex items-center gap-3 mb-1">
                             <div className="flex-1 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
