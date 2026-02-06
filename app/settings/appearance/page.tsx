@@ -20,11 +20,11 @@ export default function AppearancePage() {
     if (!mounted) return null;
 
     return (
-        <div className="bg-slate-50 dark:bg-[#101622] min-h-screen flex justify-center text-[#111318] dark:text-white">
-            <div className="relative w-full max-w-md mx-auto bg-white dark:bg-[#101622] flex flex-col min-h-screen shadow-2xl overflow-hidden">
+        <div className="min-h-screen flex justify-center text-[#111318] dark:text-white p-4">
+            <div className="relative w-full max-w-md mx-auto bg-white/60 dark:bg-[#101622]/60 backdrop-blur-xl border border-white/20 dark:border-white/10 flex flex-col min-h-screen shadow-2xl overflow-hidden rounded-3xl">
 
                 {/* Header */}
-                <div className="sticky top-0 z-50 bg-white/80 dark:bg-[#101622]/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+                <div className="sticky top-0 z-50 bg-white/40 dark:bg-[#101622]/40 backdrop-blur-md border-b border-white/20 dark:border-white/5">
                     <div className="flex items-center justify-between px-4 py-4">
                         <Link href="/settings" className="flex items-center justify-center p-2 -ml-2 text-[#111318] dark:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                             <ChevronLeft className="w-6 h-6" />
