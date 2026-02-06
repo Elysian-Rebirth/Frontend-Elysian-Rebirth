@@ -19,15 +19,8 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
     return (
         <>
             {/* Settings Background */}
-            <div className="fixed inset-0 z-[-1]">
-                <img
-                    src="/dashboard-bg.png"
-                    alt="Background"
-                    className="w-full h-full object-cover opacity-75 dark:opacity-40 pointer-events-none"
-                />
-                {/* Elegant Blue Gradient Overlay - Allows sky/birds to be seen at top */}
-                <div className="absolute inset-0 bg-gradient-to-b from-blue-100/20 via-white/70 to-white/95 dark:from-blue-950/30 dark:via-slate-950/70 dark:to-slate-950/95 backdrop-blur-[1px]" />
-            </div>
+            {/* Settings Background - Pastel Grid */}
+            <div className="fixed inset-0 z-[-1] bg-white dark:bg-slate-950 elysian-grid-settings pointer-events-none" />
 
             <div className="container max-w-6xl mx-auto py-8 space-y-8 px-4 md:px-6 relative">
                 <div>

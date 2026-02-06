@@ -139,12 +139,24 @@
         --background: 222 47% 11%;
     }
 
-    /* SaaS Grid for Light Mode - Professional Blueprint Look */
     .elysian-grid-light {
-        background-size: 40px 40px;
+        background-size: 20px 20px;
         background-image:
-            linear-gradient(to right, rgba(15, 23, 42, 0.1) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(15, 23, 42, 0.1) 1px, transparent 1px);
+            linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    }
+
+    .elysian-grid-settings {
+        background-size: 24px 24px;
+        background-image:
+            linear-gradient(to right, rgba(59, 130, 246, 0.08) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+    }
+
+    .dark .elysian-grid-settings {
+        background-image:
+            linear-gradient(to right, rgba(147, 197, 253, 0.08) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(147, 197, 253, 0.08) 1px, transparent 1px);
     }
 
     .dark .elysian-grid-light {
