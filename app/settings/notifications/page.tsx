@@ -151,29 +151,28 @@ export default function NotificationsPage() {
                             <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                                 <div className="h-full bg-blue-500 w-full rounded-full" />
                             </div>
-                            <p className="text-xs text-slate-500 mt-4 leading-relaxed">
-                                You are receiving all types of notifications. You might want to disable "Weekly Reports" to reduce inbox clutter.
-                            </p>
-                        </div>
+                            You are receiving all types of notifications. You might want to disable &quot;Weekly Reports&quot; to reduce inbox clutter.
+                        </p>
+                    </div>
 
-                        {/* Quick Actions */}
-                        <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
-                            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Quick Actions</h3>
-                            <div className="space-y-2">
-                                <Button variant="outline" size="sm" className="w-full justify-start text-xs h-9 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
-                                    <span className="w-2 h-2 rounded-full bg-slate-400 mr-2" />
-                                    Pause all for 1 hour
-                                </Button>
-                                <Button variant="outline" size="sm" className="w-full justify-start text-xs h-9 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
-                                    <span className="w-2 h-2 rounded-full bg-slate-400 mr-2" />
-                                    Mute Team Mentions
-                                </Button>
-                            </div>
+                    {/* Quick Actions */}
+                    <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+                        <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Quick Actions</h3>
+                        <div className="space-y-2">
+                            <Button variant="outline" size="sm" className="w-full justify-start text-xs h-9 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+                                <span className="w-2 h-2 rounded-full bg-slate-400 mr-2" />
+                                Pause all for 1 hour
+                            </Button>
+                            <Button variant="outline" size="sm" className="w-full justify-start text-xs h-9 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+                                <span className="w-2 h-2 rounded-full bg-slate-400 mr-2" />
+                                Mute Team Mentions
+                            </Button>
                         </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
+        </div >
     );
 }

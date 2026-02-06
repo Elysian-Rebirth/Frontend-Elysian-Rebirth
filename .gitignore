@@ -35,3 +35,7 @@ yarn-error.log*
 
 *storybook.log
 storybook-static
+
+# Backend
+backend-go/
+backend-go

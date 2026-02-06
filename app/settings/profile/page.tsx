@@ -218,38 +218,37 @@ export default function ProfilePage() {
                                     <h3 className="text-lg font-bold text-slate-900 dark:text-white">{formData.name || 'Your Name'}</h3>
                                     <p className="text-sm text-blue-600 font-medium mb-4">Product Manager</p>
 
-                                    <div className="max-w-[200px] mx-auto">
-                                        <p className="text-xs text-slate-500 leading-relaxed line-clamp-4 italic">
-                                            "{formData.bio || 'No bio yet...'}"
-                                        </p>
-                                    </div>
+                                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-4 italic">
+                                        &quot;{formData.bio || 'No bio yet...'}&quot;
+                                    </p>
+                                </div>
 
-                                    <div className="mt-6 flex justify-center gap-3">
-                                        <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:scale-110 transition-transform cursor-pointer">
-                                            <Smartphone className="w-4 h-4" />
-                                        </div>
-                                        <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:scale-110 transition-transform cursor-pointer">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
-                                        </div>
+                                <div className="mt-6 flex justify-center gap-3">
+                                    <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:scale-110 transition-transform cursor-pointer">
+                                        <Smartphone className="w-4 h-4" />
+                                    </div>
+                                    <div className="h-8 w-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:scale-110 transition-transform cursor-pointer">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-mail"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
-                            <h4 className="text-xs font-bold text-slate-500 uppercase mb-2">Completion</h4>
-                            <div className="flex items-center gap-3 mb-1">
-                                <div className="flex-1 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                                    <div className="h-full w-[85%] bg-green-500 rounded-full" />
-                                </div>
-                                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">85%</span>
-                            </div>
-                            <p className="text-[10px] text-slate-400">Add a profile cover to reach 100%</p>
                         </div>
                     </div>
-                </div>
 
+                    <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
+                        <h4 className="text-xs font-bold text-slate-500 uppercase mb-2">Completion</h4>
+                        <div className="flex items-center gap-3 mb-1">
+                            <div className="flex-1 h-2 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div className="h-full w-[85%] bg-green-500 rounded-full" />
+                            </div>
+                            <span className="text-xs font-bold text-slate-700 dark:text-slate-300">85%</span>
+                        </div>
+                        <p className="text-[10px] text-slate-400">Add a profile cover to reach 100%</p>
+                    </div>
+                </div>
             </div>
+
         </div>
+        </div >
     );
 }
