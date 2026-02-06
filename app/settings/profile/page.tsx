@@ -72,13 +72,7 @@ export default function ProfilePage() {
     return (
         <div className="max-w-7xl mx-auto md:mx-0">
 
-            {/* Header (Back Button on Mobile) */}
-            <div className="flex items-center gap-4 md:hidden mb-6">
-                <Link href="/dashboard" className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors">
-                    <ChevronLeft className="w-5 h-5" />
-                    <span className="text-sm font-medium">Back to Dashboard</span>
-                </Link>
-            </div>
+            {/* Header (Back Button handled globally in layout) */}
 
             {/* 3-Column Layout: [Sidebar (handled by layout)] [Main Content] [Context Panel] */}
             <div className="flex flex-col-reverse lg:flex-row gap-8">

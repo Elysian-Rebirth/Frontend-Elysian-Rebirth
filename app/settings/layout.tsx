@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { User, Lock, Bell, Palette } from 'lucide-react';
+import { User, Lock, Bell, Palette, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+
 
 const sidebarItems = [
     { href: '/settings/profile', title: 'Profil', icon: User },
@@ -80,6 +81,14 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                                 </Link>
                             ))}
                         </div>
+                    </div>
+
+                    {/* Mobile Back to Dashboard (Global) */}
+                    <div className="md:hidden">
+                        <Link href="/dashboard" className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors">
+                            <ChevronLeft className="w-5 h-5" />
+                            <span className="text-sm font-medium">Back to Dashboard</span>
+                        </Link>
                     </div>
 
                     {/* Dynamic Content Area (Will house the 2-column Main+Context) */}
