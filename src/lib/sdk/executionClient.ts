@@ -27,16 +27,16 @@ export interface ExecutionDetails {
 export const executionClient = {
     start: async (workflowId: string): Promise<ExecutionResponse> => {
         const response = await http.post<ExecutionResponse>(`/workflows/${workflowId}/execute`, {});
-        return response.data;
+        return response;
     },
 
     get: async (executionId: string): Promise<ExecutionDetails> => {
         const response = await http.get<{ data: ExecutionDetails }>(`/executions/${executionId}`);
-        return response.data.data;
+        return response.data;
     },
 
     list: async (workflowId: string) => {
         const response = await http.get(`/executions?workflow_id=${workflowId}`);
-        return response.data;
+        return response;
     }
 };
