@@ -72,7 +72,7 @@ export function ChatInterface() {
     };
 
     return (
-        <div className="flex h-full w-full relative overflow-hidden text-slate-800 bg-slate-50 dark:bg-slate-950 elysian-grid-settings">
+        <div className="flex h-full w-full relative overflow-hidden text-slate-800 bg-slate-50 dark:bg-slate-950">
             {/* Light 'Elysian Ether' Background Layer - Subtle */}
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-50">
                 <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-blue-400/20 rounded-full blur-[120px] animate-pulse" />
@@ -99,7 +99,7 @@ export function ChatInterface() {
                 </AnimatePresence>
 
                 {/* Main Chat Area */}
-                <main className="flex-1 flex flex-col relative min-w-0 bg-white/10">
+                <main className="flex-1 flex flex-col relative min-w-0 bg-white/10 elysian-grid-settings">
                     {/* Header */}
                     <div className="h-16 border-b border-white/20 flex items-center justify-between px-4 md:px-6 bg-white/30 backdrop-blur-md z-20">
                         <div className="flex items-center gap-3">

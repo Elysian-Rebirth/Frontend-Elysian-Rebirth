@@ -309,7 +309,7 @@ export const translationsEN = {
                 address: 'Jl. Jend. Sudirman Kav. 52-53, South Jakarta SCBD, Indonesia'
             },
             legal: {
-                copyright: '© 2024 Elysian. Registered at PSE Kominfo.',
+                copyright: '© 2026 Elysian.',
                 privacy: 'Privacy Policy',
                 terms: 'Terms & Conditions',
                 accessibility: 'Accessibility Statement'
