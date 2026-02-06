@@ -302,7 +302,8 @@ export const translationsZH: TranslationKeys = {
                     help: '帮助中心',
                     community: '社区论坛',
                     status: '服务状态',
-                    contact: '联系我们'
+                    api: 'API 文档',
+                    sales: '联系销售'
                 }
             },
             company: {
@@ -315,14 +316,11 @@ export const translationsZH: TranslationKeys = {
                 }
             },
             legal: {
-                title: '法律',
-                items: {
-                    privacy: '隐私政策',
-                    terms: '服务条款',
-                    security: '安全'
-                }
-            },
-            copyright: '© 2024 Elysian. 保留所有权利。'
+                privacy: '隐私政策',
+                terms: '服务条款',
+                accessibility: '无障碍声明',
+                copyright: '© 2024 Elysian. 保留所有权利。'
+            }
         }
     }
 };
