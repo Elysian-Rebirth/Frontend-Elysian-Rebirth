@@ -314,6 +314,12 @@ export const translationsEN = {
                 terms: 'Terms & Conditions',
                 accessibility: 'Accessibility Statement'
             }
+        },
+        cookies: {
+            title: 'We Use Cookies',
+            description: 'We use cookies to enhance your experience, analyze traffic, and personalize content. By continuing, you agree to our use of cookies.',
+            accept: 'Accept Cookies',
+            decline: 'Decline'
         }
     }
 };

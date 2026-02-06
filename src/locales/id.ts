@@ -316,6 +316,12 @@ export const translationsID: TranslationKeys = {
                 terms: 'Syarat & Ketentuan',
                 accessibility: 'Pernyataan Aksesibilitas'
             }
+        },
+        cookies: {
+            title: 'Kami Menggunakan Cookie',
+            description: 'Kami menggunakan cookie untuk meningkatkan pengalaman Anda, menganalisis traffic, dan personalisasi konten. Dengan melanjutkan, Anda menyetujui penggunaan cookie kami.',
+            accept: 'Terima Cookie',
+            decline: 'Tolak'
         }
     }
 };

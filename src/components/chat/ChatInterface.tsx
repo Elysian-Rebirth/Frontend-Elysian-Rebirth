@@ -27,7 +27,7 @@ export function ChatInterface() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [selectedMode, setSelectedMode] = useState('agent');
     const [isTyping, setIsTyping] = useState(false);
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     // Auto-scroll to bottom only if there are messages

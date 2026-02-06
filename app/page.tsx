@@ -75,7 +75,14 @@ export default function ElysianLanding() {
     }, []);
 
     const { theme, setTheme } = useTheme();
-    const isLandingDark = theme === 'dark';
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Provide safe defaults during SSR and before hydration
+    const isLandingDark = mounted ? theme === 'dark' : false;
     const toggleTheme = () => setTheme(isLandingDark ? 'light' : 'dark');
 
     const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);

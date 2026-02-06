@@ -15,6 +15,7 @@ import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { SiteFooter } from '@/components/SiteFooter';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as SonnerToaster } from '@/components/ui/sonner';
+import { CookieConsent } from '@/components/CookieConsent';
 
 import { GlobalCommandDialog } from '@/components/command/GlobalCommandDialog';
 
@@ -34,10 +35,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <QueryProvider>
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme={isLandingPage ? 'system' : 'light'}
+                    defaultTheme="light"
                     enableSystem={isLandingPage}
                     disableTransitionOnChange
                     storageKey={isLandingPage ? 'landing-theme' : 'elysian-theme'}
+                    forcedTheme={!isLandingPage ? 'light' : undefined}
                 >
                     <TelemetryProvider onEvent={() => { }}>
                         <I18nProvider locale={locale} onLocaleChange={setLocale}>
@@ -61,6 +63,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                                             <MobileBottomNav />
                                         )} */}
                                         {pathname === '/' && <SiteFooter />}
+                                        {pathname === '/' && <CookieConsent />}
                                     </SidebarProvider>
                                 </FeatureFlagsProvider>
                             </PermissionsProvider>
