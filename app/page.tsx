@@ -131,11 +131,11 @@ export default function ElysianLanding() {
                                             background: 'radial-gradient(ellipse 500px 250px at 50% 30%, rgba(59, 130, 246, 0.15), transparent 60%)'
                                         }}
                                     />
-                                    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-[#2294B3] to-[#34AED1] dark:from-white dark:via-blue-100 dark:to-blue-200 block mb-2 font-heading tracking-tight drop-shadow-sm">
+                                    <span className="relative text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-white dark:via-blue-100 dark:to-blue-200 block mb-2 font-heading tracking-tight drop-shadow-sm">
                                         {t.landing.hero.title1}
                                     </span>
                                     <span className="relative inline-block">
-                                        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#2294B3] to-[#34AED1] dark:from-blue-300 dark:via-blue-200 dark:to-cyan-100">
+                                        <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-300 dark:via-blue-200 dark:to-cyan-100">
                                             {t.landing.hero.title2}
                                         </span>
                                         {/* Organic Brush Stroke Underline */}
