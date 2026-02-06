@@ -11,11 +11,19 @@ import { useAuthStore } from '@/store/authStore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { GettingStartedWidget } from '@/components/GettingStartedWidget';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
 export function MobileSidebar() {
     // Kita gunakan context untuk state sidebar agar sinkron
     const { isMobileOpen, setMobileOpen } = useSidebar();
     const { user } = useAuthStore();
+    const pathname = usePathname();
+
+    // Auto-close sidebar when route changes (mobile mode)
+    useEffect(() => {
+        setMobileOpen(false);
+    }, [pathname, setMobileOpen]);
 
     return (
         <Sheet open={isMobileOpen} onOpenChange={setMobileOpen}>
