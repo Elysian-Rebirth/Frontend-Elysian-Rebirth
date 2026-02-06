@@ -63,12 +63,9 @@ export function LoginCard({ isModal = false }: LoginCardProps) {
 
             // Map API user to Store user (providing defaults for missing fields)
             const user = {
-                id: response.data.user.id,
-                email: response.data.user.email,
-                name: response.data.user.name,
                 role: 'viewer', // Default for now, generic backend might not return role
                 avatar: undefined,
-                ...response.data.user // Spread any extra fields backend might send
+                ...response.data.user // Spread user fields (id, email, name, etc.)
             };
 
             login(user as any); // Type assertion if schema differs slightly
