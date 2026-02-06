@@ -306,14 +306,9 @@ export const translationsZH: TranslationKeys = {
                     sales: '联系销售'
                 }
             },
-            company: {
-                title: '公司',
-                items: {
-                    about: '关于我们',
-                    blog: '博客',
-                    careers: '职业生涯',
-                    brand: '品牌指南'
-                }
+            contact: {
+                title: '联系我们',
+                address: 'Jl. Jend. Sudirman Kav. 52-53, South Jakarta SCBD, Indonesia'
             },
             legal: {
                 privacy: '隐私政策',
