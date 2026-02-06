@@ -98,7 +98,7 @@ export default function ElysianLanding() {
             />
 
             {/* 3D Space Background - Fixed Global Overlay (Dark Mode Only) - Lazy Loaded */}
-            {showBackground && <ElysianSpace />}
+            {showBackground && isLandingDark && <ElysianSpace />}
 
             {/* Hero Section - Anti-Gravity + Floating Bento (Combined) */}
             <section ref={heroRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden elysian-grid-light">

@@ -37,7 +37,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
                     defaultTheme="dark"
                     enableSystem={false}
                     disableTransitionOnChange
-                    forcedTheme={isLandingPage ? 'dark' : 'light'}
                 >
                     <TelemetryProvider onEvent={() => { }}>
                         <I18nProvider locale={locale} onLocaleChange={setLocale}>
