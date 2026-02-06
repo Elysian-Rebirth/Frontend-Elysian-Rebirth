@@ -316,6 +316,12 @@ export const translationsZH: TranslationKeys = {
                 accessibility: '无障碍声明',
                 copyright: '© 2024 Elysian. 保留所有权利。'
             }
+        },
+        cookies: {
+            title: '我们使用 Cookie',
+            description: '我们使用 Cookie 来增强您的体验、分析流量并个性化内容。继续使用即表示您同意我们使用 Cookie。',
+            accept: '接受 Cookie',
+            decline: '拒绝'
         }
     }
 };
