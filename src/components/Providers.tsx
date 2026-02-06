@@ -46,7 +46,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                                         <OfflineBanner />
                                         <SessionTimeoutWarning />
                                         <GlobalCommandDialog />
-                                        <div className="pb-20 md:pb-0">
+                                        <div className="pb-0">
                                             <SmoothScroll>
                                                 {children}
                                             </SmoothScroll>
@@ -55,9 +55,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
                                         <SonnerToaster />
 
                                         {/* Hide Bottom Nav on Auth Pages and Landing Page */}
-                                        {!['/login', '/register', '/forgot-password', '/'].includes(pathname) && (
+                                        {/* Mobile Bottom Nav Removed as requested */}
+                                        {/* {!['/login', '/register', '/forgot-password', '/'].includes(pathname) && (
                                             <MobileBottomNav />
-                                        )}
+                                        )} */}
                                         {pathname === '/' && <SiteFooter />}
                                     </SidebarProvider>
                                 </FeatureFlagsProvider>

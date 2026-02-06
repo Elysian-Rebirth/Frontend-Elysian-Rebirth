@@ -76,7 +76,7 @@ export default function ProfilePage() {
             </div>
 
             {/* 3-Column Layout: [Sidebar (handled by layout)] [Main Content] [Context Panel] */}
-            <div className="flex flex-col lg:flex-row gap-8">
+            <div className="flex flex-col-reverse lg:flex-row gap-8">
 
                 {/* Main Content: The Form */}
                 <div className="flex-1 min-w-0 space-y-8">
