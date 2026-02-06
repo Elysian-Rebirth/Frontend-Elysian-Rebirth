@@ -72,9 +72,9 @@ export function ChatInterface() {
     };
 
     return (
-        <div className="flex h-full w-full relative overflow-hidden text-slate-800 bg-slate-50">
-            {/* Light 'Elysian Ether' Background Layer */}
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="flex h-full w-full relative overflow-hidden text-slate-800 bg-slate-50 dark:bg-slate-950 elysian-grid-settings">
+            {/* Light 'Elysian Ether' Background Layer - Subtle */}
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-50">
                 <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-blue-400/20 rounded-full blur-[120px] animate-pulse" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-sky-400/20 rounded-full blur-[100px] animate-pulse delay-1000" />
                 <div className="absolute top-[30%] left-[30%] w-[50%] h-[50%] bg-indigo-300/10 rounded-full blur-[100px]" />

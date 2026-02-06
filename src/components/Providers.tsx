@@ -34,9 +34,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <QueryProvider>
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme="dark"
-                    enableSystem={false}
+                    defaultTheme="system"
+                    enableSystem
                     disableTransitionOnChange
+                    storageKey={isLandingPage ? 'landing-theme' : 'elysian-theme'}
                 >
                     <TelemetryProvider onEvent={() => { }}>
                         <I18nProvider locale={locale} onLocaleChange={setLocale}>
