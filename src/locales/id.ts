@@ -245,6 +245,27 @@ export const translationsID: TranslationKeys = {
             btnConsult: 'Hubungi Sales',
             foot: 'Dibuat Untuk Membantu UMKM Indonesia'
         },
+        collaboration: {
+            badge: 'Power your workflow',
+            title1: 'Kolaborasi Tim',
+            title2: 'Tanpa Batas.',
+            description: 'Satu platform terintegrasi untuk menyatukan ide, eksekusi, dan hasil. Tinggalkan silo, mulai berkolaborasi dengan cara yang benar.',
+            cards: {
+                project: {
+                    title: 'Project Management',
+                    desc: 'Konsolidasi milestone, tugas, dan deadline dalam satu visual dashboard yang intuitif.'
+                },
+                updates: {
+                    title: 'Status Updates',
+                    desc: 'Otomatisasi laporan progres. Hemat waktu meeting dengan update asinkronus.'
+                },
+                workflow: {
+                    title: 'Orkestrasi Workflow AI',
+                    desc: 'Rancang dan otomatisasi agen AI yang cerdas secara visual. Hubungkan Logic Router, Reasoning Engine, dan Knowledge Base tanpa batasan.',
+                    cta: 'Coba Workflow'
+                }
+            }
+        },
         faq: {
             title: 'Pertanyaan Umum',
             subtitle: 'Jawaban untuk keraguan Anda',
@@ -256,6 +277,45 @@ export const translationsID: TranslationKeys = {
             a3: 'Tentu. Anda bisa mencoba paket Pro gratis selama 14 hari tanpa komitmen.',
             q4: 'Bagaimana untuk Enterprise?',
             a4: 'Kami menyediakan private cloud, SLA khusus, dan dedicated support untuk klien Enterprise.'
+        },
+        cta_section: {
+            title1: 'Langkah Pertama',
+            title2: 'untuk Bisnis Maju',
+            description: 'Dari UMKM sampai korporasi, semua bisa nikmati mudahnya berbisnis dengan Elysian.',
+            btn: 'Coba Sekarang'
+        },
+        footer: {
+            description: 'Asisten Operasional Cerdas terdepan di Indonesia yang didedikasikan untuk membantu UMKM. Kami menggabungkan kecerdasan buatan canggih untuk mengotomatiskan proses, memberikan wawasan mendalam, dan memacu pertumbuhan bisnis Anda.',
+            solutions: {
+                title: 'Solusi Bisnis',
+                items: {
+                    docs: 'Otomatisasi Dokumen',
+                    finance: 'Analisis Keuangan AI',
+                    inventory: 'Manajemen Inventaris',
+                    trends: 'Prediksi Tren Pasar',
+                    erp: 'Integrasi ERP'
+                }
+            },
+            support: {
+                title: 'Dukungan',
+                items: {
+                    help: 'Pusat Bantuan',
+                    api: 'Dokumentasi API',
+                    status: 'Status Server',
+                    community: 'Komunitas Pengguna',
+                    sales: 'Hubungi Sales'
+                }
+            },
+            contact: {
+                title: 'Hubungi Kami',
+                address: 'Jl. Jend. Sudirman Kav. 52-53, Jakarta Selatan SCBD, Indonesia'
+            },
+            legal: {
+                copyright: '© 2026 Elysian.',
+                privacy: 'Kebijakan Privasi',
+                terms: 'Syarat & Ketentuan',
+                accessibility: 'Pernyataan Aksesibilitas'
+            }
         }
     }
 };

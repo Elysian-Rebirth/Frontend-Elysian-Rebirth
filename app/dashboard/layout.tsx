@@ -2,7 +2,6 @@
 
 import { Sidebar } from '@/components/Sidebar';
 import { DashboardNavbar } from '@/components/DashboardNavbar';
-import { MobileBottomNav } from '@/components/MobileBottomNav';
 
 export default function DashboardLayout({
     children,
@@ -25,9 +24,6 @@ export default function DashboardLayout({
                 <div id="main-scroll-container" className="flex-1 pb-16 md:pb-8">
                     {children}
                 </div>
-
-                {/* Mobile Bottom Nav */}
-                <MobileBottomNav />
             </main>
         </div>
     );

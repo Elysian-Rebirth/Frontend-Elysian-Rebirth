@@ -8,10 +8,12 @@ import { GettingStartedWidget } from '@/components/GettingStartedWidget';
 import { User, Infinity as InfinityIcon, Sparkles, ChevronsLeft, HelpCircle, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/';
 import { useSidebar } from '@/contexts/SidebarContext';
+import { useAuthStore } from '@/store/authStore';
 import { cn } from '@/lib/utils';
 
 export function Sidebar() {
     const { isOpen, toggle } = useSidebar();
+    const { user } = useAuthStore();
 
     return (
         <aside id="main-sidebar" className={cn(
@@ -79,23 +81,27 @@ export function Sidebar() {
 
                 {/* Admin Dashboard Link (For Super Admins) */}
                 {isOpen ? (
-                    <Link href="/admin" className="w-full">
-                        <Button variant="outline" className="w-full justify-start gap-2 bg-gradient-to-r from-sky-50 to-white hover:from-sky-100 hover:to-sky-50 border-sky-200 text-sky-700 h-9 rounded-lg text-sm font-semibold shadow-sm animate-in fade-in duration-300 group">
-                            <Shield className="h-4 w-4 text-sky-500 group-hover:text-sky-600 transition-colors" />
-                            Admin Panel
-                        </Button>
-                    </Link>
-                ) : (
-                    <div className="flex justify-center mb-2">
-                        <Link href="/admin">
-                            <Button variant="ghost" size="icon" className="text-sky-600 hover:bg-sky-50 h-9 w-9 relative group">
-                                <Shield className="h-5 w-5" />
-                                <span className="absolute left-10 bg-white text-sky-700 border border-sky-100 shadow-md text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">
-                                    Admin Panel
-                                </span>
+                    user?.role === 'admin' && (
+                        <Link href="/admin" className="w-full">
+                            <Button variant="outline" className="w-full justify-start gap-2 bg-gradient-to-r from-sky-50 to-white hover:from-sky-100 hover:to-sky-50 border-sky-200 text-sky-700 h-9 rounded-lg text-sm font-semibold shadow-sm animate-in fade-in duration-300 group">
+                                <Shield className="h-4 w-4 text-sky-500 group-hover:text-sky-600 transition-colors" />
+                                Admin Panel
                             </Button>
                         </Link>
-                    </div>
+                    )
+                ) : (
+                    user?.role === 'admin' && (
+                        <div className="flex justify-center mb-2">
+                            <Link href="/admin">
+                                <Button variant="ghost" size="icon" className="text-sky-600 hover:bg-sky-50 h-9 w-9 relative group">
+                                    <Shield className="h-5 w-5" />
+                                    <span className="absolute left-10 bg-white text-sky-700 border border-sky-100 shadow-md text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">
+                                        Admin Panel
+                                    </span>
+                                </Button>
+                            </Link>
+                        </div>
+                    )
                 )}
 
                 {/* Bantuan Button (Reference Image 2) */}

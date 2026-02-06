@@ -8,6 +8,7 @@ import * as z from 'zod';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { authService } from '@/services/auth.service';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -104,16 +105,30 @@ export function RegisterCard({ isModal = false }: RegisterCardProps) {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
-        console.log("Submitting Sanitized Values:", values);
 
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        try {
+            await authService.register({
+                name: values.fullName,
+                email: values.email,
+                password: values.password
+            });
 
-        toast.success('Pendaftaran berhasil! Silakan masuk.');
-        setIsLoading(false);
-        if (isModal) {
-            window.location.href = '/login';
-        } else {
-            router.push('/login');
+            toast.success('Registration successful!', {
+                description: 'Please login with your new account.'
+            });
+
+            if (isModal) {
+                window.location.href = '/login';
+            } else {
+                router.push('/login');
+            }
+
+        } catch (error: any) {
+            console.error(error);
+            const msg = error.response?.data?.error || error.message || 'Registration failed';
+            toast.error('Registration Failed', { description: msg });
+        } finally {
+            setIsLoading(false);
         }
     }
 

@@ -1,28 +1,35 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Bell } from 'lucide-react';
+import { Bell, Check, CheckCheck } from 'lucide-react';
+import { useNotificationStore } from '@/store/notificationStore';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from '@/components/ui/';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/';
-import { Button } from '@/components/ui/';
-import { Badge } from '@/components/ui/';
+} from '@/components/ui/popover';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Image from 'next/image';
+import { formatDistanceToNow } from 'date-fns';
+import { id } from 'date-fns/locale';
 
 export function NotificationPopover() {
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('aktivitas');
+    const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotificationStore();
+    const unread = unreadCount();
 
     return (
         <Popover open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
                 <Button variant="ghost" size="icon" className="relative text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-colors">
                     <Bell className="h-5 w-5" />
-                    {/* Optional: Indicator dot if needed */}
-                    {/* <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" /> */}
+                    {unread > 0 && (
+                        <span className="absolute top-2 right-2 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white animate-pulse" />
+                    )}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[380px] p-0 rounded-xl shadow-xl border-blue-100 bg-white" align="end">
@@ -36,6 +43,7 @@ export function NotificationPopover() {
                                 className="p-0 pb-2 rounded-none bg-transparent text-sm font-semibold text-slate-500 data-[state=active]:text-blue-600 data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-blue-600 transition-all"
                             >
                                 Aktivitas
+                                {unread > 0 && <Badge variant="secondary" className="ml-2 bg-blue-100 text-blue-700 h-5 px-1.5">{unread}</Badge>}
                             </TabsTrigger>
                             <TabsTrigger
                                 value="update"
@@ -45,38 +53,69 @@ export function NotificationPopover() {
                             </TabsTrigger>
                         </TabsList>
 
-                        {/* Mark as read action (optional, keeping minimal as per design) */}
+                        {unread > 0 && activeTab === 'aktivitas' && (
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2"
+                                onClick={() => markAllAsRead()}
+                            >
+                                <CheckCheck className="h-3 w-3 mr-1" />
+                                Tandai Baca
+                            </Button>
+                        )}
                     </div>
 
-                    {/* Filter Chips (Visible only on Aktivitas for now as per image) */}
-                    {activeTab === 'aktivitas' && (
-                        <div className="flex items-center gap-2 px-4 py-3 bg-slate-50/50">
-                            <Badge variant="secondary" className="bg-blue-100 text-blue-700 hover:bg-blue-200 cursor-pointer rounded-full px-3 font-normal">Semua</Badge>
-                            <Badge variant="outline" className="text-slate-500 hover:bg-slate-100 border-slate-200 cursor-pointer rounded-full px-3 font-normal bg-white">Pencairan</Badge>
-                        </div>
-                    )}
-
                     {/* Content Area */}
-                    <div className="min-h-[300px] flex flex-col items-center justify-center p-6 text-center">
-                        <TabsContent value="aktivitas" className="mt-0 flex flex-col items-center animate-in fade-in-50 duration-300">
-                            <div className="relative w-32 h-32 mb-4">
-                                <Image
-                                    src="/empty-state-notification.png"
-                                    alt="No notifications"
-                                    width={128}
-                                    height={128}
-                                    className="w-full h-full object-contain opacity-90 drop-shadow-sm"
-                                />
-                            </div>
-                            <h3 className="text-sm font-bold text-slate-700 mb-2">
-                                Belum Ada Notifikasi dari Supplier<br />& Buyer Anda
-                            </h3>
-                            <p className="text-xs text-slate-500 leading-relaxed max-w-[240px]">
-                                Yuk Kirimkan Dokumen Anda melalui<br />Email/WhatsApp/SMS sekarang!
-                            </p>
+                    <div className="min-h-[300px] bg-slate-50/30">
+                        <TabsContent value="aktivitas" className="mt-0 focus-visible:ring-0">
+                            {notifications.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center py-12 text-center">
+                                    <div className="relative w-32 h-32 mb-4">
+                                        <Image
+                                            src="/empty-state-notification.png"
+                                            alt="No notifications"
+                                            width={128}
+                                            height={128}
+                                            className="w-full h-full object-contain opacity-90 drop-shadow-sm"
+                                        />
+                                    </div>
+                                    <h3 className="text-sm font-bold text-slate-700 mb-2">
+                                        Belum Ada Notifikasi
+                                    </h3>
+                                    <p className="text-xs text-slate-500 px-8">
+                                        Aktivitas terbaru Anda akan muncul di sini.
+                                    </p>
+                                </div>
+                            ) : (
+                                <ScrollArea className="h-[350px]">
+                                    <div className="flex flex-col">
+                                        {notifications.map((item) => (
+                                            <div
+                                                key={item.id}
+                                                className={`flex gap-3 p-4 border-b border-slate-100 hover:bg-slate-50 transition-colors cursor-pointer ${!item.isRead ? 'bg-blue-50/40' : ''}`}
+                                                onClick={() => markAsRead(item.id)}
+                                            >
+                                                <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${!item.isRead ? 'bg-blue-500' : 'bg-transparent'}`} />
+                                                <div className="flex-1 space-y-1">
+                                                    <p className={`text-sm ${!item.isRead ? 'font-semibold text-slate-800' : 'text-slate-600'}`}>
+                                                        {item.title}
+                                                    </p>
+                                                    <p className="text-xs text-slate-500 line-clamp-2">
+                                                        {item.message}
+                                                    </p>
+                                                    <p className="text-[10px] text-slate-400">
+                                                        {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true, locale: id })}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </ScrollArea>
+                            )}
                         </TabsContent>
 
-                        <TabsContent value="update" className="mt-0 flex flex-col items-center animate-in fade-in-50 duration-300">
+                        <TabsContent value="update" className="mt-0 flex flex-col items-center py-12 text-center">
                             <div className="relative w-28 h-28 mb-4 opacity-50 grayscale">
                                 <Image
                                     src="/empty-state-notification.png"

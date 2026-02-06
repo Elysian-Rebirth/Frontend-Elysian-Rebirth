@@ -16,6 +16,7 @@ import { InputPassword } from '@/components/ui/input-password';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 import { useAuthStore } from '@/store/authStore';
+import { authService } from '@/services/auth.service';
 import RiveLoginAvatar from '@/components/ui/rive-login-avatar';
 import { ElysianTextLogo } from '@/components/ui/elysian-logo';
 import { cn } from '@/lib/utils';
@@ -54,40 +55,43 @@ export function LoginCard({ isModal = false }: LoginCardProps) {
         setSubmitStatus('idle');
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            // Real API Call
+            const response = await authService.login({
+                email: values.email,
+                password: values.password
+            });
 
-            if (!values.email || !values.password) {
-                throw new Error("Invalid credentials");
-            }
-
-            const mockUser = {
-                id: 'usr_' + Math.random().toString(36).substr(2, 9),
-                email: values.email || 'demo@elysian.ai',
-                name: 'Demo User',
-                role: 'admin' as const,
-                company: 'Elysian Corp',
-                avatar: 'https://github.com/shadcn.png'
+            // Map API user to Store user (providing defaults for missing fields)
+            const user = {
+                id: response.data.user.id,
+                email: response.data.user.email,
+                name: response.data.user.name,
+                role: 'viewer', // Default for now, generic backend might not return role
+                avatar: undefined,
+                ...response.data.user // Spread any extra fields backend might send
             };
 
-            login(mockUser);
+            login(user as any); // Type assertion if schema differs slightly
 
             setSubmitStatus('success');
-            toast.success('Berhasil masuk!');
+            toast.success('Login Successful', { description: 'Welcome back to Elysian.' });
 
             setTimeout(() => {
                 const redirectTo = sessionStorage.getItem('redirect_after_login') || '/dashboard';
                 sessionStorage.removeItem('redirect_after_login');
                 if (isModal) {
-                    window.location.href = redirectTo; // Force full navigation from modal
+                    window.location.href = redirectTo;
                 } else {
                     router.push(redirectTo);
                 }
-            }, 1000);
+            }, 500);
 
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
             setSubmitStatus('error');
-            toast.error('Gagal masuk. Periksa kembali email dan kata sandi Anda.');
+            // Extract error message if available
+            const msg = error.response?.data?.error || error.message || 'Failed to login';
+            toast.error('Login Failed', { description: msg });
         } finally {
             setIsLoading(false);
         }

@@ -12,45 +12,12 @@ interface ToolbarProps {
 }
 
 export function Toolbar({ mobileMode, setMobileMode, setIsSidebarOpen }: ToolbarProps) {
-    const { nodes, edges, meta, startExecution, setNodeStatus, publishVersion } = useWorkflowStore();
+    const { nodes, edges, meta, executeWorkflow, publishVersion } = useWorkflowStore();
     const { fitView } = useReactFlow();
 
     const handleRun = async () => {
-        startExecution();
-        // ... (existing logic) ...
-        const payload = {
-            workflowId: meta.workflowId,
-            version: meta.version,
-            executionId: `exec_${Date.now()}`,
-            timestamp: new Date().toISOString(),
-            nodes: nodes.map(n => ({
-                id: n.id,
-                type: n.type,
-                config: n.data,
-            })),
-            edges: edges.map(e => ({
-                from: e.source,
-                to: e.target,
-                portFrom: e.sourceHandle || 'default',
-                portTo: e.targetHandle || 'default'
-            })),
-            entryPoint: nodes.find(n => n.type === 'input')?.id || 'start',
-        };
-
-        toast.success("Workflow Execution Started", {
-            description: `Run ID: ${payload.executionId} - Status: Running`,
-        });
-
-        const sortedNodes = [...nodes];
-        for (const node of sortedNodes) {
-            setNodeStatus(node.id, 'running');
-            await new Promise(r => setTimeout(r, 800));
-            setNodeStatus(node.id, 'success');
-        }
-
-        toast.info("Execution Completed", {
-            description: "All nodes processed successfully."
-        });
+        // Trigger Async Backend Execution
+        await executeWorkflow();
     };
 
     const handlePublish = () => {

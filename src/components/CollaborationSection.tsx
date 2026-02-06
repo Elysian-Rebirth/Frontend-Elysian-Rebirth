@@ -3,8 +3,11 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Layers, Zap, FileText, ArrowRight } from 'lucide-react';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export function CollaborationSection() {
+    const { t } = useTranslation();
+
     return (
         <section className="py-16 lg:py-32 bg-slate-50 dark:bg-slate-950 relative border-t border-slate-200/60 dark:border-slate-800/60">
             {/* Background Gradients */}
@@ -24,7 +27,7 @@ export function CollaborationSection() {
                         className="flex items-center gap-2 mb-4"
                     >
                         <div className="h-px w-8 bg-blue-600" />
-                        <span className="text-blue-600 font-semibold tracking-wide text-sm uppercase">Power your workflow</span>
+                        <span className="text-blue-600 font-semibold tracking-wide text-sm uppercase">{t.landing.collaboration.badge}</span>
                     </motion.div>
 
                     <motion.h2
@@ -34,8 +37,8 @@ export function CollaborationSection() {
                         transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
                         className="text-4xl sm:text-5xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-[1.1] mb-6 md:mb-8 tracking-tight"
                     >
-                        Kolaborasi Tim <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Tanpa Batas.</span>
+                        {t.landing.collaboration.title1} <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">{t.landing.collaboration.title2}</span>
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
@@ -44,7 +47,7 @@ export function CollaborationSection() {
                         transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                         className="text-lg sm:text-xl lg:text-2xl text-slate-500 dark:text-slate-400 max-w-2xl leading-relaxed font-light"
                     >
-                        Satu platform terintegrasi untuk menyatukan ide, eksekusi, dan hasil. Tinggalkan silo, mulai berkolaborasi dengan cara yang benar.
+                        {t.landing.collaboration.description}
                     </motion.p>
                 </div>
 
@@ -65,9 +68,9 @@ export function CollaborationSection() {
                             <div className="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-6 text-blue-600 dark:text-blue-400 ring-4 ring-blue-50/50 dark:ring-blue-900/10">
                                 <Layers className="w-7 h-7" />
                             </div>
-                            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">Project Management</h3>
+                            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">{t.landing.collaboration.cards.project.title}</h3>
                             <p className="text-slate-500 dark:text-slate-400 text-lg leading-relaxed max-w-md">
-                                Konsolidasi milestone, tugas, dan deadline dalam satu visual dashboard yang intuitif.
+                                {t.landing.collaboration.cards.project.desc}
                             </p>
                         </div>
 
@@ -95,9 +98,9 @@ export function CollaborationSection() {
                             <div className="w-14 h-14 bg-amber-50 dark:bg-amber-900/20 rounded-2xl flex items-center justify-center mb-6 text-amber-600 dark:text-amber-400 ring-4 ring-amber-50/50 dark:ring-amber-900/10">
                                 <Zap className="w-7 h-7" />
                             </div>
-                            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">Status Updates</h3>
+                            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight">{t.landing.collaboration.cards.updates.title}</h3>
                             <p className="text-slate-500 dark:text-slate-400 text-lg leading-relaxed">
-                                Otomatisasi laporan progres. Hemat waktu meeting dengan update asinkronus.
+                                {t.landing.collaboration.cards.updates.desc}
                             </p>
                         </div>
 
@@ -125,13 +128,13 @@ export function CollaborationSection() {
                             <div className="w-14 h-14 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 dark:text-emerald-400 ring-4 ring-emerald-50/50 dark:ring-emerald-900/10">
                                 <FileText className="w-7 h-7" />
                             </div>
-                            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight">Orkestrasi Workflow AI</h3>
+                            <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight">{t.landing.collaboration.cards.workflow.title}</h3>
                             <p className="text-slate-500 dark:text-slate-400 text-lg leading-relaxed mb-8">
-                                Rancang dan otomatisasi agen AI yang cerdas secara visual. Hubungkan Logic Router, Reasoning Engine, dan Knowledge Base tanpa batasan.
+                                {t.landing.collaboration.cards.workflow.desc}
                             </p>
 
                             <button className="group/btn flex items-center gap-2 text-slate-900 dark:text-slate-100 font-semibold text-base py-3 px-6 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shadow-sm w-fit">
-                                <span>Coba Workflow</span>
+                                <span>{t.landing.collaboration.cards.workflow.cta}</span>
                                 <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                             </button>
                         </div>

@@ -43,9 +43,15 @@ export interface ExecutionState {
     status: 'idle' | 'running' | 'completed' | 'failed';
     activeNodeId: string | null;
     // Per-node execution details
+    // Per-node execution details
     nodeStatus: Record<string, NodeStatus>;
     errors: Record<string, string>; // nodeId -> error message
     results: Record<string, unknown>;   // nodeId -> output data
+    logs: Array<{
+        timestamp?: string;
+        level: string;
+        message: string;
+    }>;
 }
 
 export interface UIState {
@@ -89,6 +95,10 @@ export interface WorkflowState {
     startExecution: () => void;
     stopExecution: () => void;
     setNodeStatus: (nodeId: string, status: NodeStatus) => void;
+
+    // Async Execution
+    executeWorkflow: () => Promise<void>;
+    pollExecution: () => Promise<void>;
 
     // Persistence Actions
     publishVersion: () => void;

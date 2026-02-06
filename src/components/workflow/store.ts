@@ -11,6 +11,9 @@ import {
     applyEdgeChanges,
 } from 'reactflow';
 import { WorkflowState, WorkflowMeta, ExecutionState, UIState, WorkflowNodeData, NodeStatus } from './types';
+import { executeWorkflow, getExecution } from '@/services/workflow.service';
+import { toast } from 'sonner';
+
 
 // Initial State
 const initialMeta: WorkflowMeta = {
@@ -27,6 +30,7 @@ const initialExecution: ExecutionState = {
     nodeStatus: {},
     errors: {},
     results: {},
+    logs: [],
 };
 
 const initialUI: UIState = {
@@ -166,6 +170,100 @@ export const useWorkflowStore = create<WorkflowState>()(
                     },
                 }));
             },
+
+            executeWorkflow: async () => {
+                const { meta, startExecution, pollExecution } = get();
+                startExecution(); // Resets local state
+
+                try {
+                    // Call API: POST /execute
+                    const { executionId } = await executeWorkflow(meta.workflowId);
+
+                    set((state) => ({
+                        execution: {
+                            ...state.execution,
+                            runId: executionId,
+                            status: 'running',
+                        }
+                    }));
+
+                    toast.success("Workflow Execution Started", {
+                        description: `Run ID: ${executionId}`
+                    });
+
+                    // Start polling
+                    pollExecution();
+
+                } catch (error) {
+                    toast.error("Execution Failed", {
+                        description: error instanceof Error ? error.message : "Unknown error"
+                    });
+                    set((state) => ({
+                        execution: { ...state.execution, status: 'failed' }
+                    }));
+                }
+            },
+
+            pollExecution: async () => {
+                const { execution, pollExecution } = get();
+                if (!execution.runId || execution.status === 'completed' || execution.status === 'failed') return;
+
+                try {
+                    try {
+                        // Call API: GET /execution/:id
+                        const details = await getExecution(execution.runId);
+
+                        const nodeStatus: Record<string, NodeStatus> = { ...execution.nodeStatus };
+                        const logs = details.logs || [];
+
+                        // Parse Logs to update Node Status
+                        logs.forEach(log => {
+                            // Logic: If we see a log for a node, it means it started/finished.
+                            // Ideally backend sends explicit node status updates, but parsing logs works for MVP.
+                            if (log.nodeId && log.level !== 'ERROR') {
+                                nodeStatus[log.nodeId] = 'success';
+                            }
+                            if (log.nodeId && log.level === 'ERROR') {
+                                nodeStatus[log.nodeId] = 'error';
+                            }
+                        });
+
+                        // Update Status
+                        const mappedStatus = details.status.toLowerCase() as ExecutionState['status'];
+
+                        set((state) => ({
+                            execution: {
+                                ...state.execution,
+                                status: mappedStatus,
+                                nodeStatus: nodeStatus,
+                                // Store results if completed
+                                results: details.results || {}
+                            }
+                        }));
+
+                        // Continue Polling if not finished
+                        if (details.status === 'PENDING' || details.status === 'RUNNING') {
+                            setTimeout(() => get().pollExecution(), 1500); // 1.5s interval
+                        } else {
+                            // Finished
+                            if (details.status === 'COMPLETED') {
+                                toast.success("Execution Completed");
+                            } else if (details.status === 'FAILED') {
+                                toast.error("Execution Failed");
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Polling error", error);
+                        // Don't stop polling immediately on one error, maybe network blip
+                        // But if 404, maybe stop. For now, simple retry logic is implicitly handled by user re-click or ignoring.
+                    }
+                } catch (error) {
+                    console.error("Polling error", error);
+                }
+            },
+
+
+
 
             // Persistence Actions
             publishVersion: () => {

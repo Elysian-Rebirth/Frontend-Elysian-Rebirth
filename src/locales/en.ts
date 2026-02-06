@@ -243,6 +243,27 @@ export const translationsEN = {
             btnConsult: 'Contact Sales',
             foot: 'No credit card. Cancel anytime.'
         },
+        collaboration: {
+            badge: 'Power your workflow',
+            title1: 'Team Collaboration',
+            title2: 'Without Limits.',
+            description: 'One integrated platform to unite ideas, execution, and results. Leave silos behind, start collaborating the right way.',
+            cards: {
+                project: {
+                    title: 'Project Management',
+                    desc: 'Consolidate milestones, tasks, and deadlines in one intuitive visual dashboard.'
+                },
+                updates: {
+                    title: 'Status Updates',
+                    desc: 'Automate progress reports. Save meeting time with asynchronous updates.'
+                },
+                workflow: {
+                    title: 'AI Workflow Orchestration',
+                    desc: 'Design and automate intelligent AI agents visually. Connect Logic Router, Reasoning Engine, and Knowledge Base without limits.',
+                    cta: 'Try Workflow'
+                }
+            }
+        },
         faq: {
             title: 'Frequently Asked Questions',
             subtitle: 'Answers to your doubts',
@@ -254,6 +275,45 @@ export const translationsEN = {
             a3: 'Sure. You can try the Pro plan for free for 14 days with no commitment.',
             q4: 'How about Enterprise?',
             a4: 'We provide private cloud, custom SLAs, and dedicated support for Enterprise clients.'
+        },
+        cta_section: {
+            title1: 'First Step',
+            title2: 'for Business Growth',
+            description: 'From SMEs to corporations, everyone can enjoy the ease of doing business with Elysian.',
+            btn: 'Try Now'
+        },
+        footer: {
+            description: 'Indonesia\'s leading Intelligent Operational Assistant dedicated to helping SMEs. We combine advanced artificial intelligence to automate processes, provide deep insights, and drive your business growth.',
+            solutions: {
+                title: 'Business Solutions',
+                items: {
+                    docs: 'Document Automation',
+                    finance: 'AI Financial Analysis',
+                    inventory: 'Inventory Management',
+                    trends: 'Market Trend Prediction',
+                    erp: 'ERP Integration'
+                }
+            },
+            support: {
+                title: 'Support',
+                items: {
+                    help: 'Help Center',
+                    api: 'API Documentation',
+                    status: 'Server Status',
+                    community: 'User Community',
+                    sales: 'Contact Sales'
+                }
+            },
+            contact: {
+                title: 'Contact Us',
+                address: 'Jl. Jend. Sudirman Kav. 52-53, South Jakarta SCBD, Indonesia'
+            },
+            legal: {
+                copyright: '© 2024 Elysian. Registered at PSE Kominfo.',
+                privacy: 'Privacy Policy',
+                terms: 'Terms & Conditions',
+                accessibility: 'Accessibility Statement'
+            }
         }
     }
 };

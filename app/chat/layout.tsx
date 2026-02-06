@@ -1,6 +1,5 @@
 import { Sidebar } from '@/components/Sidebar';
 import { DashboardNavbar } from '@/components/DashboardNavbar';
-import { MobileBottomNav } from '@/components/MobileBottomNav';
 
 export default function ChatLayout({
     children,
@@ -21,9 +20,6 @@ export default function ChatLayout({
                 <div className="flex-1 overflow-hidden flex flex-col pb-16 md:pb-0">
                     {children}
                 </div>
-
-                {/* Mobile Bottom Nav */}
-                <MobileBottomNav />
             </main>
         </div>
     );

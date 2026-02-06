@@ -71,23 +71,20 @@ export function ResultsPanel() {
                     <div className="flex-1 p-4 overflow-y-auto font-mono text-xs text-slate-600 bg-white">
                         {execution.runId ? (
                             <div className="space-y-4">
-                                <div className="p-3 bg-slate-50 rounded border border-slate-100">
-                                    <div className="flex items-center gap-2 text-slate-500 mb-2 border-b border-slate-200 pb-2">
+                                <div className="p-3 bg-slate-50 rounded border border-slate-100 max-h-[150px] overflow-y-auto">
+                                    <div className="flex items-center gap-2 text-slate-500 mb-2 border-b border-slate-200 pb-2 sticky top-0 bg-slate-50">
                                         <FileJson className="h-3 w-3" />
-                                        <span>Output Preview</span>
+                                        <span>Live Logs</span>
                                     </div>
-                                    <pre className="text-[10px] leading-relaxed overflow-x-auto text-slate-600">
-                                        {`{
-  "execution_id": "${execution.runId}",
-  "status": "${execution.status}",
-  "results": [
-    {
-      "node": "llm-1",
-      "output": "Based on the document provided..."
-    }
-  ]
-}`}
-                                    </pre>
+                                    <div className="space-y-1 font-mono text-[10px]">
+                                        {execution.logs?.length ? execution.logs.map((log, i) => (
+                                            <div key={i} className={`flex gap-2 ${log.level === 'ERROR' ? 'text-red-500' : 'text-slate-600'}`}>
+                                                <span className="text-slate-400">[{typeof log.timestamp === 'string' ? log.timestamp.split('T')[1]?.split('.')[0] : 'Time'}]</span>
+                                                <span className={`font-bold ${log.level === 'INFO' ? 'text-blue-500' : 'text-amber-500'}`}>{log.level}</span>
+                                                <span>{log.message}</span>
+                                            </div>
+                                        )) : <span className="text-slate-400 italic">No logs yet...</span>}
+                                    </div>
                                 </div>
                                 <div className="flex items-center gap-2 text-slate-400">
                                     <Clock className="h-3 w-3" />

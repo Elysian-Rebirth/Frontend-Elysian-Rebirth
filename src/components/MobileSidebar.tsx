@@ -7,6 +7,7 @@ import { NavigationMenu } from '@/components/NavigationMenu';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSidebar } from '@/contexts/SidebarContext';
+import { useAuthStore } from '@/store/authStore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { GettingStartedWidget } from '@/components/GettingStartedWidget';
@@ -14,6 +15,7 @@ import { GettingStartedWidget } from '@/components/GettingStartedWidget';
 export function MobileSidebar() {
     // Kita gunakan context untuk state sidebar agar sinkron
     const { isMobileOpen, setMobileOpen } = useSidebar();
+    const { user } = useAuthStore();
 
     return (
         <Sheet open={isMobileOpen} onOpenChange={setMobileOpen}>
@@ -76,13 +78,15 @@ export function MobileSidebar() {
 
                         {/* WIDGETS SECTION (Restored & Styled) */}
                         <div className="space-y-2 pt-1">
-                            {/* Admin Panel */}
-                            <Link href="/admin" onClick={() => setMobileOpen(false)} className='block'>
-                                <Button variant="outline" className="w-full justify-start gap-2 bg-gradient-to-r from-sky-50 to-white/60 hover:from-sky-100 hover:to-sky-50 border-sky-200 text-sky-700 h-9 rounded-lg text-sm font-semibold shadow-sm">
-                                    <Shield className="h-4 w-4 text-sky-500" />
-                                    Admin Panel
-                                </Button>
-                            </Link>
+                            {/* Admin Panel (Only for Admin) */}
+                            {user?.role === 'admin' && (
+                                <Link href="/admin" onClick={() => setMobileOpen(false)} className='block'>
+                                    <Button variant="outline" className="w-full justify-start gap-2 bg-gradient-to-r from-sky-50 to-white/60 hover:from-sky-100 hover:to-sky-50 border-sky-200 text-sky-700 h-9 rounded-lg text-sm font-semibold shadow-sm">
+                                        <Shield className="h-4 w-4 text-sky-500" />
+                                        Admin Panel
+                                    </Button>
+                                </Link>
+                            )}
 
                             {/* Help Button */}
                             <Link href="/help" onClick={() => setMobileOpen(false)} className='block'>

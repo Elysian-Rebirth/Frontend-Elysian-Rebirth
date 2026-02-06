@@ -138,4 +138,16 @@
         --card: 222 47% 11%;
         --background: 222 47% 11%;
     }
+
+    /* SaaS Grid for Light Mode - Professional Blueprint Look */
+    .elysian-grid-light {
+        background-size: 40px 40px;
+        background-image:
+            linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+    }
+
+    .dark .elysian-grid-light {
+        background-image: none;
+    }
 }
