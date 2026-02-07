@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { User, Settings, LogOut, LayoutGrid, Infinity as InfinityIcon, Bot } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { User, Settings, LogOut, LayoutGrid, Infinity as InfinityIcon, Bot, Sun, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/';
 import { cn } from '@/lib/utils';
 import {
@@ -28,6 +29,7 @@ const UserAvatar = () => (
 );
 
 export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }) {
+    const { theme, setTheme } = useTheme();
     const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
 
@@ -116,6 +118,20 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                 <div className="flex items-center gap-1 sm:gap-2">
 
 
+
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className={cn(
+                            "rounded-full text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all",
+                            scrolled ? "h-9 w-9" : "h-10 w-10 bg-white/50"
+                        )}
+                        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    >
+                        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                        <span className="sr-only">Toggle theme</span>
+                    </Button>
 
                     <Button
                         variant="ghost"

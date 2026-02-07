@@ -39,7 +39,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
                     enableSystem={isLandingPage}
                     disableTransitionOnChange
                     storageKey={isLandingPage ? 'landing-theme' : 'elysian-theme'}
-                    forcedTheme={!isLandingPage ? 'light' : undefined}
+                // forcedTheme={!isLandingPage ? 'light' : undefined} // DISABLED: Allow Dark Mode for Admin Dashboard
                 >
                     <TelemetryProvider onEvent={() => { }}>
                         <I18nProvider locale={locale} onLocaleChange={setLocale}>

@@ -10,7 +10,7 @@ export function CTASection() {
     const { t } = useTranslation();
 
     return (
-        <div className="relative w-full rounded-[2.5rem] overflow-hidden bg-gradient-to-r from-sky-50 to-white dark:from-slate-900 dark:to-slate-900 shadow-xl border border-sky-100 dark:border-slate-800 mb-24">
+        <div className="container mx-auto px-4 relative w-full rounded-[2.5rem] overflow-hidden bg-gradient-to-r from-sky-50 to-white dark:from-slate-900 dark:to-slate-900 shadow-xl border border-sky-100 dark:border-slate-800 mb-24">
             <div className="relative z-10 p-8 md:p-16 flex flex-col md:flex-row items-center justify-between gap-10">
                 <div className="max-w-xl space-y-6 text-center md:text-left">
                     <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-200 to-white font-heading drop-shadow-sm transition-all hover:brightness-110">
@@ -40,7 +40,7 @@ export function CTASection() {
                         src="/cloud-wave-bg.png"
                         alt="Background Decoration"
                         fill
-                        className="object-cover object-right-bottom opacity-80 mix-blend-multiply dark:mix-blend-screen"
+                        className="object-cover object-right-bottom opacity-80 dark:opacity-20 mix-blend-multiply dark:mix-blend-luminosity"
                         quality={90}
                     />
                     {/* Gradient Overlay for better text readability */}

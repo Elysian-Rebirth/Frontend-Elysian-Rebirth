@@ -220,7 +220,7 @@ export default function LoginPage() {
                 <div className="w-full max-w-[380px] space-y-6">
 
                     {/* Rive Stage (Breaking the grid) */}
-                    <div className="h-[260px] w-[140%] -ml-[20%] flex items-end justify-center pb-0 pointer-events-none">
+                    <div className="h-[260px] w-full flex items-end justify-center pb-0 pointer-events-none">
                         <RiveLoginAvatar
                             emailValue={emailValue || ""}
                             isEmailFocused={isEmailFocused}

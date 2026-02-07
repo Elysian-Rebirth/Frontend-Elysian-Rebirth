@@ -9,7 +9,7 @@ export function GlassCard({ className, variant = "transparent", ...props }: Glas
         <div
             className={cn(
                 "rounded-xl transition-all duration-300",
-                variant === "transparent" ? "glass-obsidian hover:bg-slate-900/70 hover:shadow-lg hover:-translate-y-1" : "glass-obsidian-solid",
+                variant === "transparent" ? "bg-white dark:bg-slate-950/50 dark:glass-obsidian border border-slate-200 dark:border-white/5 hover:shadow-lg hover:-translate-y-1" : "glass-obsidian-solid",
                 className
             )}
             {...props}

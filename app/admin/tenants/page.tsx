@@ -65,7 +65,7 @@ export default function TenantsPage() {
                 {/* Could add filters here */}
             </div>
 
-            <div className="rounded-md border bg-card">
+            <div className="rounded-md border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-950/50">
                 <DataTable
                     columns={tenantColumns}
                     data={MOCK_TENANTS}

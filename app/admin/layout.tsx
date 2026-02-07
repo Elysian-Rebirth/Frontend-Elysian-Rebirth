@@ -1,6 +1,7 @@
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminGuard } from "@/components/auth/AdminGuard";
+import { AdminThemeWrapper } from "@/components/admin/AdminThemeWrapper";
 
 export default function AdminLayout({
     children,
@@ -9,7 +10,7 @@ export default function AdminLayout({
 }) {
     return (
         <AdminGuard>
-            <div className="flex w-full min-h-screen admin-obsidian-theme obsidian-mesh-bg bg-slate-950 text-slate-100 font-sans selection:bg-rose-500/30">
+            <AdminThemeWrapper>
                 {/* Sidebar (Floating Glass) */}
                 <AdminSidebar />
 
@@ -20,7 +21,7 @@ export default function AdminLayout({
                         {children}
                     </main>
                 </div>
-            </div>
+            </AdminThemeWrapper>
         </AdminGuard>
     );
 }

@@ -115,10 +115,10 @@ export default function FeatureFlagsPage() {
             {/* Filters */}
             <div className="flex items-center gap-4">
                 <div className="relative w-72">
-                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-slate-500" />
                     <Input
                         placeholder="Search flags..."
-                        className="pl-8"
+                        className="pl-8 bg-white dark:bg-slate-950/50 border-slate-200 dark:border-white/10"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
@@ -127,28 +127,28 @@ export default function FeatureFlagsPage() {
 
             <GlassCard variant="solid" className="rounded-md border-0 overflow-hidden">
                 <Table className="compact-table">
-                    <TableHeader className="bg-slate-900/50">
-                        <TableRow className="border-white/5 hover:bg-transparent">
-                            <TableHead className="w-[300px] text-slate-400">Flag Detail</TableHead>
-                            <TableHead className="text-slate-400">Scope</TableHead>
-                            <TableHead className="text-slate-400">Targeting</TableHead>
-                            <TableHead className="text-right text-slate-400">State</TableHead>
+                    <TableHeader className="bg-slate-50 dark:bg-slate-900/50">
+                        <TableRow className="border-slate-200 dark:border-white/5 hover:bg-transparent">
+                            <TableHead className="w-[300px] text-slate-500 dark:text-slate-400">Flag Detail</TableHead>
+                            <TableHead className="text-slate-500 dark:text-slate-400">Scope</TableHead>
+                            <TableHead className="text-slate-500 dark:text-slate-400">Targeting</TableHead>
+                            <TableHead className="text-right text-slate-500 dark:text-slate-400">State</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {filteredFlags.map(flag => (
-                            <TableRow key={flag.id} className="border-white/5 hover:bg-white/5">
+                            <TableRow key={flag.id} className="border-slate-200 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5">
                                 <TableCell>
                                     <div className="flex flex-col">
-                                        <span className="font-medium text-sm text-slate-200">{flag.name}</span>
-                                        <code className="text-[10px] bg-slate-800 px-1 py-0.5 rounded w-fit text-slate-400 mt-1 border border-white/5">
+                                        <span className="font-medium text-sm text-slate-900 dark:text-slate-200">{flag.name}</span>
+                                        <code className="text-[10px] bg-slate-100 dark:bg-slate-800 px-1 py-0.5 rounded w-fit text-slate-500 dark:text-slate-400 mt-1 border border-slate-200 dark:border-white/5">
                                             {flag.key}
                                         </code>
                                         <span className="text-xs text-slate-500 mt-1">{flag.description}</span>
                                     </div>
                                 </TableCell>
                                 <TableCell>
-                                    <Badge variant="outline" className="gap-1 border-white/10 text-slate-400">
+                                    <Badge variant="outline" className="gap-1 border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400">
                                         {flag.scope === 'Global' ? <Globe className="h-3 w-3" /> : <Users className="h-3 w-3" />}
                                         {flag.scope}
                                     </Badge>
@@ -157,16 +157,16 @@ export default function FeatureFlagsPage() {
                                     {flag.scope === 'Tenant' && flag.targetTenants ? (
                                         <div className="flex gap-1 flex-wrap">
                                             {flag.targetTenants.map(t => (
-                                                <Badge key={t} variant="secondary" className="text-[10px] bg-slate-800 text-slate-300">{t}</Badge>
+                                                <Badge key={t} variant="secondary" className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">{t}</Badge>
                                             ))}
                                         </div>
                                     ) : (
-                                        <span className="text-xs text-slate-600 italic">All Users</span>
+                                        <span className="text-xs text-slate-500 dark:text-slate-600 italic">All Users</span>
                                     )}
                                 </TableCell>
                                 <TableCell className="text-right">
                                     <div className="flex justify-end items-center gap-3">
-                                        <span className={`text-xs font-medium ${flag.isEnabled ? 'text-emerald-400' : 'text-slate-600'}`}>
+                                        <span className={`text-xs font-medium ${flag.isEnabled ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-600'}`}>
                                             {flag.isEnabled ? 'ON' : 'OFF'}
                                         </span>
                                         <Switch

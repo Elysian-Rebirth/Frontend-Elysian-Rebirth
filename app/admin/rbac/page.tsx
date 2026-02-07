@@ -36,8 +36,8 @@ export default function RbacPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-2xl font-bold tracking-tight">Access Control (RBAC)</h1>
-                <p className="text-muted-foreground">Manage permissions for each role. Changes affect users immediately.</p>
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Access Control (RBAC)</h1>
+                <p className="text-slate-500 dark:text-slate-400">Manage permissions for each role. Changes affect users immediately.</p>
             </div>
 
             <PermissionMatrix initialData={MOCK_MATRIX} />

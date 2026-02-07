@@ -71,31 +71,31 @@ export default function AuditLogsPage() {
         <div className="space-y-6">
             <div className="flex justify-between items-end">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Forensic Audit Logs</h1>
-                    <p className="text-muted-foreground">Trace every action. Immutable security records.</p>
+                    <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Forensic Audit Logs</h1>
+                    <p className="text-slate-500 dark:text-slate-400">Trace every action. Immutable security records.</p>
                 </div>
-                <Badge variant="outline" className="font-mono text-xs">
+                <Badge variant="outline" className="font-mono text-xs border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400">
                     Viewing in: {userTimeZone}
                 </Badge>
             </div>
 
-            <div className="rounded-md border bg-card">
+            <div className="rounded-md border border-slate-200 dark:border-white/10 bg-white dark:bg-slate-950/50">
                 <Table className="compact-table">
-                    <TableHeader className="bg-muted/50">
-                        <TableRow>
-                            <TableHead>Timestamp</TableHead>
-                            <TableHead>Actor</TableHead>
-                            <TableHead>Action</TableHead>
-                            <TableHead>Resource</TableHead>
-                            <TableHead>Context (IP/Loc)</TableHead>
-                            <TableHead className="text-right">Evidence</TableHead>
+                    <TableHeader className="bg-slate-50 dark:bg-slate-900/50">
+                        <TableRow className="border-slate-200 dark:border-white/5">
+                            <TableHead className="text-slate-500 dark:text-slate-400">Timestamp</TableHead>
+                            <TableHead className="text-slate-500 dark:text-slate-400">Actor</TableHead>
+                            <TableHead className="text-slate-500 dark:text-slate-400">Action</TableHead>
+                            <TableHead className="text-slate-500 dark:text-slate-400">Resource</TableHead>
+                            <TableHead className="text-slate-500 dark:text-slate-400">Context (IP/Loc)</TableHead>
+                            <TableHead className="text-right text-slate-500 dark:text-slate-400">Evidence</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {MOCK_LOGS.map(log => (
-                            <TableRow key={log.id}>
+                            <TableRow key={log.id} className="border-slate-200 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5">
                                 {/* Timezone Critical Display */}
-                                <TableCell className="whitespace-nowrap font-mono text-xs text-muted-foreground">
+                                <TableCell className="whitespace-nowrap font-mono text-xs text-slate-500 dark:text-slate-400">
                                     {formatDate(log.timestamp)}
                                 </TableCell>
 
@@ -103,7 +103,7 @@ export default function AuditLogsPage() {
                                 <TableCell>
                                     <div className="flex flex-col">
                                         <div className="flex items-center gap-2">
-                                            <span className="font-medium">{log.actor.name}</span>
+                                            <span className="font-medium text-slate-900 dark:text-slate-200">{log.actor.name}</span>
                                             {log.actor.impersonatorName && (
                                                 <TooltipProvider>
                                                     <Tooltip>
@@ -120,7 +120,7 @@ export default function AuditLogsPage() {
                                                 </TooltipProvider>
                                             )}
                                         </div>
-                                        <span className="text-xs text-muted-foreground">{log.actor.email}</span>
+                                        <span className="text-xs text-slate-500 dark:text-slate-500">{log.actor.email}</span>
                                     </div>
                                 </TableCell>
 
@@ -128,13 +128,13 @@ export default function AuditLogsPage() {
                                     <Badge variant={log.status === 'Success' ? 'secondary' : 'destructive'} className="text-[10px] mr-2">
                                         {log.status.toUpperCase()}
                                     </Badge>
-                                    <span className="font-medium text-sm">{log.action}</span>
+                                    <span className="font-medium text-sm text-slate-700 dark:text-slate-200">{log.action}</span>
                                 </TableCell>
 
-                                <TableCell className="text-sm text-slate-500">{log.resource}</TableCell>
+                                <TableCell className="text-sm text-slate-600 dark:text-slate-500">{log.resource}</TableCell>
 
                                 <TableCell>
-                                    <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+                                    <div className="flex flex-col gap-1 text-xs text-slate-500 dark:text-slate-400">
                                         <div className="flex items-center gap-1">
                                             <Monitor className="h-3 w-3" /> {log.ipAddress}
                                         </div>
@@ -150,7 +150,7 @@ export default function AuditLogsPage() {
                                     {log.changes ? (
                                         <AuditDiffViewer log={log} />
                                     ) : (
-                                        <span className="text-xs text-muted-foreground italic">No data diff</span>
+                                        <span className="text-xs text-slate-400 italic">No data diff</span>
                                     )}
                                 </TableCell>
                             </TableRow>

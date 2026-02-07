@@ -133,8 +133,14 @@
 
     /* High Contrast Data Zone - NO BLUR (Performance Optimization) */
     .glass-obsidian-solid {
-        @apply bg-slate-900/95 border-slate-800 backdrop-blur-none text-slate-200;
-        /* Force shadcn default components inside to inherit dark variables */
+        @apply bg-white dark:bg-slate-900/95 border-slate-200 dark:border-slate-800 backdrop-blur-none text-slate-900 dark:text-slate-200;
+        /* Force shadcn default components inside to inherit dark variables only in dark mode */
+        --card: 0 0% 100%;
+        --card-foreground: 222.2 84% 4.9%;
+        --background: 0 0% 100%;
+    }
+
+    .dark .glass-obsidian-solid {
         --card: 222 47% 11%;
         --background: 222 47% 11%;
     }
