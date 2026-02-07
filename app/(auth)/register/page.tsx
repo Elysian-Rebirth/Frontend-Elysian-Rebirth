@@ -329,10 +329,10 @@ export default function RegisterPage() {
                 DESKTOP LAYOUT (GLASS CITADEL) - hidden lg:flex
                 TIDAK DIUBAH SAMA SEKALI DARI ORIGINAL
                ===================================================================================== */}
-            <div className="hidden lg:flex flex-col justify-center min-h-screen py-12 px-8 lg:px-12 w-full relative">
+            <div className="hidden lg:flex flex-col justify-center min-h-screen py-10 px-8 lg:px-12 w-full relative">
 
                 {/* Brand Logo */}
-                <div className="absolute top-8 left-8">
+                <div className="mb-8 w-full max-w-[420px] mx-auto">
                     <Link href="/">
                         <ElysianTextLogo />
                     </Link>

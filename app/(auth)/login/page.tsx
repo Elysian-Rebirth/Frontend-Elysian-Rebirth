@@ -208,14 +208,14 @@ export default function LoginPage() {
             {/* --------------------------------------------------------------------------------
                DESKTOP LAYOUT: "Glass Citadel" & "Premium Stage" (Visible only on Desktop)
             -------------------------------------------------------------------------------- */}
-            < div className="hidden lg:flex flex-col justify-center h-full px-12 relative w-full items-center" >
+            <div className="hidden lg:flex flex-col justify-center min-h-screen py-10 px-12 relative w-full items-center overflow-y-auto">
 
-                {/* Brand Logo (Absolute Top Left of Panel) */}
-                < div className="absolute top-8 left-8" >
+                {/* Brand Logo (Flex Flow - No Overlap) */}
+                <div className="mb-8 w-full max-w-[380px]">
                     <Link href="/">
                         <ElysianTextLogo />
                     </Link>
-                </div >
+                </div>
 
                 <div className="w-full max-w-[380px] space-y-6">
 
