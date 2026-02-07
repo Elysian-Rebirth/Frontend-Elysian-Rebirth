@@ -35,19 +35,40 @@ export function AdminHeader() {
                         </Button>
                     </SheetTrigger>
                     {/* ... Mobile Menu Content (Can optionally update this too, but header is priority) ... */}
-                    <SheetContent side="left" className="w-72 bg-slate-950 border-r border-white/10 p-0 text-slate-200">
+                    <SheetContent side="left" className="w-[300px] sm:w-[400px] p-0 border-r border-slate-200 dark:border-white/10 bg-white dark:bg-slate-950 [&>button]:top-4 [&>button]:right-4 [&>button]:bg-transparent hover:[&>button]:bg-slate-100 dark:hover:[&>button]:bg-white/10 [&>button]:text-slate-500 dark:[&>button]:text-slate-400">
                         {/* Keeping Mobile Menu Dark Mode Only for now as requested "1 page full admin dashboard" implies desktop focus, sticking to safe defaults for mobile menu to avoid huge refactor */}
-                        <div className="flex flex-col h-full">
-                            <div className="p-5 flex items-center gap-3 bg-gradient-to-b from-rose-950/20 to-transparent">
-                                <div className="p-2 bg-rose-600/20 border border-rose-500/30 rounded-lg shadow-[0_0_15px_rgba(225,29,72,0.3)]">
-                                    <ShieldAlert className="w-5 h-5 text-rose-500" />
+                        <div className="flex flex-col h-full bg-white dark:bg-slate-950 transition-colors duration-300">
+                            <div className="p-5 flex items-center gap-3 bg-gradient-to-b from-rose-500/5 to-transparent dark:from-rose-950/20">
+                                <div className="p-2 bg-rose-500/10 dark:bg-rose-600/20 border border-rose-500/20 dark:border-rose-500/30 rounded-lg shadow-sm dark:shadow-[0_0_15px_rgba(225,29,72,0.3)]">
+                                    <ShieldAlert className="w-5 h-5 text-rose-600 dark:text-rose-500" />
                                 </div>
                                 <div>
-                                    <h1 className="font-bold text-sm tracking-[0.2em] text-rose-500">GOD MODE</h1>
+                                    <h1 className="font-bold text-sm tracking-[0.2em] text-rose-600 dark:text-rose-500">GOD MODE</h1>
                                     <p className="text-[10px] uppercase text-slate-500 tracking-wider">Mobile Access</p>
                                 </div>
                             </div>
-                            {/* ... menu items ... */}
+
+                            <div className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+                                {menuItems.map((item) => {
+                                    const isActive = pathname === item.href;
+                                    return (
+                                        <Link
+                                            key={item.href}
+                                            href={item.href}
+                                            onClick={() => setIsOpen(false)}
+                                            className={cn(
+                                                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
+                                                isActive
+                                                    ? "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400 shadow-sm"
+                                                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-white/5"
+                                            )}
+                                        >
+                                            <item.icon className={cn("h-4 w-4", isActive ? "text-rose-600 dark:text-rose-400" : "text-slate-500 dark:text-slate-500")} />
+                                            {item.label}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
                         </div>
                     </SheetContent>
                 </Sheet>
