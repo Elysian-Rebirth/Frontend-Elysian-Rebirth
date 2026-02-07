@@ -14,7 +14,8 @@ export function AdminThemeWrapper({ children }: { children: React.ReactNode }) {
 
     if (!mounted) {
         // Prevent hydration mismatch by rendering a safe default (or empty)
-        return <div className="min-h-screen bg-slate-950">{children}</div>;
+        // DEFAULT TO LIGHT MODE as requested by user
+        return <div className="min-h-screen bg-slate-50">{children}</div>;
     }
 
     const isDark = theme === 'dark';
