@@ -377,7 +377,7 @@ export default function RegisterPage() {
                                         <div className="flex items-center gap-2">
                                             <div className="flex items-center justify-center gap-1 bg-slate-50 border border-slate-200 h-11 px-3 rounded-lg text-sm text-slate-600 font-medium cursor-not-allowed select-none min-w-[80px]">
                                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img src="https://flagcdn.com/w20/id.png" alt="ID" className="w-5 h-auto rounded-sm shadow-sm" />
+                                                <img src="/indonesia.png" alt="ID" className="w-5 h-auto rounded-sm shadow-sm" />
                                                 <span>+62</span>
                                             </div>
                                             <FormControl>
