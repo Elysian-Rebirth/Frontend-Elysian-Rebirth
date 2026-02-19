@@ -12,7 +12,7 @@ interface ToolbarProps {
 }
 
 export function Toolbar({ mobileMode, setMobileMode, setIsSidebarOpen }: ToolbarProps) {
-    const { nodes, edges, meta, executeWorkflow, publishVersion } = useWorkflowStore();
+    const { meta, executeWorkflow, publishVersion } = useWorkflowStore();
     const { fitView } = useReactFlow();
 
     const handleRun = async () => {

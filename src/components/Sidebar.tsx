@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import { NavigationMenu } from '@/components/NavigationMenu';
 import { GettingStartedWidget } from '@/components/GettingStartedWidget';
-import { User, Infinity as InfinityIcon, Sparkles, ChevronsLeft, HelpCircle, Shield } from 'lucide-react';
+import { User, ChevronsLeft, HelpCircle, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/';
 import { useSidebar } from '@/contexts/SidebarContext';
 import { useAuthStore } from '@/store/authStore';

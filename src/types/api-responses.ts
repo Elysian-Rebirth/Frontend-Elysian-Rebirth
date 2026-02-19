@@ -80,3 +80,33 @@ export interface WorkflowExecutionResponse {
     outputs?: Record<string, unknown>;
     error?: string;
 }
+
+// Enterprise Dashboard Metrics
+
+export interface CostMetric {
+    date: string;
+    amount: number;
+    currency: string;
+    budget: number;
+    projected: number;
+}
+
+export interface LatencyMetric {
+    timestamp: string;
+    p95: number;
+    p99: number;
+    errors: number;
+}
+
+export interface AuditLog {
+    id: string;
+    user: {
+        name: string;
+        email: string;
+        avatar?: string;
+    };
+    action: string;
+    target: string;
+    timestamp: string;
+    status: 'success' | 'failure';
+}

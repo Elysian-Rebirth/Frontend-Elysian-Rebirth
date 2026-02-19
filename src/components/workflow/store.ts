@@ -205,7 +205,7 @@ export const useWorkflowStore = create<WorkflowState>()(
             },
 
             pollExecution: async () => {
-                const { execution, pollExecution } = get();
+                const { execution } = get();
                 if (!execution.runId || execution.status === 'completed' || execution.status === 'failed') return;
 
                 try {

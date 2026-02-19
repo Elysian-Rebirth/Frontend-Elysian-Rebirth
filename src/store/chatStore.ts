@@ -14,10 +14,12 @@ interface ChatState {
     currentConversationId: string | null;
     selectedMode: 'agent' | 'planning' | 'images' | 'workflow';
     sidebarOpen: boolean;
+    draftMessage: string | null;
 
     setConversationId: (id: string | null) => void;
     setSelectedMode: (mode: ChatState['selectedMode']) => void;
     setSidebarOpen: (open: boolean) => void;
+    setDraftMessage: (message: string | null) => void;
 }
 
 export const useChatStore = create<ChatState>()(
@@ -26,13 +28,22 @@ export const useChatStore = create<ChatState>()(
             currentConversationId: null,
             selectedMode: 'agent',
             sidebarOpen: false,
+            draftMessage: null,
 
             setConversationId: (id) => set({ currentConversationId: id }),
             setSelectedMode: (mode) => set({ selectedMode: mode }),
             setSidebarOpen: (open) => set({ sidebarOpen: open }),
+            setDraftMessage: (message) => set({ draftMessage: message }),
         }),
         {
             name: 'chat-storage',
+            partialize: (state) => ({
+                // Only persist specific fields if needed, or all. 
+                // Persisting draftMessage is good for page reloads.
+                selectedMode: state.selectedMode,
+                sidebarOpen: state.sidebarOpen,
+                draftMessage: state.draftMessage
+            }),
         }
     )
 );

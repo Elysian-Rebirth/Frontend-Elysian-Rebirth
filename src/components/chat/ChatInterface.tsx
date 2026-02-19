@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import NextImage from 'next/image'; // Import Next.js Image
-import { useSearchParams } from 'next/navigation';
 import { Sender } from './Sender';
 import { ChatBubble } from './ChatBubble';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -12,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ChatSidebarContent } from './ChatSidebarContent';
 import { useAuthStore } from '@/store/authStore';
+import { useChatStore } from '@/store/chatStore';
 
 interface Message {
     id: string;
@@ -30,8 +30,11 @@ export function ChatInterface() {
     const [isTyping, setIsTyping] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
-    const searchParams = useSearchParams();
     const initialPromptHandled = useRef(false);
+
+    // Chat Store for draft messages from Dashboard
+    const draftMessage = useChatStore(state => state.draftMessage);
+    const setDraftMessage = useChatStore(state => state.setDraftMessage);
 
     // Auto-scroll to bottom only if there are messages
     useEffect(() => {
@@ -74,18 +77,18 @@ export function ChatInterface() {
         }, 1500);
     };
 
-    // ── Auto-send from URL param (dashboard AiChatWidget → /chat?q=...) ──
+    // ── Auto-send from Store (dashboard AiChatWidget) ──
     useEffect(() => {
-        const initialPrompt = searchParams.get('q');
-        if (initialPrompt && !initialPromptHandled.current) {
+        if (draftMessage && !initialPromptHandled.current) {
             initialPromptHandled.current = true;
-            // Small delay to ensure UI is mounted before sending
-            const timer = setTimeout(() => {
-                handleSend(decodeURIComponent(initialPrompt));
-            }, 100);
-            return () => clearTimeout(timer);
+
+            // Send the draft message
+            handleSend(draftMessage);
+
+            // Clear it immediately to prevent double-firing on refresh
+            setDraftMessage(null);
         }
-    }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [draftMessage, setDraftMessage]);
 
     return (
         <div className="flex h-full w-full relative overflow-hidden text-slate-800 bg-slate-50 dark:bg-slate-950">
