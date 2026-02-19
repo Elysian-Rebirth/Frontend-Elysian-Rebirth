@@ -1,96 +1,177 @@
+/**
+ * DashboardShell.tsx — Container Component (Data Orchestration)
+ *
+ * Architecture:
+ * - This is the ONLY component that calls React Query hooks
+ * - All data is passed DOWN to presentation components via typed props
+ * - Progressive Rendering: each component gets its own isLoading,
+ *   fast APIs render immediately, slow ones load independently
+ * - Pipeline tab filter is URL-driven via searchParams
+ */
 'use client';
 
-import React from 'react';
+import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Home } from 'lucide-react';
-import { TokenUsageChart } from './TokenUsageChart';
-import { TryElysianWidget } from './PromoWidgets';
-import { QuestWidget } from './QuestWidget';
-import { DashboardStats } from './DashboardStats';
-import { ActivePipelinesList } from './ActivePipelinesList';
-import { BusinessNeedsSection } from './BusinessNeeds';
-import { OnboardingWidget } from '@/components/onboarding/OnboardingWidget';
+
+// Data hooks
+import { useDashboardStats, useChartData, useActivityFeed } from '@/queries/dashboard.queries';
+import { useWorkflows } from '@/queries/workflow.queries';
+import { useAuthStore } from '@/store/authStore';
 import { useTranslation } from '@/hooks/useTranslation';
-import { useDashboardStats } from '@/queries/dashboard.queries';
 
-interface DashboardStatsData {
-    docs?: number;
-    apiCalls?: number;
-    errorRate?: number;
-    successRate?: number;
-}
+// Presentation components (progressive rendering — each has own skeleton)
+import { MetricCard } from './MetricCard';
+import { AnalyticsChart } from './AnalyticsChart';
+import { PriorityTasks } from './PriorityTasks';
+import { AiChatWidget } from './AiChatWidget';
+import { PipelineTable } from './PipelineTable';
+import type { PipelineRow } from './PipelineTable';
+import type { ChartDataPoint } from './AnalyticsChart';
+import type { ActivityItem } from './PriorityTasks';
 
-export function DashboardShell({ stats: _initialStats }: { stats: DashboardStatsData | null }) {
+// Onboarding widget (kept from previous design)
+import { OnboardingWidget } from '@/components/onboarding/OnboardingWidget';
+
+// Inner component that uses useSearchParams (must be wrapped in Suspense)
+function DashboardContent() {
     const { t } = useTranslation();
-    const { data: stats, isLoading } = useDashboardStats();
+    const searchParams = useSearchParams();
+    const statusFilter = searchParams.get('status') ?? 'all';
 
-    // Use dummy data if still loading but show real stats once fetched
-    const displayStats = stats || {
-        docs: 0,
-        apiCalls: 0,
-        errorRate: 0,
-        successRate: 0
-    };
+    // ── Auth State (for greeting) ──
+    const user = useAuthStore(state => state.user);
+
+    // ── Data Hooks (independent — each renders progressively) ──
+    const { data: stats, isLoading: statsLoading } = useDashboardStats();
+    const { data: chartData, isLoading: chartLoading } = useChartData();
+    const { data: activities, isLoading: activitiesLoading } = useActivityFeed();
+    const { data: pipelines, isLoading: pipelinesLoading } = useWorkflows({ status: statusFilter });
+
+    // ── Derive KPI deltas ──
+    const docsCount = stats?.docs ?? 0;
+    const prevDocs = stats?.previousDocs ?? 0;
+    const docsDelta = docsCount - prevDocs;
+
+    const apiCallsCount = stats?.apiCalls ?? 0;
+    const prevApiCalls = stats?.previousApiCalls ?? 0;
+    const apiDelta = apiCallsCount - prevApiCalls;
+
+    const pipelineCount = stats?.activePipelines ?? (pipelines?.length ?? 0);
+    const prevPipelines = stats?.previousActivePipelines ?? 0;
+    const pipelineDelta = pipelineCount - prevPipelines;
+
+    // ── Transform data for presentation components ──
+    const chartPoints: ChartDataPoint[] = (chartData ?? []).map(d => ({
+        day: d.day,
+        tokens: d.tokens,
+        projected: d.projected,
+    }));
+
+    const activityItems: ActivityItem[] = (activities ?? []).map(a => ({
+        id: a.id,
+        type: a.type,
+        title: a.title,
+        description: a.description,
+        timestamp: a.timestamp,
+        status: a.status,
+    }));
+
+    const pipelineRows: PipelineRow[] = (pipelines ?? []).map(p => ({
+        id: p.id,
+        name: p.name,
+        status: p.status,
+        lastRun: p.lastRun,
+    }));
 
     return (
         <>
             <OnboardingWidget />
-            <div className="w-full overflow-hidden p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto space-y-4 md:space-y-6 lg:space-y-8">
-                {/* Header */}
+
+            <div className="w-full overflow-hidden p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto space-y-6">
+                {/* ── Header ── */}
                 <div id="dashboard-header" className="pt-2 md:pt-0">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                    <div className="flex items-center gap-2 text-sm text-slate-400 mb-2">
                         <Home className="w-4 h-4" />
                         <span>/</span>
                         <span>{t.dashboard.breadcrumb}</span>
                     </div>
-                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{t.dashboard.heading}</h1>
-                    <p className="text-sm md:text-base text-muted-foreground mt-1">{t.dashboard.description}</p>
+                    <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
+                        {t.dashboard.heading}
+                    </h1>
+                    <p className="text-sm md:text-base text-slate-400 mt-1">
+                        {t.dashboard.description}
+                    </p>
                 </div>
 
-                {/* Top Section: Charts & Promo */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-                    {/* Left: Chart */}
-                    <div className="lg:col-span-2 min-w-0">
-                        <TokenUsageChart />
+                {/* ── 2-Column Layout ── */}
+                <div className="grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-6">
+
+                    {/* ── Main Content Column ── */}
+                    <div className="space-y-6 min-w-0">
+
+                        {/* Zone A: KPI Metric Cards (3 cards) */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <MetricCard
+                                label="Docs Indexed"
+                                value={docsCount}
+                                previousValue={prevDocs}
+                                delta={docsDelta}
+                                isLoading={statsLoading}
+                            />
+                            <MetricCard
+                                label="API Calls"
+                                value={apiCallsCount.toLocaleString()}
+                                previousValue={prevApiCalls.toLocaleString()}
+                                delta={apiDelta}
+                                isLoading={statsLoading}
+                            />
+                            <MetricCard
+                                label="Active Pipelines"
+                                value={pipelineCount}
+                                previousValue={prevPipelines}
+                                delta={pipelineDelta}
+                                isLoading={statsLoading}
+                            />
+                        </div>
+
+                        {/* Zone B: Analytics Chart */}
+                        <AnalyticsChart
+                            data={chartPoints}
+                            isLoading={chartLoading}
+                        />
+
+                        {/* Zone E: Pipeline Table (URL-driven tab filters) */}
+                        <PipelineTable
+                            pipelines={pipelineRows}
+                            isLoading={pipelinesLoading}
+                        />
                     </div>
 
-                    {/* Right: Widgets */}
-                    <div className="space-y-4 md:space-y-6 min-w-0">
-                        <div className="min-h-[180px] md:min-h-[200px]">
-                            <TryElysianWidget />
-                        </div>
-                        <QuestWidget />
+                    {/* ── Right Sidebar Column ── */}
+                    <div className="space-y-6 min-w-0">
+                        {/* Zone C: Priority Tasks / Activity Feed */}
+                        <PriorityTasks
+                            activities={activityItems}
+                            isLoading={activitiesLoading}
+                        />
+
+                        {/* Zone D: AI Chat Widget */}
+                        <AiChatWidget
+                            userName={user?.name}
+                        />
                     </div>
-                </div>
-
-                {/* Stats Grid */}
-                <DashboardStats
-                    docs={displayStats.docs}
-                    apiCalls={displayStats.apiCalls}
-                    errorRate={displayStats.errorRate}
-                    successRate={displayStats.successRate}
-                    isLoading={isLoading}
-                />
-
-                {/* Active Pipelines Table */}
-                <div className="rounded-xl border bg-white dark:bg-zinc-900 shadow-sm overflow-hidden">
-                    <div className="p-4 md:p-6">
-                        <div className="mb-6">
-                            <h3 className="font-bold text-lg">{t.dashboard.activePipelines}</h3>
-                        </div>
-                        <div className="w-full overflow-x-auto">
-                            <div className="min-w-[600px]">
-                                <ActivePipelinesList />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Bottom: Business Needs */}
-                <div className="min-w-0">
-                    <BusinessNeedsSection />
                 </div>
             </div>
         </>
     );
 }
 
+// ── Exported Shell (wraps inner content in Suspense for useSearchParams) ──
+export function DashboardShell() {
+    return (
+        <Suspense fallback={null}>
+            <DashboardContent />
+        </Suspense>
+    );
+}
