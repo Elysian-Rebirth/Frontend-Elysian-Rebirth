@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from 'axios';
 import { config } from './config';
+import { globalDegradation } from './globalDegradation';
 
 class HttpClient {
     private client: AxiosInstance;
@@ -30,16 +31,28 @@ class HttpClient {
             (error) => Promise.reject(error)
         );
 
-        // Response interceptor
+        // Response interceptor — detect service degradation from organic failures
         this.client.interceptors.response.use(
-            (response) => response,
+            (response) => {
+                // Successful response → clear any degraded state for this service
+                globalDegradation.clearFor(response.config.url);
+                return response;
+            },
             (error) => {
-                if (error.response?.status === 401) {
+                const status = error.response?.status;
+
+                if (status === 401) {
                     // Redirect to login on unauthorized
                     if (typeof window !== 'undefined') {
                         window.location.href = '/login';
                     }
                 }
+
+                // Detect service degradation from organic API failures
+                if (status === 503 || status === 504 || status === 429) {
+                    globalDegradation.markDegraded(error.config?.url, status);
+                }
+
                 return Promise.reject(error);
             }
         );

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { ChatInterface } from '@/components/chat/ChatInterface';
 import { Metadata } from 'next';
 
@@ -12,8 +13,12 @@ export default function ChatPage() {
             {/* 
                We wrap ChatInterface in a full-height container.
                The ChatInterface handles its own internal scrolling and layout.
+               Suspense boundary required because ChatInterface uses useSearchParams.
             */}
-            <ChatInterface />
+            <Suspense fallback={null}>
+                <ChatInterface />
+            </Suspense>
         </div>
     );
 }
+

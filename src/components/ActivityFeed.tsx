@@ -1,3 +1,12 @@
+/**
+ * ActivityFeed.tsx — Now powered by React Query instead of Zustand
+ *
+ * Uses useActivityFeed() which:
+ * - Fetches on mount
+ * - Refetches on window focus
+ * - Gets invalidated after mutations in chat/workflow/knowledge
+ * - No polling
+ */
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/';
@@ -7,9 +16,10 @@ import {
   Database,
   Edit,
   Workflow,
-  Info
+  Info,
+  Loader2,
 } from 'lucide-react';
-import { useActivityStore } from '@/store/activityStore';
+import { useActivityFeed } from '@/queries/activity.queries';
 
 const iconMap = {
   chat: MessageSquare,
@@ -28,7 +38,28 @@ const colorMap = {
 };
 
 export function ActivityFeed({ limit = 10 }: { limit?: number }) {
-  const events = useActivityStore((state) => state.getRecentEvents(limit));
+  const { data: events = [], isLoading, isError } = useActivityFeed(limit);
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardContent className="flex flex-col items-center justify-center py-12">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground mb-2" />
+          <p className="text-sm text-muted-foreground">Loading activity...</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Card>
+        <CardContent className="flex flex-col items-center justify-center py-12">
+          <p className="text-sm text-muted-foreground">Failed to load activity feed</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (events.length === 0) {
     return (
@@ -48,11 +79,12 @@ export function ActivityFeed({ limit = 10 }: { limit?: number }) {
       <CardContent>
         <div className="space-y-4">
           {events.map((event, index) => {
-            const Icon = iconMap[event.type];
-            const colorClass = colorMap[event.type];
+            const eventType = event.type as keyof typeof iconMap;
+            const Icon = iconMap[eventType] || Info;
+            const colorClass = colorMap[eventType] || 'bg-gray-500';
 
             return (
-              <div key={`${event.timestamp}-${index}`} className="flex gap-4">
+              <div key={event.id || `${event.timestamp}-${index}`} className="flex gap-4">
                 <div className="relative">
                   <div className={`flex h-10 w-10 items-center justify-center rounded-full ${colorClass}`}>
                     <Icon className="h-5 w-5 text-white" />
