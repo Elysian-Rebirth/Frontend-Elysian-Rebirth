@@ -50,8 +50,8 @@ export interface AuditLogEntry {
     location: string;
     status: 'Success' | 'Failure';
     changes?: {
-        before: Record<string, any>;
-        after: Record<string, any>;
+        before: Record<string, unknown>;
+        after: Record<string, unknown>;
     };
 }
 

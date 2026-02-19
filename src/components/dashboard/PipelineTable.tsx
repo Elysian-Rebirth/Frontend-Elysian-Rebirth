@@ -134,81 +134,86 @@ export function PipelineTable({ pipelines, isLoading }: PipelineTableProps) {
                 })}
             </div>
 
-            {/* Table Header */}
-            <div className="grid grid-cols-12 gap-4 px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                <div className="col-span-4">Client</div>
-                <div className="col-span-3">Task</div>
-                <div className="col-span-2">Due on</div>
-                <div className="col-span-2">Status</div>
-                <div className="col-span-1 text-right">More</div>
-            </div>
-
-            {/* Table Body */}
-            <div className="space-y-2">
-                {pipelines.length === 0 ? (
-                    <div className="text-center py-20">
-                        <p className="text-sm text-slate-400">No pipelines found.</p>
+            {/* Scrollable Table Container */}
+            <div className="w-full overflow-x-auto">
+                <div className="min-w-[800px]">
+                    {/* Table Header */}
+                    <div className="grid grid-cols-12 gap-4 px-4 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-100 dark:border-slate-800 mb-2">
+                        <div className="col-span-4">Client</div>
+                        <div className="col-span-3">Task</div>
+                        <div className="col-span-2">Due on</div>
+                        <div className="col-span-2">Status</div>
+                        <div className="col-span-1 text-right">More</div>
                     </div>
-                ) : (
-                    pipelines.map((pipeline) => {
-                        const config = getStatusDisplay(pipeline.status);
 
-                        return (
-                            <div
-                                key={pipeline.id}
-                                onClick={() => router.push(`/workflow?id=${pipeline.id}`)}
-                                className="grid grid-cols-12 items-center gap-4 px-4 py-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer group"
-                            >
-                                {/* Client (Avatar + Name) */}
-                                <div className="col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 font-bold text-sm border border-blue-100 dark:border-blue-900">
-                                        {pipeline.name.charAt(0)}
-                                    </div>
-                                    <div className="min-w-0">
-                                        <div className="font-bold text-sm text-slate-900 dark:text-slate-100 truncate group-hover:text-blue-600 transition-colors">
-                                            {pipeline.name}
-                                        </div>
-                                        <div className="text-xs text-slate-400 truncate">@{pipeline.name.toLowerCase().replace(/\s/g, '.')}</div>
-                                    </div>
-                                </div>
-
-                                {/* Task (Name + Type) */}
-                                <div className="col-span-3 min-w-0">
-                                    <div className="font-semibold text-sm text-slate-700 dark:text-slate-200 truncate">
-                                        {pipeline.type || 'RAG Pipeline'}
-                                    </div>
-                                    <div className="text-xs text-slate-400 truncate">Automated workflow</div>
-                                </div>
-
-                                {/* Due Date */}
-                                <div className="col-span-2">
-                                    <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
-                                        {formatTimeAgo(pipeline.lastRun)}
-                                    </span>
-                                </div>
-
-                                {/* Status */}
-                                <div className="col-span-2">
-                                    <span className={cn(
-                                        'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold',
-                                        config.color,
-                                        config.bgColor
-                                    )}>
-                                        {config.icon && <config.icon className="w-3 h-3" />}
-                                        {config.label}
-                                    </span>
-                                </div>
-
-                                {/* Action */}
-                                <div className="col-span-1 text-right">
-                                    <button className="p-1.5 rounded-lg text-slate-300 hover:text-blue-500 hover:bg-blue-50 transition-colors">
-                                        <MoreHorizontal className="w-5 h-5" />
-                                    </button>
-                                </div>
+                    {/* Table Body */}
+                    <div className="space-y-2">
+                        {pipelines.length === 0 ? (
+                            <div className="text-center py-20">
+                                <p className="text-sm text-slate-400">No pipelines found.</p>
                             </div>
-                        );
-                    })
-                )}
+                        ) : (
+                            pipelines.map((pipeline) => {
+                                const config = getStatusDisplay(pipeline.status);
+
+                                return (
+                                    <div
+                                        key={pipeline.id}
+                                        onClick={() => router.push(`/workflow?id=${pipeline.id}`)}
+                                        className="grid grid-cols-12 items-center gap-4 px-4 py-4 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer group"
+                                    >
+                                        {/* Client (Avatar + Name) */}
+                                        <div className="col-span-4 flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-600 font-bold text-sm border border-blue-100 dark:border-blue-900 shrink-0">
+                                                {pipeline.name.charAt(0)}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <div className="font-bold text-sm text-slate-900 dark:text-slate-100 truncate group-hover:text-blue-600 transition-colors">
+                                                    {pipeline.name}
+                                                </div>
+                                                <div className="text-xs text-slate-400 truncate">@{pipeline.name.toLowerCase().replace(/\s/g, '.')}</div>
+                                            </div>
+                                        </div>
+
+                                        {/* Task (Name + Type) */}
+                                        <div className="col-span-3 min-w-0">
+                                            <div className="font-semibold text-sm text-slate-700 dark:text-slate-200 truncate">
+                                                {pipeline.type || 'RAG Pipeline'}
+                                            </div>
+                                            <div className="text-xs text-slate-400 truncate">Automated workflow</div>
+                                        </div>
+
+                                        {/* Due Date */}
+                                        <div className="col-span-2">
+                                            <span className="text-sm font-medium text-slate-600 dark:text-slate-300">
+                                                {formatTimeAgo(pipeline.lastRun)}
+                                            </span>
+                                        </div>
+
+                                        {/* Status */}
+                                        <div className="col-span-2">
+                                            <span className={cn(
+                                                'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold',
+                                                config.color,
+                                                config.bgColor
+                                            )}>
+                                                {config.icon && <config.icon className="w-3 h-3" />}
+                                                {config.label}
+                                            </span>
+                                        </div>
+
+                                        {/* Action */}
+                                        <div className="col-span-1 text-right">
+                                            <button className="p-1.5 rounded-lg text-slate-300 hover:text-blue-500 hover:bg-blue-50 transition-colors">
+                                                <MoreHorizontal className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

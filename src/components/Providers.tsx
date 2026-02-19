@@ -11,7 +11,6 @@ import { PermissionsProvider } from '@/components/providers/PermissionsProvider'
 import { FeatureFlagsProvider } from '@/components/providers/FeatureFlagsProvider';
 import { OfflineBanner } from '@/components/OfflineBanner';
 import { SessionTimeoutWarning } from '@/components/SessionTimeoutWarning';
-import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { SiteFooter } from '@/components/SiteFooter';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as SonnerToaster } from '@/components/ui/sonner';
