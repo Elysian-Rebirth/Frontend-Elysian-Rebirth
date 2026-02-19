@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import NextImage from 'next/image'; // Import Next.js Image
+import { useSearchParams } from 'next/navigation';
 import { Sender } from './Sender';
 import { ChatBubble } from './ChatBubble';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -29,6 +30,8 @@ export function ChatInterface() {
     const [isTyping, setIsTyping] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
+    const searchParams = useSearchParams();
+    const initialPromptHandled = useRef(false);
 
     // Auto-scroll to bottom only if there are messages
     useEffect(() => {
@@ -70,6 +73,19 @@ export function ChatInterface() {
             setIsTyping(false);
         }, 1500);
     };
+
+    // ── Auto-send from URL param (dashboard AiChatWidget → /chat?q=...) ──
+    useEffect(() => {
+        const initialPrompt = searchParams.get('q');
+        if (initialPrompt && !initialPromptHandled.current) {
+            initialPromptHandled.current = true;
+            // Small delay to ensure UI is mounted before sending
+            const timer = setTimeout(() => {
+                handleSend(decodeURIComponent(initialPrompt));
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className="flex h-full w-full relative overflow-hidden text-slate-800 bg-slate-50 dark:bg-slate-950">

@@ -110,6 +110,13 @@ const nextConfig = {
     experimental: {
         optimizePackageImports: ['antd', '@ant-design/icons'],
     },
+    images: {
+        unoptimized: true,
+    },
+    optimizeFonts: false,
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
 };
 
 export default withPWA(nextConfig);

@@ -19,7 +19,6 @@ describe('workflowStore', () => {
             store.setState({
                 nodes: [],
                 edges: [],
-                pipelines: [],
                 isDirty: false,
             });
         });
@@ -57,24 +56,5 @@ describe('workflowStore', () => {
         expect(state.edges).toHaveLength(0); // Edge connected to '1' should be gone
     });
 
-    it('deletePipelineOptimistic should remove pipeline and return snapshot', () => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const p1 = { id: '1', name: 'P1', status: 'queued', createdAt: '' } as any;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const p2 = { id: '2', name: 'P2', status: 'processing', createdAt: '' } as any;
 
-        act(() => {
-            store.setState({ pipelines: [p1, p2] });
-        });
-
-        let snapshot;
-        act(() => {
-            snapshot = store.getState().deletePipelineOptimistic('1');
-        });
-
-        const state = store.getState();
-        expect(state.pipelines).toHaveLength(1);
-        expect(state.pipelines[0].id).toBe('2');
-        expect(snapshot).toHaveLength(2); // Should return original state
-    });
 });

@@ -1,7 +1,19 @@
+/**
+ * workflowStore.ts — Client-only canvas state for Workflow Builder
+ *
+ * Server state (pipelines list, workflow details) is managed by React Query:
+ *   - useWorkflows() → fetches pipeline list
+ *   - useWorkflowLoader(id) → fetches detail, always seeds canvas with latest server state
+ *   - useSaveWorkflow() → persists with OCC conflict detection
+ *
+ * This store manages:
+ *   - Canvas UI state (nodes, edges, selection)
+ *   - isDirty — UX indicator only ("unsaved changes" dot), never blocks data flow
+ *   - serverVersion — hash/ETag of last-known server state for OCC
+ */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Node, Edge } from 'reactflow';
-import type { PipelineItem } from '@/types/x';
 import { createEncryptedIdbStorage } from '@/lib/storage-engine';
 
 interface WorkflowState {
@@ -9,8 +21,7 @@ interface WorkflowState {
   edges: Edge[];
   selectedNode: Node | null;
   isDirty: boolean;
-  // Pipeline State (Optimistic UI Demo)
-  pipelines: PipelineItem[];
+  serverVersion: string;
 
   setNodes: (nodes: Node[]) => void;
   setEdges: (edges: Edge[]) => void;
@@ -18,48 +29,28 @@ interface WorkflowState {
   updateNode: (id: string, data: Record<string, unknown>) => void;
   deleteNode: (id: string) => void;
   setSelectedNode: (node: Node | null) => void;
-  saveWorkflow: () => Promise<void>;
-  loadWorkflow: (id: string) => Promise<void>;
-  clearWorkflow: () => void;
+  setDirty: (dirty: boolean) => void;
 
-  // Pipeline Actions
-  setPipelines: (pipelines: PipelineItem[]) => void;
-  deletePipelineOptimistic: (id: string) => PipelineItem[];
-  restorePipelines: (pipelines: PipelineItem[]) => void;
+  /**
+   * setFromServer — Always accept server data and record version.
+   * Called by useWorkflowLoader when server data arrives.
+   * isDirty is NOT a gate — server data always flows through.
+   */
+  setFromServer: (nodes: Node[], edges: Edge[], version: string) => void;
+
+  clearWorkflow: () => void;
 }
 
 const STORAGE_SECRET = process.env.NEXT_PUBLIC_STORAGE_KEY ?? 'DEV_ONLY_STATIC_KEY';
 
 export const useWorkflowStore = create<WorkflowState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       nodes: [],
       edges: [],
       selectedNode: null,
       isDirty: false,
-      pipelines: [
-        {
-          id: 'pipe_001',
-          name: 'Customer Support RAG Indexing',
-          status: 'processing',
-          progress: 67,
-          eta: '2 min remaining',
-          lastUpdated: new Date(Date.now() - 30000),
-        },
-        {
-          id: 'pipe_002',
-          name: 'Product Documentation Update',
-          status: 'queued',
-          lastUpdated: new Date(Date.now() - 120000),
-        },
-        {
-          id: 'pipe_003',
-          name: 'Weekly Knowledge Refresh',
-          status: 'completed',
-          progress: 100,
-          lastUpdated: new Date(Date.now() - 300000),
-        },
-      ],
+      serverVersion: '',
 
       setNodes: (nodes) => set({ nodes, isDirty: true }),
 
@@ -88,17 +79,15 @@ export const useWorkflowStore = create<WorkflowState>()(
 
       setSelectedNode: (node) => set({ selectedNode: node }),
 
-      saveWorkflow: async () => {
-        const { nodes, edges } = get();
-        // TODO: Call backend API
-        console.log('Saving workflow:', { nodes, edges });
-        set({ isDirty: false });
-      },
+      setDirty: (dirty) => set({ isDirty: dirty }),
 
-      loadWorkflow: async (id) => {
-        // TODO: Call backend API
-        console.log('Loading workflow:', id);
-      },
+      setFromServer: (nodes, edges, version) =>
+        set({
+          nodes,
+          edges,
+          isDirty: false,
+          serverVersion: version,
+        }),
 
       clearWorkflow: () =>
         set({
@@ -106,24 +95,12 @@ export const useWorkflowStore = create<WorkflowState>()(
           edges: [],
           selectedNode: null,
           isDirty: false,
+          serverVersion: '',
         }),
-
-      // Pipeline Actions Implementation
-      setPipelines: (pipelines) => set({ pipelines }),
-
-      deletePipelineOptimistic: (id) => {
-        const currentPipelines = get().pipelines;
-        set((state) => ({
-          pipelines: state.pipelines.filter((p) => p.id !== id)
-        }));
-        return currentPipelines; // Return snapshot for rollback
-      },
-
-      restorePipelines: (pipelines) => set({ pipelines }),
     }),
     {
       name: 'workflow-storage',
-      version: 1,
+      version: 3,
       storage: createEncryptedIdbStorage<WorkflowState>({
         key: 'elysian-workflow',
         secret: STORAGE_SECRET,
@@ -131,22 +108,17 @@ export const useWorkflowStore = create<WorkflowState>()(
       partialize: (state) => ({
         nodes: state.nodes,
         edges: state.edges,
-      }) as unknown as WorkflowState, // Cast to match PersistStorage expectation, though we only save partial data
+        serverVersion: state.serverVersion,
+      }) as unknown as WorkflowState,
       migrate: (persistedState, version) => {
-        // Migration Strategy
-        // v0 (undefined) -> v1
-        if (version === 0) {
+        if (version < 3) {
           const s = persistedState as Partial<WorkflowState>;
           return {
-            ...s,
-            // Ensure mandatory fields exist
             nodes: s.nodes || [],
             edges: s.edges || [],
-            // Re-initialize volatile state
             selectedNode: null,
             isDirty: false,
-            pipelines: [],
-            // Function placeholders are not needed as Zustand re-binds them
+            serverVersion: '',
           } as WorkflowState;
         }
         return persistedState as WorkflowState;
