@@ -5,9 +5,9 @@ import { AuditDiffViewer } from "@/components/admin/audit/AuditDiffViewer";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Ghost, MapPin, Monitor } from "lucide-react";
-import { format } from "date-fns";
+
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { GlassCard } from "@/components/ui/GlassCard";
+
 
 const MOCK_LOGS: AuditLogEntry[] = [
     {

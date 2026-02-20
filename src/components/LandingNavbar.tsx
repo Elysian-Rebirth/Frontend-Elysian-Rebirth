@@ -4,15 +4,15 @@ import Image from 'next/image';
 import { motion, AnimatePresence, Variants, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { ArrowRight, Sun, Moon, Search, Terminal, Monitor, Menu, X, Languages } from 'lucide-react';
+import { ArrowRight, Search, Terminal, Monitor, Menu, X, Languages } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useScrollSpy } from '@/hooks/useScrollSpy';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { useTheme } from 'next-themes';
 
 interface LandingNavbarProps {
     showTerminal?: boolean;
     setShowTerminal?: (v: boolean) => void;
-    isDark?: boolean;
-    toggleTheme?: () => void;
 }
 
 const navContainerVariants: Variants = {
@@ -39,8 +39,10 @@ const navItemVariants: Variants = {
     }
 };
 
-export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleTheme }: LandingNavbarProps) {
+export function LandingNavbar({ showTerminal, setShowTerminal }: LandingNavbarProps) {
     const { t, locale, setLocale } = useTranslation();
+    const { resolvedTheme } = useTheme();
+    const isDark = resolvedTheme === 'dark';
 
     // 1. SCROLL DETECTION (No Reflow)
     const [scrolled, setScrolled] = useState(false);
@@ -196,13 +198,9 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                         </motion.button>
 
                         {/* Theme Toggle - Hidden on Mobile (moved to sidebar) */}
-                        <motion.button
-                            variants={navItemVariants}
-                            onClick={toggleTheme}
-                            className="hidden md:flex p-2 rounded-full text-slate-500 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
-                        >
-                            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                        </motion.button>
+                        <div className="hidden md:flex">
+                            <ThemeToggle />
+                        </div>
 
                         {/* Mobile Menu Toggle */}
                         <motion.button
@@ -327,20 +325,12 @@ export function LandingNavbar({ showTerminal, setShowTerminal, isDark, toggleThe
                                             </motion.button>
 
                                             {/* Theme */}
-                                            <motion.button
-                                                variants={navItemVariants}
-                                                onClick={toggleTheme}
-                                                className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-white/40 dark:bg-slate-800/40 border border-white/50 dark:border-slate-700/50 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-all group"
-                                            >
-                                                {isDark ? (
-                                                    <Moon className="w-5 h-5 text-blue-400 group-hover:scale-110 transition-transform" />
-                                                ) : (
-                                                    <Sun className="w-5 h-5 text-amber-500 group-hover:scale-110 transition-transform" />
-                                                )}
+                                            <div className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl bg-white/40 dark:bg-slate-800/40 border border-white/50 dark:border-slate-700/50 hover:bg-white/60 dark:hover:bg-slate-800/60 transition-all group">
+                                                <ThemeToggle />
                                                 <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
-                                                    {isDark ? "Dark" : "Light"}
+                                                    Mode
                                                 </span>
-                                            </motion.button>
+                                            </div>
                                         </div>
 
                                         {/* Search */}

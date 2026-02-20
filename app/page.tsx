@@ -74,7 +74,7 @@ export default function ElysianLanding() {
         return () => clearTimeout(timer);
     }, []);
 
-    const { theme, setTheme } = useTheme();
+    const { resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -82,8 +82,7 @@ export default function ElysianLanding() {
     }, []);
 
     // Provide safe defaults during SSR and before hydration
-    const isLandingDark = mounted ? theme === 'dark' : false;
-    const toggleTheme = () => setTheme(isLandingDark ? 'light' : 'dark');
+    const isLandingDark = mounted ? resolvedTheme === 'dark' : false;
 
     const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
     const heroY = useTransform(scrollYProgress, [0, 0.5], [0, -50]);
@@ -100,8 +99,6 @@ export default function ElysianLanding() {
             <LandingNavbar
                 showTerminal={showTerminal}
                 setShowTerminal={toggleTerminal}
-                isDark={isLandingDark}
-                toggleTheme={toggleTheme}
             />
 
             {/* 3D Space Background - Fixed Global Overlay (Dark Mode Only) - Lazy Loaded */}

@@ -1,14 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 const ADMIN_RECOVERY_KEY = 'x-admin-recovery-token';
 const AUTH_TOKEN_KEY = 'token'; // Standard token key
 
 export function useImpersonate() {
-    const router = useRouter();
     const [isImpersonating, setIsImpersonating] = useState(false);
 
     useEffect(() => {

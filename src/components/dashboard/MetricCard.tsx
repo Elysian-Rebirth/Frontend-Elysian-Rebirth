@@ -1,7 +1,7 @@
 'use client';
 
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowUp, ArrowDown } from 'lucide-react';
+
 import { cn } from '@/lib/utils';
 
 export interface MetricCardProps {

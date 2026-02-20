@@ -4,14 +4,13 @@ import React from 'react';
 import { usePathname } from 'next/navigation';
 import { SidebarProvider } from '@/contexts/SidebarContext';
 import { SmoothScroll } from '@/components/providers/SmoothScroll';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { TelemetryProvider } from '@/components/providers/TelemetryProvider';
 import { I18nProvider, Locale } from '@/components/providers/I18nProvider';
 import { PermissionsProvider } from '@/components/providers/PermissionsProvider';
 import { FeatureFlagsProvider } from '@/components/providers/FeatureFlagsProvider';
 import { OfflineBanner } from '@/components/OfflineBanner';
 import { SessionTimeoutWarning } from '@/components/SessionTimeoutWarning';
-import { MobileBottomNav } from '@/components/MobileBottomNav';
 import { SiteFooter } from '@/components/SiteFooter';
 import { Toaster } from '@/components/ui/toaster';
 import { Toaster as SonnerToaster } from '@/components/ui/sonner';
@@ -35,11 +34,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <QueryProvider>
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme="light"
-                    enableSystem={isLandingPage}
+                    defaultTheme="system"
+                    enableSystem
                     disableTransitionOnChange
-                    storageKey={isLandingPage ? 'landing-theme' : 'elysian-theme'}
-                // forcedTheme={!isLandingPage ? 'light' : undefined} // DISABLED: Allow Dark Mode for Admin Dashboard
+                    storageKey="elysian-theme" // Unified storage key
                 >
                     <TelemetryProvider onEvent={() => { }}>
                         <I18nProvider locale={locale} onLocaleChange={setLocale}>

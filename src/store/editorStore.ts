@@ -4,7 +4,7 @@ import type { EditorDocument } from '@/lib/sdk/schemas';
 import { createEncryptedIdbStorage } from '@/lib/storage-engine';
 
 // Enterprise Storage Engine
-const storage = createEncryptedIdbStorage<any>({
+const storage = createEncryptedIdbStorage<unknown>({
     key: 'elysian-editor',
     secret: 'elysian-local-secret-key-v1' // In prod, use env var
 });
@@ -13,7 +13,7 @@ export interface Snapshot {
     id: string;
     name: string;
     timestamp: number;
-    content: any;
+    content: unknown;
     version: number;
 }
 
@@ -26,7 +26,7 @@ interface EditorState {
     snapshots: Snapshot[];
 
     setDocument: (doc: EditorDocument) => void;
-    updateContent: (content: any) => void; // Changed to any to support Tiptap JSON
+    updateContent: (content: unknown) => void;
     setDirty: (dirty: boolean) => void;
     setAutosave: (enabled: boolean) => void;
     markSynced: () => void;
