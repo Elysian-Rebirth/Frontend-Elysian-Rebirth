@@ -47,6 +47,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
     const router = useRouter();
     const isFormDirty = useSettingsUiStore((s) => s.isFormDirty);
     const setFormDirty = useSettingsUiStore((s) => s.setFormDirty);
+    const returnUrl = useSettingsUiStore((s) => s.returnUrl);
 
     // Native browser unload interceptor
     useEffect(() => {
@@ -66,14 +67,14 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
             const confirmLeave = window.confirm("Anda memiliki perubahan yang belum disimpan. Yakin ingin pindah?");
             if (confirmLeave) {
                 setFormDirty(false); // Force clean state
-                if (href === 'back') router.back();
+                if (href === 'close') router.push(returnUrl || '/dashboard');
                 else router.push(href);
             }
         }
         // If not dirty, Next.js Link handles the rest automatically.
         // For buttons, we still need to push manually if not dirty.
         else if (e.currentTarget.tagName !== 'A') {
-            if (href === 'back') router.back();
+            if (href === 'close') router.push(returnUrl || '/dashboard');
             else router.push(href);
         }
     };
@@ -97,14 +98,14 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
             {/* Modal Overlay / Popup */}
             {/* Removed backdrop-blur-[2px] fixed massive GPU performance drop on full screen overlays */}
             <div className="fixed inset-0 z-[100] bg-slate-900/60 dark:bg-black/80 flex items-center justify-center p-4 sm:p-6 md:p-12 overflow-y-auto">
-                <div className="relative w-full max-w-[1040px] mx-auto bg-white dark:bg-[#0B1120] rounded-2xl md:rounded-3xl shadow-2xl border border-slate-200/60 dark:border-slate-800/60 flex flex-col md:flex-row overflow-hidden min-h-[75vh] md:min-h-[80vh] my-auto">
+                <div className="relative w-full max-w-[960px] mx-auto bg-white dark:bg-[#0B1120] rounded-2xl md:rounded-3xl shadow-2xl border border-slate-200/60 dark:border-slate-800/60 flex flex-col md:flex-row overflow-hidden h-[80vh] min-h-[500px] max-h-[750px] my-auto">
 
                     {/* Mobile Close Button (Absolute Top Right) */}
                     <Button
                         variant="ghost"
                         size="icon"
                         className="absolute top-4 right-4 z-50 rounded-full md:hidden text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
-                        onClick={(e) => handleNavigation(e, 'back')}
+                        onClick={(e) => handleNavigation(e, 'close')}
                     >
                         <X className="h-5 w-5" />
                     </Button>
@@ -154,7 +155,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8 rounded-md text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                                onClick={(e) => handleNavigation(e, 'back')}
+                                onClick={(e) => handleNavigation(e, 'close')}
                             >
                                 <X className="h-4 w-4" />
                             </Button>
