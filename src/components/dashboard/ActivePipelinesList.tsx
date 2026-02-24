@@ -105,7 +105,7 @@ export const ActivePipelinesList: React.FC<ActivePipelinesListProps> = ({
             accessorKey: "name",
             header: "Pipeline Name",
             cell: ({ row }) => (
-                <div className="font-medium">
+                <div className="font-medium whitespace-nowrap min-w-[180px]">
                     {row.original.name}
                     <div className="text-xs text-muted-foreground md:hidden">
                         {row.original.id}
@@ -117,7 +117,7 @@ export const ActivePipelinesList: React.FC<ActivePipelinesListProps> = ({
             accessorKey: "status",
             header: "Status",
             cell: ({ row }) => (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 whitespace-nowrap min-w-[120px]">
                     {getStatusIcon(row.original.status)}
                     <Badge variant={getStatusBadgeVariant(row.original.status)} className={cn("uppercase", getStatusBadgeClass(row.original.status))}>
                         {row.original.status}
@@ -151,7 +151,7 @@ export const ActivePipelinesList: React.FC<ActivePipelinesListProps> = ({
             accessorKey: "lastUpdated",
             header: "Last Updated",
             cell: ({ row }) => (
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground whitespace-nowrap min-w-[100px]">
                     {formatTimeAgo(row.original.lastUpdated)}
                 </div>
             ),

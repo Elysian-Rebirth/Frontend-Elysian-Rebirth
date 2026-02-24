@@ -27,7 +27,7 @@ export function CostForecaster({ data, isLoading }: CostForecasterProps) {
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">Cost & Billing Intelligence</h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400">Real-time spend forecast vs budget</p>
 
-                    <div className="mt-4 flex gap-6">
+                    <div className="mt-4 flex flex-col sm:flex-row gap-4 sm:gap-6">
                         <div>
                             <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">Current Spend</p>
                             <p className="text-2xl font-bold text-slate-900 dark:text-slate-50">${currentSpend.toFixed(2)}</p>
