@@ -108,3 +108,62 @@ export const handlers = [
         });
     }),
 ];
+
+// ============================================
+// Settings Mock Data (Workspace & AI)
+// ============================================
+
+let teammates = [
+    { id: '1', name: 'Matt Yudha', email: 'matt@elysian.com', role: 'owner', lastActive: 'Just now' },
+    { id: '2', name: 'Sarah Connor', email: 'sarah@elysian.com', role: 'admin', lastActive: '2 hours ago' },
+    { id: '3', name: 'John Doe', email: 'john@elysian.com', role: 'member', lastActive: '1 day ago' },
+];
+
+let agents = [
+    { id: '1', name: 'Customer Support Bot', type: 'Support', status: 'active', calls: 15420 },
+    { id: '2', name: 'Sales Assistant', type: 'Sales', status: 'paused', calls: 3200 },
+];
+
+export const settingsHandlers = [
+    // Workspace Teammates
+    http.get('*/api/workspace/teammates', () => {
+        return HttpResponse.json({ status: 'success', data: teammates });
+    }),
+
+    http.delete('*/api/workspace/teammates/:id', ({ params }) => {
+        const { id } = params;
+        teammates = teammates.filter(t => t.id !== id);
+        return new HttpResponse(null, { status: 204 });
+    }),
+
+    // AI Agents
+    http.get('*/api/ai/agents', () => {
+        return HttpResponse.json({ status: 'success', data: agents });
+    }),
+
+    http.patch('*/api/ai/agents/:id/status', async ({ params, request }) => {
+        const { id } = params;
+        const body = await request.json() as { status: string };
+        agents = agents.map(a => a.id === id ? { ...a, status: body.status } : a);
+        return HttpResponse.json({ status: 'success' });
+    }),
+
+    // Workspace Billing Stub
+    http.get('*/api/workspace/billing', () => {
+        return HttpResponse.json({
+            status: 'success',
+            data: {
+                plan: 'Enterprise',
+                status: 'active',
+                nextBillingDate: '2026-12-31T23:59:59Z',
+                amount: 49900,
+                currency: 'USD',
+                seats: 12,
+                usage: 84
+            }
+        });
+    })
+];
+
+// Append the new handlers
+handlers.push(...settingsHandlers);

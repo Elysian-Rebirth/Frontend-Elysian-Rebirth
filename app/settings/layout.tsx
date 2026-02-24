@@ -3,14 +3,16 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { User, Lock, Bell, Palette, ChevronLeft, Settings, Users, ShieldCheck, Activity, CreditCard, Import, Bot, Zap, X } from 'lucide-react';
+import { User, Lock, Bell, Palette, ChevronLeft, Settings, Users, ShieldCheck, Activity, CreditCard, Import, Bot, Zap, X, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { buttonVariants, Button } from '@/components/ui/button';
 import { useSettingsUiStore } from '@/store/ui/settingsStore';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 import { Sidebar } from '@/components/Sidebar';
 import { DashboardNavbar } from '@/components/DashboardNavbar';
 import { ElysianGrid } from '@/components/backgrounds/ElysianGrid';
+import { SafeLink } from '@/components/navigation/SafeLink';
 
 const sidebarGroups = [
     {
@@ -45,39 +47,50 @@ const sidebarGroups = [
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const router = useRouter();
-    const isFormDirty = useSettingsUiStore((s) => s.isFormDirty);
-    const setFormDirty = useSettingsUiStore((s) => s.setFormDirty);
+
+    // Check if ANY form is dirty across the entire settings schema
+    const isAnyDirty = useSettingsUiStore((s) => s.isAnyDirty());
+    const isPathDirty = useSettingsUiStore((s) => s.isPathDirty);
+    const setDirty = useSettingsUiStore((s) => s.setDirty);
     const returnUrl = useSettingsUiStore((s) => s.returnUrl);
 
-    // Native browser unload interceptor
+    // Native browser unload interceptor (only triggers for refresh/close tab)
     useEffect(() => {
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-            if (isFormDirty) {
+            if (isAnyDirty) {
                 e.preventDefault();
                 e.returnValue = '';
             }
         };
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-    }, [isFormDirty]);
+    }, [isAnyDirty]);
 
-    const handleNavigation = (e: React.MouseEvent, href: string) => {
-        if (isFormDirty) {
+    const handleClose = (e: React.MouseEvent) => {
+        if (isPathDirty(pathname)) {
             e.preventDefault();
-            const confirmLeave = window.confirm("Anda memiliki perubahan yang belum disimpan. Yakin ingin pindah?");
+            const confirmLeave = window.confirm("Anda memiliki perubahan yang belum disimpan. Yakin ingin menutup?");
             if (confirmLeave) {
-                setFormDirty(false); // Force clean state
-                if (href === 'close') router.push(returnUrl || '/dashboard');
-                else router.push(href);
+                setDirty(pathname, false);
+                router.push(returnUrl || '/dashboard');
             }
-        }
-        // If not dirty, Next.js Link handles the rest automatically.
-        // For buttons, we still need to push manually if not dirty.
-        else if (e.currentTarget.tagName !== 'A') {
-            if (href === 'close') router.push(returnUrl || '/dashboard');
-            else router.push(href);
+        } else {
+            router.push(returnUrl || '/dashboard');
         }
     };
+
+    const handleBackContext = (e: React.MouseEvent) => {
+        if (isPathDirty(pathname)) {
+            e.preventDefault();
+            const confirmLeave = window.confirm("Anda memiliki perubahan yang belum disimpan. Yakin ingin kembali?");
+            if (confirmLeave) {
+                setDirty(pathname, false);
+                router.push('/settings');
+            }
+        } else {
+            router.push('/settings');
+        }
+    }
 
     return (
         <div className="flex min-h-screen w-full relative z-0">
@@ -97,29 +110,18 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
 
             {/* Modal Overlay / Popup */}
             {/* Removed backdrop-blur-[2px] fixed massive GPU performance drop on full screen overlays */}
-            <div className="fixed inset-0 z-[100] bg-slate-900/60 dark:bg-black/80 flex items-center justify-center p-0 md:p-4 lg:p-12 overflow-y-auto md:overflow-hidden">
-                <div className="relative w-full h-full md:h-[80vh] md:min-h-[500px] md:max-h-[750px] max-w-[960px] mx-auto bg-white dark:bg-[#0B1120] md:rounded-2xl lg:rounded-3xl shadow-2xl border-0 md:border border-slate-200/60 dark:border-slate-800/60 flex flex-col md:flex-row overflow-hidden my-auto">
+            <div className="fixed inset-0 z-[100] bg-white sm:bg-slate-900/60 sm:dark:bg-black/80 flex items-center justify-center p-0 md:p-4 lg:p-12 overflow-y-auto md:overflow-hidden">
+                <div className="relative w-full h-[100dvh] sm:h-full md:h-[80vh] md:min-h-[500px] md:max-h-[750px] sm:max-w-[960px] lg:max-w-[1080px] mx-auto bg-white dark:bg-[#0B1120] rounded-none md:rounded-2xl lg:rounded-3xl shadow-none sm:shadow-2xl border-0 md:border border-slate-200/60 dark:border-slate-800/60 flex flex-col md:flex-row overflow-hidden my-auto">
 
 
 
-                    {/* Left Sidebar Pane */}
-                    <aside className="w-full md:w-64 lg:w-[280px] border-b md:border-b-0 md:border-r border-slate-200/60 dark:border-slate-800/60 bg-slate-50/50 dark:bg-[#060D18] flex flex-col shrink-0 overflow-x-auto md:overflow-x-visible">
+                    {/* Left Sidebar Pane (Always visible on Desktop, visible on Mobile ONLY if pathname is exactly /settings) */}
+                    <aside className={cn(
+                        "w-full md:w-64 lg:w-[280px] border-b md:border-b-0 md:border-r border-slate-200/60 dark:border-slate-800/60 bg-slate-50/50 dark:bg-[#060D18] flex-col shrink-0 overflow-x-auto md:overflow-x-visible",
+                        pathname === '/settings' ? "flex" : "hidden md:flex"
+                    )}>
                         {/* Sidebar Header Space */}
                         <div className="hidden md:block h-14 lg:h-20" />
-
-                        {/* Mobile Header: Title + Close */}
-                        <div className="md:hidden flex items-center justify-between p-4 sticky left-0">
-                            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Settings</h2>
-                            {/* Mobile Close Button (Inline inside header) */}
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="rounded-full text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800"
-                                onClick={(e) => handleNavigation(e, 'close')}
-                            >
-                                <X className="h-5 w-5" />
-                            </Button>
-                        </div>
 
                         <nav className="flex md:flex-col md:flex-1 md:overflow-y-auto px-4 md:px-0 md:pb-8 gap-4 md:gap-6 scrollbar-hide">
                             {sidebarGroups.map((group) => (
@@ -131,44 +133,126 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                                         {group.items.map((item) => {
                                             const isActive = pathname.includes(item.href);
                                             return (
-                                                <Link
+                                                <SafeLink
                                                     key={item.href}
                                                     href={item.href}
-                                                    onClick={(e) => handleNavigation(e, item.href)}
                                                     className={cn(
-                                                        "flex items-center gap-2 md:gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-200 whitespace-nowrap",
+                                                        "flex items-center gap-3 px-4 md:px-3 py-3 md:py-2 rounded-xl md:rounded-lg text-[15px] md:text-[13px] font-medium transition-all duration-200 whitespace-nowrap",
                                                         isActive
-                                                            ? "bg-black/5 dark:bg-white/10 text-slate-900 dark:text-white ring-1 ring-slate-200 dark:ring-slate-700 md:ring-0"
+                                                            ? "bg-black/5 dark:bg-white/10 text-slate-900 dark:text-white ring-1 md:ring-slate-200 md:dark:ring-slate-700 md:ring-0"
                                                             : "text-slate-600 dark:text-slate-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-slate-200 border border-transparent"
                                                     )}
                                                 >
-                                                    <item.icon className={cn("h-4 w-4 shrink-0", isActive ? "text-slate-900 dark:text-white" : "text-slate-400 dark:text-slate-500")} />
-                                                    <span className="md:inline">{item.title}</span>
-                                                </Link>
+                                                    <div className={cn("p-2 rounded-lg md:p-0 md:bg-transparent md:dark:bg-transparent shrink-0",
+                                                        isActive ? "bg-white dark:bg-[#0B1120] shadow-sm md:shadow-none" : "bg-slate-100 dark:bg-slate-800/50")}>
+                                                        <item.icon className={cn("h-5 w-5 md:h-4 md:w-4 shrink-0", isActive ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400")} />
+                                                    </div>
+                                                    <span className="flex-1 text-left">{item.title}</span>
+                                                    {/* Mobile Arrow Indicator */}
+                                                    <ChevronLeft className="h-4 w-4 shrink-0 text-slate-400 rotate-180 md:hidden" />
+                                                </SafeLink>
                                             )
                                         })}
                                     </div>
                                 </div>
                             ))}
+                            {/* Mobile Close Button for Settings Main Menu */}
+                            <div className="md:hidden px-4 md:px-0 mt-8 mb-4">
+                                <Button
+                                    variant="outline"
+                                    className="w-full justify-center gap-2 rounded-xl h-12 text-slate-600 dark:text-slate-400"
+                                    onClick={handleClose}
+                                >
+                                    <X className="h-5 w-5" />
+                                    Close Settings
+                                </Button>
+                            </div>
                         </nav>
                     </aside>
 
-                    {/* Right Content Pane */}
-                    <main className="flex-1 flex flex-col bg-white dark:bg-[#0B1120] relative min-w-0">
+                    {/* Right Content Pane (Visible on Desktop always, Visible on Mobile ONLY if pathname is NOT /settings) */}
+                    <main className={cn(
+                        "flex-1 flex flex-col bg-white dark:bg-[#0B1120] relative min-w-0 md:w-auto h-[100dvh] md:h-auto overflow-hidden",
+                        pathname === '/settings' ? "hidden md:flex" : "flex"
+                    )}>
+
+                        {/* Mobile Sticky Header (Visible only on < md) */}
+                        <header className="md:hidden flex flex-none items-center h-14 pt-safe px-4 border-b border-slate-200/60 dark:border-slate-800/60 bg-white/80 dark:bg-[#0B1120]/80 backdrop-blur top-0 sticky z-10 w-full">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="mr-2 -ml-2 text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                                onClick={handleBackContext}
+                            >
+                                <ChevronLeft className="h-5 w-5" />
+                            </Button>
+                            <h2 className="text-base font-semibold text-slate-900 dark:text-white capitalize truncate ml-2">
+                                {pathname.split('/').pop()?.replace('-', ' ') || 'Settings'}
+                            </h2>
+                            <div className="flex-1" />
+
+                            {/* Hamburger Menu - Settings Drawer */}
+                            <Sheet>
+                                <SheetTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
+                                    >
+                                        <Menu className="h-5 w-5" />
+                                    </Button>
+                                </SheetTrigger>
+                                <SheetContent side="right" className="w-[85vw] max-w-[320px] p-0 flex flex-col bg-slate-50 dark:bg-[#060D18]">
+                                    <SheetHeader className="p-4 border-b border-slate-200/60 dark:border-slate-800/60 flex flex-row items-center justify-between text-left space-y-0">
+                                        <SheetTitle className="text-lg font-semibold text-slate-900 dark:text-white">Settings</SheetTitle>
+                                    </SheetHeader>
+                                    <nav className="flex-1 overflow-y-auto p-4 gap-6 flex flex-col scrollbar-hide">
+                                        {sidebarGroups.map((group) => (
+                                            <div key={group.label} className="flex flex-col gap-1 shrink-0">
+                                                <h4 className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 px-3">
+                                                    {group.label}
+                                                </h4>
+                                                <div className="flex flex-col gap-0.5">
+                                                    {group.items.map((item) => {
+                                                        const isActive = pathname.includes(item.href);
+                                                        return (
+                                                            <SafeLink
+                                                                key={item.href}
+                                                                href={item.href}
+                                                                className={cn(
+                                                                    "flex items-center gap-3 px-3 py-2 rounded-lg text-[14px] font-medium transition-all duration-200",
+                                                                    isActive
+                                                                        ? "bg-black/5 dark:bg-white/10 text-slate-900 dark:text-white"
+                                                                        : "text-slate-600 dark:text-slate-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-slate-200"
+                                                                )}
+                                                            >
+                                                                <item.icon className={cn("h-4 w-4 shrink-0", isActive ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400")} />
+                                                                <span className="flex-1 text-left">{item.title}</span>
+                                                            </SafeLink>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </nav>
+                                </SheetContent>
+                            </Sheet>
+                        </header>
+
                         {/* Desktop Close Button (Floating Top Right inside content) */}
                         <div className="absolute top-4 right-4 md:top-6 md:right-6 z-50 hidden md:block">
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8 rounded-md text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                                onClick={(e) => handleNavigation(e, 'close')}
+                                onClick={handleClose}
                             >
                                 <X className="h-4 w-4" />
                             </Button>
                         </div>
 
-                        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 lg:p-12 scrollbar-hide pb-24 md:pb-12">
-                            <div className="max-w-[640px]">
+                        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-10 lg:p-12 scrollbar-hide pb-safe mt-safe md:mt-0">
+                            <div className="max-w-[800px] w-full mx-auto md:mx-0 min-h-full">
                                 {children}
                             </div>
                         </div>

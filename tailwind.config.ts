@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss"
+import plugin from "tailwindcss/plugin"
 
 const config = {
     darkMode: ["class"],
@@ -95,7 +96,23 @@ const config = {
             },
         },
     },
-    plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+    plugins: [
+        require("tailwindcss-animate"),
+        require("@tailwindcss/typography"),
+        plugin(function ({ addUtilities }) {
+            addUtilities({
+                '.pt-safe': {
+                    paddingTop: 'env(safe-area-inset-top)',
+                },
+                '.pb-safe': {
+                    paddingBottom: 'env(safe-area-inset-bottom)',
+                },
+                '.mt-safe': {
+                    marginTop: 'env(safe-area-inset-top)',
+                },
+            })
+        })
+    ],
 } satisfies Config
 
 export default config

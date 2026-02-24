@@ -6,8 +6,12 @@ import {
     Plus, MessageSquare, Briefcase, UserCog
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useQueryState } from 'nuqs';
+import { AgentConfigSlideOver } from '@/components/settings/ai/AgentConfigSlideOver';
 
 export default function AgentsPage() {
+    const [, setAgentId] = useQueryState('agent');
+
     const activeAgents = [
         {
             id: "dart-ai",
@@ -112,7 +116,13 @@ export default function AgentsPage() {
                                 </div>
                                 <div className="flex items-center gap-2 w-full sm:w-auto">
                                     <Button variant="outline" size="sm" className="flex-1 sm:flex-none">View activity</Button>
-                                    <Button size="sm" className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white">Open agent</Button>
+                                    <Button
+                                        size="sm"
+                                        className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white"
+                                        onClick={() => setAgentId(agent.id)}
+                                    >
+                                        Open agent
+                                    </Button>
                                 </div>
                             </div>
 
@@ -188,6 +198,9 @@ export default function AgentsPage() {
                     </Button>
                 </div>
             </div>
+
+            {/* Deep-Linked Overlay */}
+            <AgentConfigSlideOver />
         </div>
     );
 }
