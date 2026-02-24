@@ -20,6 +20,7 @@ import {
 import { MobileSidebar } from './MobileSidebar';
 import { NotificationPopover } from '@/components/NotificationPopover';
 import { useUiStore } from '@/store/uiStore';
+import { useSettingsUiStore } from '@/store/ui/settingsStore';
 
 // Placeholder for user avatar
 const UserAvatar = () => (
@@ -35,6 +36,7 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
     const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
     const { isGridVisible, toggleGrid } = useUiStore();
+    const setReturnUrl = useSettingsUiStore((s) => s.setReturnUrl);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -213,8 +215,12 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                                 </div>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem><User className="mr-2 h-4 w-4" />Profile</DropdownMenuItem>
-                            <DropdownMenuItem><Settings className="mr-2 h-4 w-4" />Settings</DropdownMenuItem>
+                            <Link href="/settings/profile" onClick={() => { if (!pathname.startsWith('/settings')) setReturnUrl(pathname); }}>
+                                <DropdownMenuItem className="cursor-pointer"><User className="mr-2 h-4 w-4" />Profile</DropdownMenuItem>
+                            </Link>
+                            <Link href="/settings" onClick={() => { if (!pathname.startsWith('/settings')) setReturnUrl(pathname); }}>
+                                <DropdownMenuItem className="cursor-pointer"><Settings className="mr-2 h-4 w-4" />Settings</DropdownMenuItem>
+                            </Link>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem className="text-red-600"><LogOut className="mr-2 h-4 w-4" />Log out</DropdownMenuItem>
                         </DropdownMenuContent>
