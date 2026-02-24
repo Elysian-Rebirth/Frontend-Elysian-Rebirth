@@ -3,6 +3,7 @@
 import { useAuthStore } from '@/store/authStore';
 import { useSidebar } from '@/contexts/SidebarContext';
 import { usePathname } from 'next/navigation';
+import { useSettingsUiStore } from '@/store/ui/settingsStore';
 import { mainNav } from '@/config/nav';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -30,6 +31,7 @@ export function NavigationMenu() {
     const { user } = useAuthStore();
     const { isOpen } = useSidebar();
     const pathname = usePathname();
+    const setReturnUrl = useSettingsUiStore((s) => s.setReturnUrl);
 
     const hasAnyRole = (allowedRoles: string[]) => {
         if (!user || !user.role) return false;
@@ -99,6 +101,11 @@ export function NavigationMenu() {
                                     key={item.href}
                                     href={item.href}
                                     id={getOnboardingId(item.href)}
+                                    onClick={() => {
+                                        if (item.href.startsWith('/settings') && !pathname.startsWith('/settings')) {
+                                            setReturnUrl(pathname);
+                                        }
+                                    }}
                                     className={cn(
                                         'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group overflow-hidden',
                                         !isOpen && 'justify-center px-2',

@@ -46,10 +46,10 @@ export default function SecurityPage() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto md:mx-0">
+        <div className="w-full">
 
-            {/* 3-Col Layout */}
-            <div className="flex flex-col lg:flex-row gap-8">
+            {/* Layout: Stack on Mobile/Tablet, Row on Desktop (xl) to prevent horizontal scrolling */}
+            <div className="flex flex-col xl:flex-row gap-8">
 
                 {/* Main Content: Password & 2FA */}
                 <div className="flex-1 min-w-0 space-y-8">
@@ -78,7 +78,7 @@ export default function SecurityPage() {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label htmlFor="new" className="text-xs text-slate-500 uppercase font-semibold">New Password</Label>
                                     <Input
