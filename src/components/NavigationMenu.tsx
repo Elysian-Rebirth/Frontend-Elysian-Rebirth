@@ -22,6 +22,7 @@ const iconMap: Record<string, any> = {
     FileText: LucideIcons.FileText,
     Briefcase: LucideIcons.Briefcase,
     Activity: LucideIcons.Activity,
+    ShieldAlert: LucideIcons.ShieldAlert,
     Users: LucideIcons.Users,
     Database: LucideIcons.Database,
 
@@ -52,32 +53,36 @@ export function NavigationMenu() {
         return true;
     });
 
-    // Group by section
-    const groupedNav: Record<string, typeof filteredNav> = {
-        'Main': [],
-        'System': []
-    };
+    // Group by section dynamically to support any section defined in nav.ts
+    const groupedNav: Record<string, typeof filteredNav> = {};
+
+    // Ensure order matching the nav.ts structure
+    const sectionOrder: string[] = [];
 
     filteredNav.forEach(item => {
-        const section = item.section || 'Main';
-        if (!groupedNav[section]) groupedNav[section] = [];
+        const section = item.section || 'MAIN';
+        if (!groupedNav[section]) {
+            groupedNav[section] = [];
+            sectionOrder.push(section);
+        }
         groupedNav[section].push(item);
     });
 
     return (
-        <nav className="space-y-6">
-            {Object.entries(groupedNav).map(([section, items]) => {
-                if (items.length === 0) return null;
+        <nav className="space-y-6 pb-2">
+            {sectionOrder.map((section) => {
+                const items = groupedNav[section];
+                if (!items || items.length === 0) return null;
 
                 return (
                     <div key={section} className="space-y-1">
                         {isOpen && (
-                            <h4 className="px-3 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
+                            <h4 className="px-3 text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3">
                                 {section}
                             </h4>
                         )}
                         {!isOpen && (
-                            <div className="h-px w-6 mx-auto bg-slate-200 dark:bg-slate-700/50 my-2" />
+                            <div className="h-px w-6 flex shrink-0 mx-auto bg-slate-200 dark:bg-slate-700/50 mb-3 mt-4 first:mt-0" />
                         )}
 
                         {items.map((item) => {
@@ -117,8 +122,8 @@ export function NavigationMenu() {
                                     {isActive && (
                                         <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-500 rounded-r-full shadow-[0_0_12px_rgba(59,130,246,0.5)]" />
                                     )}
-                                    <Icon className={cn("h-5 w-5 transition-colors", isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-500 dark:text-slate-400 group-hover:text-blue-500 dark:group-hover:text-blue-400")} />
-                                    {isOpen && <span className="animate-in fade-in duration-200">{item.label}</span>}
+                                    <Icon className={cn("h-5 w-5 transition-colors shrink-0", isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-500 dark:text-slate-400 group-hover:text-blue-500 dark:group-hover:text-blue-400")} />
+                                    {isOpen && <span className="animate-in fade-in duration-200 truncate">{item.label}</span>}
                                 </Link>
                             );
                         })}

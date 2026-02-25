@@ -19,7 +19,7 @@ import { id } from 'date-fns/locale';
 export function NotificationPopover() {
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('aktivitas');
-    const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotificationStore();
+    const { actions, unreadCount, markAsRead, markAllAsRead } = useNotificationStore();
     const unread = unreadCount();
 
     return (
@@ -69,7 +69,7 @@ export function NotificationPopover() {
                     {/* Content Area */}
                     <div className="min-h-[300px] bg-slate-50/30">
                         <TabsContent value="aktivitas" className="mt-0 focus-visible:ring-0">
-                            {notifications.length === 0 ? (
+                            {actions.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center py-12 text-center">
                                     <div className="relative w-32 h-32 mb-4">
                                         <Image
@@ -90,7 +90,7 @@ export function NotificationPopover() {
                             ) : (
                                 <ScrollArea className="h-[350px]">
                                     <div className="flex flex-col">
-                                        {notifications.map((item) => (
+                                        {actions.filter(a => a.status === 'pending').map((item) => (
                                             <div
                                                 key={item.id}
                                                 className={`flex gap-3 p-4 border-b border-slate-100 hover:bg-slate-50 transition-colors cursor-pointer ${!item.isRead ? 'bg-blue-50/40' : ''}`}
@@ -102,10 +102,10 @@ export function NotificationPopover() {
                                                         {item.title}
                                                     </p>
                                                     <p className="text-xs text-slate-500 line-clamp-2">
-                                                        {item.message}
+                                                        {item.summary}
                                                     </p>
                                                     <p className="text-[10px] text-slate-400">
-                                                        {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true, locale: id })}
+                                                        {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true, locale: id })}
                                                     </p>
                                                 </div>
                                             </div>

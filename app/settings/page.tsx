@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { SettingsSectionSkeleton } from '@/components/settings/SettingsSectionSkeleton'; // We'll create this later
 
 export default function SettingsPage() {
     const router = useRouter();

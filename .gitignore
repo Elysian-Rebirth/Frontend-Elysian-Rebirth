@@ -39,3 +39,10 @@ storybook-static
 # Backend
 backend-go/
 backend-go
+
+# Local Spec and Agent Folders
+.agent/
+.sdd/
+specs/
+project-dashboard/
+spec-kit-command-cursor/

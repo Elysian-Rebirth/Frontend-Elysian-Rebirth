@@ -44,7 +44,7 @@ export default function ProfilePage() {
 
     const { register, handleSubmit, setValue, watch, formState: { errors, isDirty } } = form;
     const currentAvatar = watch('avatar');
-    const { setFormDirty } = useSettingsUiStore();
+    const { setDirty } = useSettingsUiStore();
 
     // Hydration Fix: Wait for client-side load
     useEffect(() => {
@@ -66,9 +66,9 @@ export default function ProfilePage() {
 
     // Sync form dirty state with Zustand
     useEffect(() => {
-        setFormDirty(isDirty);
-        return () => setFormDirty(false);
-    }, [isDirty, setFormDirty]);
+        setDirty('/settings/profile', isDirty);
+        return () => setDirty('/settings/profile', false);
+    }, [isDirty, setDirty]);
 
     if (!hasHydrated) return <div className="p-8 text-center text-slate-500">Loading profile settings...</div>;
 

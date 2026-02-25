@@ -97,7 +97,7 @@ function WorkflowBuilderContent() {
     };
 
     return (
-        <div className="flex h-[calc(100vh-6rem)] w-full overflow-hidden bg-slate-50 dark:bg-[#0B1120] relative">
+        <div className="flex h-full w-full overflow-hidden relative">
             {/* Desktop Sidebar (Palette) */}
             <div className="hidden md:flex flex-col h-full z-20 shadow-xl shadow-slate-200/50 dark:shadow-none border-r border-slate-200/50 dark:border-blue-900/30">
                 <Sidebar onNodeSelect={onNodeSelect} />

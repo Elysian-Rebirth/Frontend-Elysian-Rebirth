@@ -10,18 +10,18 @@ export default function DashboardLayout({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex min-h-screen w-full relative z-0">
+        <div className="flex h-[100dvh] w-full overflow-hidden relative z-0 bg-slate-50/50 dark:bg-[#060D18]">
             <ElysianGrid />
-            {/* Sidebar Sticky for Desktop */}
-            <div className="hidden md:block sticky top-0 h-screen flex-none">
-                <Sidebar />
-            </div>
 
-            <main className="flex-1 flex flex-col min-h-screen relative w-full">
-                {/* Floating Navbar */}
-                <DashboardNavbar />
+            <Sidebar />
 
-                <div id="main-scroll-container" className="flex-1 overflow-y-auto pb-16 md:pb-8 pt-24">
+            <main className="flex-1 min-w-0 flex flex-col h-full overflow-hidden relative">
+                {/* Transparent Navbar */}
+                <div className="relative z-10 border-b border-slate-200/50 dark:border-slate-800/50 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md">
+                    <DashboardNavbar staticMode={true} />
+                </div>
+
+                <div id="main-scroll-container" className="flex-1 overflow-y-auto relative">
                     <div className="w-full max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
                         {children}
                     </div>

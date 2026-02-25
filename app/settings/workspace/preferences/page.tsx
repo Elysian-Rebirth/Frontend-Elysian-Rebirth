@@ -8,7 +8,7 @@ import { useSettingsUiStore } from '@/store/ui/settingsStore';
 
 export default function PreferencesPage() {
     const [copied, setCopied] = useState(false);
-    const { setFormDirty } = useSettingsUiStore();
+    const { setDirty } = useSettingsUiStore();
 
     // Mock initial data
     const [workspaceName, setWorkspaceName] = useState("Elysian Global");
@@ -31,7 +31,7 @@ export default function PreferencesPage() {
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setWorkspaceName(e.target.value);
-        setFormDirty(true); // Mark form as dirty when name changes
+        setDirty('/settings/workspace/preferences', true); // Mark form as dirty when name changes
     };
 
     return (
@@ -102,7 +102,7 @@ export default function PreferencesPage() {
             <div className="pt-4 flex justify-end">
                 <Button
                     className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white"
-                    onClick={() => { setFormDirty(false); /* MSW Mutation will go here */ }}
+                    onClick={() => { setDirty('/settings/workspace/preferences', false); /* MSW Mutation will go here */ }}
                 >
                     Save Changes
                 </Button>

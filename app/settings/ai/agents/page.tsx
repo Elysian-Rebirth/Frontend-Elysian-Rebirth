@@ -8,8 +8,9 @@ import {
 import { cn } from '@/lib/utils';
 import { useQueryState } from 'nuqs';
 import { AgentConfigSlideOver } from '@/components/settings/ai/AgentConfigSlideOver';
+import { Suspense } from 'react';
 
-export default function AgentsPage() {
+function AgentsContent() {
     const [, setAgentId] = useQueryState('agent');
 
     const activeAgents = [
@@ -202,5 +203,17 @@ export default function AgentsPage() {
             {/* Deep-Linked Overlay */}
             <AgentConfigSlideOver />
         </div>
+    );
+}
+
+export default function AgentsPage() {
+    return (
+        <Suspense fallback={
+            <div className="h-full flex items-center justify-center p-8 text-sm text-slate-500">
+                Loading agents...
+            </div>
+        }>
+            <AgentsContent />
+        </Suspense>
     );
 }
