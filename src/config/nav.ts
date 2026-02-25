@@ -9,6 +9,8 @@ export interface NavItem {
 
 export const mainNav: NavItem[] = [
     { key: 'dashboard', label: 'Dashboard', href: '/dashboard', icon: 'dashboard', section: 'Main' },
+    { key: 'workstreams', label: 'Mission Control', href: '/workstreams', icon: 'Activity', section: 'Main' },
+    { key: 'action-center', label: 'Action Center', href: '/action-center', icon: 'ShieldAlert', section: 'Main' },
     { key: 'chat', label: 'Chat', href: '/chat', icon: 'chat', section: 'Main' },
     { key: 'knowledge', label: 'Knowledge Base', href: '/knowledge', icon: 'Book', roles: ['admin', 'editor'], section: 'Main' },
     { key: 'editor', label: 'Document Editor', href: '/editor', icon: 'FileText', section: 'Main' },

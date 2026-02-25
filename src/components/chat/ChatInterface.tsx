@@ -91,16 +91,16 @@ export function ChatInterface() {
     }, [draftMessage, setDraftMessage]);
 
     return (
-        <div className="flex h-full w-full relative overflow-hidden text-slate-800 dark:text-slate-300 bg-slate-50 dark:bg-[#0B1120]">
+        <div className="flex h-full w-full relative overflow-hidden text-slate-800 dark:text-slate-300 bg-transparent">
             {/* Light 'Elysian Ether' Background Layer - Subtle */}
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-50 dark:opacity-20">
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-50 dark:opacity-20 hidden md:block">
                 <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-blue-400/20 dark:bg-blue-600/20 rounded-full blur-[120px] animate-pulse" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-sky-400/20 dark:bg-cyan-600/20 rounded-full blur-[100px] animate-pulse delay-1000" />
                 <div className="absolute top-[30%] left-[30%] w-[50%] h-[50%] bg-indigo-300/10 dark:bg-indigo-600/10 rounded-full blur-[100px]" />
             </div>
 
-            {/* Main Content Container with Glass Effect */}
-            <div className="relative z-10 flex h-full w-full bg-white/30 dark:bg-[#0B1120]/40 backdrop-blur-xl shadow-2xl overflow-hidden md:m-4 md:rounded-3xl md:border md:border-white/50 dark:md:border-blue-900/30">
+            {/* Main Content Container */}
+            <div className="relative z-10 flex h-full w-full bg-transparent overflow-hidden">
 
                 {/* Left Sidebar (Desktop) */}
                 <AnimatePresence mode="wait">

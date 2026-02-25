@@ -22,6 +22,7 @@ const iconMap: Record<string, any> = {
     FileText: LucideIcons.FileText,
     Briefcase: LucideIcons.Briefcase,
     Activity: LucideIcons.Activity,
+    ShieldAlert: LucideIcons.ShieldAlert,
     Users: LucideIcons.Users,
     Database: LucideIcons.Database,
 

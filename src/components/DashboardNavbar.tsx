@@ -32,7 +32,7 @@ const UserAvatar = () => (
 );
 
 export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }) {
-    const { theme, setTheme } = useTheme();
+    const { theme, resolvedTheme, setTheme } = useTheme();
     const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
     const { isGridVisible, toggleGrid } = useUiStore();
@@ -76,7 +76,9 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
         return 'Elysian';
     };
 
-    const isDark = theme === 'dark';
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => setMounted(true), []);
+    const isDark = mounted ? (theme === 'dark' || resolvedTheme === 'dark') : false;
 
     return (
         <div className={cn(
@@ -87,21 +89,9 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                 initial="initial"
                 animate={!staticMode ? (scrolled ? "scrolled" : "initial") : "static"}
                 variants={{
-                    static: {
-                        backgroundColor: "transparent",
-                        backdropFilter: "blur(0px)",
-                        boxShadow: "none"
-                    },
-                    initial: {
-                        backgroundColor: isDark ? "rgba(15, 23, 42, 0)" : "rgba(255, 255, 255, 0)",
-                        backdropFilter: "blur(0px)",
-                        boxShadow: "none"
-                    },
-                    scrolled: {
-                        backgroundColor: isDark ? "rgba(15, 23, 42, 0.85)" : "rgba(255, 255, 255, 0.9)",
-                        backdropFilter: "blur(12px)",
-                        boxShadow: "0 10px 30px -10px rgba(0, 0, 0, 0.1)"
-                    }
+                    static: { y: 0 },
+                    initial: { y: 0 },
+                    scrolled: { y: 0 }
                 }}
                 transition={{ duration: 0.2, ease: "easeInOut" }}
                 className={cn(
@@ -110,8 +100,8 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                         ? "h-16 w-full px-6 bg-transparent"
                         : "w-[95%] md:w-full max-w-5xl",
                     !staticMode && (scrolled
-                        ? "h-14 border-slate-200/50 dark:border-slate-700/50 px-4"
-                        : "h-16 px-4")
+                        ? "h-14 border-slate-200/50 dark:border-slate-700/50 px-4 bg-white/90 dark:bg-slate-900/85 backdrop-blur-md shadow-[0_10px_30px_-10px_rgba(0,0,0,0.1)]"
+                        : "h-16 px-4 bg-white/0 dark:bg-slate-900/0 backdrop-blur-none shadow-none")
                 )}
             >
 

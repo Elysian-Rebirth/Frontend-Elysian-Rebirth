@@ -93,15 +93,15 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
     }
 
     return (
-        <div className="flex min-h-screen w-full relative z-0">
+        <div className="flex bg-slate-50/50 dark:bg-[#060D18] h-[100dvh] w-full relative z-0">
             <ElysianGrid />
             {/* Background Base (Simulating the Dashboard behind the modal) */}
-            <div className="hidden md:block sticky top-0 h-screen flex-none">
-                <Sidebar />
-            </div>
+            <Sidebar />
 
-            <main className="flex-1 flex flex-col min-h-screen relative w-full overflow-hidden">
-                <DashboardNavbar />
+            <main className="flex-1 flex flex-col h-full relative w-full overflow-hidden">
+                <div className="relative z-10 border-b border-slate-200/50 dark:border-slate-800/50 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md">
+                    <DashboardNavbar staticMode={true} />
+                </div>
                 {/* Dummy background content so it's not empty behind blur */}
                 <div className="flex-1 p-8 opacity-20 hidden md:block">
                     <div className="w-full h-full border-2 border-dashed border-slate-300 dark:border-slate-800 rounded-2xl"></div>
@@ -117,19 +117,19 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
 
                     {/* Left Sidebar Pane (Always visible on Desktop, visible on Mobile ONLY if pathname is exactly /settings) */}
                     <aside className={cn(
-                        "w-full md:w-64 lg:w-[280px] border-b md:border-b-0 md:border-r border-slate-200/60 dark:border-slate-800/60 bg-slate-50/50 dark:bg-[#060D18] flex-col shrink-0 overflow-x-auto md:overflow-x-visible",
+                        "w-full md:w-64 lg:w-[280px] border-b md:border-b-0 md:border-r border-slate-200/60 dark:border-slate-800/60 bg-slate-50/50 dark:bg-[#060D18] flex-col flex-1 md:flex-none md:shrink-0 overflow-y-auto md:overflow-visible",
                         pathname === '/settings' ? "flex" : "hidden md:flex"
                     )}>
                         {/* Sidebar Header Space */}
                         <div className="hidden md:block h-14 lg:h-20" />
 
-                        <nav className="flex md:flex-col md:flex-1 md:overflow-y-auto px-4 md:px-0 md:pb-8 gap-4 md:gap-6 scrollbar-hide">
+                        <nav className="flex flex-col md:flex-1 md:overflow-y-auto px-4 md:px-0 md:pb-8 gap-4 md:gap-6 scrollbar-hide shrink-0 w-full mt-4 md:mt-0">
                             {sidebarGroups.map((group) => (
-                                <div key={group.label} className="flex md:flex-col gap-2 md:gap-1 shrink-0 pb-4 md:pb-0">
-                                    <h4 className="hidden md:block text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 px-3">
+                                <div key={group.label} className="flex flex-col gap-2 md:gap-1 shrink-0 pb-4 md:pb-0 w-full">
+                                    <h4 className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1.5 px-3">
                                         {group.label}
                                     </h4>
-                                    <div className="flex md:flex-col gap-2 md:gap-0.5">
+                                    <div className="flex flex-col gap-2 md:gap-0.5 w-full">
                                         {group.items.map((item) => {
                                             const isActive = pathname.includes(item.href);
                                             return (
@@ -137,17 +137,19 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
                                                     key={item.href}
                                                     href={item.href}
                                                     className={cn(
-                                                        "flex items-center gap-3 px-4 md:px-3 py-3 md:py-2 rounded-xl md:rounded-lg text-[15px] md:text-[13px] font-medium transition-all duration-200 whitespace-nowrap",
+                                                        "flex items-center justify-between px-4 md:px-3 py-3 md:py-2 rounded-xl md:rounded-lg text-[15px] md:text-[13px] font-medium transition-all duration-200 w-full",
                                                         isActive
-                                                            ? "bg-black/5 dark:bg-white/10 text-slate-900 dark:text-white ring-1 md:ring-slate-200 md:dark:ring-slate-700 md:ring-0"
-                                                            : "text-slate-600 dark:text-slate-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-slate-200 border border-transparent"
+                                                            ? "bg-black/5 dark:bg-white/10 text-slate-900 dark:text-white ring-1 ring-slate-200/50 dark:ring-slate-700/50 md:ring-0"
+                                                            : "text-slate-600 dark:text-slate-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-slate-200 border border-transparent bg-white/50 dark:bg-slate-800/20 md:bg-transparent md:dark:bg-transparent"
                                                     )}
                                                 >
-                                                    <div className={cn("p-2 rounded-lg md:p-0 md:bg-transparent md:dark:bg-transparent shrink-0",
-                                                        isActive ? "bg-white dark:bg-[#0B1120] shadow-sm md:shadow-none" : "bg-slate-100 dark:bg-slate-800/50")}>
-                                                        <item.icon className={cn("h-5 w-5 md:h-4 md:w-4 shrink-0", isActive ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400")} />
+                                                    <div className="flex items-center gap-3">
+                                                        <div className={cn("p-2 rounded-lg md:p-0 md:bg-transparent shrink-0",
+                                                            isActive ? "bg-white dark:bg-[#0B1120] shadow-sm md:shadow-none" : "bg-slate-100 dark:bg-slate-800/50 md:bg-transparent md:dark:bg-transparent")}>
+                                                            <item.icon className={cn("h-5 w-5 md:h-4 md:w-4 shrink-0", isActive ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400")} />
+                                                        </div>
+                                                        <span className="text-left">{item.title}</span>
                                                     </div>
-                                                    <span className="flex-1 text-left">{item.title}</span>
                                                     {/* Mobile Arrow Indicator */}
                                                     <ChevronLeft className="h-4 w-4 shrink-0 text-slate-400 rotate-180 md:hidden" />
                                                 </SafeLink>

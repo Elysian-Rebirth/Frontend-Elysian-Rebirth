@@ -17,7 +17,7 @@ export function Sidebar() {
 
     return (
         <aside id="main-sidebar" className={cn(
-            "border-r border-blue-100 dark:border-blue-900/30 bg-white dark:bg-[#0B1120] relative hidden md:flex flex-col h-full overflow-hidden shadow-sm z-30 transition-all duration-300 ease-in-out",
+            "border-r border-blue-100 dark:border-blue-900/30 bg-white/70 backdrop-blur-md dark:bg-[#0B1120]/70 relative hidden md:flex flex-col h-full overflow-hidden shadow-sm z-30 transition-all duration-300 ease-in-out shrink-0",
             isOpen ? "w-64" : "w-20"
         )}>
             {/* Visual Identity: Elysian Clouds Background (Animated) */}
