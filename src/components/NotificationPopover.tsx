@@ -90,7 +90,7 @@ export function NotificationPopover() {
                             ) : (
                                 <ScrollArea className="h-[350px]">
                                     <div className="flex flex-col">
-                                        {actions.filter(a => a.status === 'idle').map((item) => (
+                                        {actions.filter(a => a.status === 'pending').map((item) => (
                                             <div
                                                 key={item.id}
                                                 className={`flex gap-3 p-4 border-b border-slate-100 hover:bg-slate-50 transition-colors cursor-pointer ${!item.isRead ? 'bg-blue-50/40' : ''}`}
@@ -102,10 +102,10 @@ export function NotificationPopover() {
                                                         {item.title}
                                                     </p>
                                                     <p className="text-xs text-slate-500 line-clamp-2">
-                                                        {item.message}
+                                                        {item.summary}
                                                     </p>
                                                     <p className="text-[10px] text-slate-400">
-                                                        {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true, locale: id })}
+                                                        {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true, locale: id })}
                                                     </p>
                                                 </div>
                                             </div>
