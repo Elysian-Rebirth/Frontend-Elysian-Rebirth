@@ -147,7 +147,7 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                         variant="ghost"
                         size="icon"
                         className={cn(
-                            "rounded-full text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all",
+                            "hidden md:flex rounded-full text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all",
                             scrolled ? "h-9 w-9" : "h-10 w-10 bg-white/50 dark:bg-slate-800/40"
                         )}
                         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -185,36 +185,38 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                         <NotificationPopover />
                     </div>
 
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                className={cn(
-                                    "relative rounded-full border-none p-0 ml-1 hover:bg-transparent focus-visible:ring-0 transition-all",
-                                    scrolled ? "h-9 w-9" : "h-10 w-10 scale-105"
-                                )}
-                            >
-                                <UserAvatar />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56 mt-2" align="end" forceMount>
-                            <DropdownMenuLabel className="font-normal">
-                                <div className="flex flex-col space-y-1">
-                                    <p className="text-sm font-medium leading-none">Administrator</p>
-                                    <p className="text-xs leading-none text-muted-foreground">admin@elysian.ai</p>
-                                </div>
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <Link href="/settings/profile" onClick={() => { if (!pathname.startsWith('/settings')) setReturnUrl(pathname); }}>
-                                <DropdownMenuItem className="cursor-pointer"><User className="mr-2 h-4 w-4" />Profile</DropdownMenuItem>
-                            </Link>
-                            <Link href="/settings" onClick={() => { if (!pathname.startsWith('/settings')) setReturnUrl(pathname); }}>
-                                <DropdownMenuItem className="cursor-pointer"><Settings className="mr-2 h-4 w-4" />Settings</DropdownMenuItem>
-                            </Link>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-red-600"><LogOut className="mr-2 h-4 w-4" />Log out</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="hidden md:block">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    className={cn(
+                                        "relative rounded-full border-none p-0 ml-1 hover:bg-transparent focus-visible:ring-0 transition-all",
+                                        scrolled ? "h-9 w-9" : "h-10 w-10 scale-105"
+                                    )}
+                                >
+                                    <UserAvatar />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56 mt-2" align="end" forceMount>
+                                <DropdownMenuLabel className="font-normal">
+                                    <div className="flex flex-col space-y-1">
+                                        <p className="text-sm font-medium leading-none">Administrator</p>
+                                        <p className="text-xs leading-none text-muted-foreground">admin@elysian.ai</p>
+                                    </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <Link href="/settings/profile" onClick={() => { if (!pathname.startsWith('/settings')) setReturnUrl(pathname); }}>
+                                    <DropdownMenuItem className="cursor-pointer"><User className="mr-2 h-4 w-4" />Profile</DropdownMenuItem>
+                                </Link>
+                                <Link href="/settings" onClick={() => { if (!pathname.startsWith('/settings')) setReturnUrl(pathname); }}>
+                                    <DropdownMenuItem className="cursor-pointer"><Settings className="mr-2 h-4 w-4" />Settings</DropdownMenuItem>
+                                </Link>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="text-red-600"><LogOut className="mr-2 h-4 w-4" />Log out</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                 </div>
             </motion.header >
         </div >

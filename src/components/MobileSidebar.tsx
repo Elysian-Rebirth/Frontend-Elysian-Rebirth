@@ -2,7 +2,8 @@
 
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Menu, LogOut, Settings, User as UserIcon, X, Shield, HelpCircle } from 'lucide-react';
+import { Menu, LogOut, Settings, User as UserIcon, X, Shield, HelpCircle, Sun, Moon } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { NavigationMenu } from '@/components/NavigationMenu';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,6 +20,7 @@ export function MobileSidebar() {
     const { isMobileOpen, setMobileOpen } = useSidebar();
     const { user } = useAuthStore();
     const pathname = usePathname();
+    const { theme, setTheme } = useTheme();
 
     // Auto-close sidebar when route changes (mobile mode)
     useEffect(() => {
@@ -114,12 +116,22 @@ export function MobileSidebar() {
                                     <AvatarImage src="https://github.com/shadcn.png" />
                                     <AvatarFallback className="bg-gradient-to-br from-blue-500 to-cyan-400 text-white">AD</AvatarFallback>
                                 </Avatar>
-                                <div className="flex-1 min-w-0">
+                                <div className="flex-1 min-w-0 pr-2">
                                     <p className="text-sm font-bold text-slate-800 dark:text-slate-100 truncate group-hover:text-blue-600 transition-colors">
                                         Admin User
                                     </p>
                                     <p className="text-xs text-slate-500 truncate">admin@elysian.ai</p>
                                 </div>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                                    className="h-8 w-8 shrink-0 rounded-full border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-700"
+                                >
+                                    <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-slate-500" />
+                                    <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-slate-400" />
+                                    <span className="sr-only">Toggle theme</span>
+                                </Button>
                             </div>
 
                             <div className="mt-3">
