@@ -36,8 +36,8 @@ export function AgentTaskCard({ task, isDragging }: AgentTaskCardProps) {
     return (
         <div
             className={cn(
-                "group relative border bg-white/60 dark:bg-[#0B1120]/80 hover:bg-white dark:hover:bg-[#0B1120] backdrop-blur-md rounded-2xl p-4 flex flex-col gap-3 transition-all duration-300 shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing",
-                isDragging ? "border-blue-400 dark:border-blue-500 shadow-lg opacity-50 rotate-2 scale-105" : "border-slate-200/60 dark:border-slate-800/60 hover:border-blue-200/80 dark:hover:border-blue-900/80"
+                "group relative border bg-white dark:bg-[#0B1120] rounded-2xl p-4 flex flex-col gap-3 transition-all duration-300 shadow-sm hover:shadow-md cursor-grab active:cursor-grabbing",
+                isDragging ? "border-blue-400 dark:border-blue-500 shadow-lg opacity-50 rotate-2 scale-105" : "border-slate-200/80 dark:border-slate-800 hover:border-blue-300/80 dark:hover:border-blue-800"
             )}
         >
             {/* Top row: badge + model */}
