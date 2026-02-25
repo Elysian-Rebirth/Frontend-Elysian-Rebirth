@@ -11,6 +11,41 @@ import { useActiveWorkstreams } from '@/hooks/useWorkstreams';
 export default function ActiveWorkstreamsPage() {
     const { data: workstreams, isLoading, isError } = useActiveWorkstreams();
 
+    // Dynamic metrics dynamically memoized to prevent breaking MetaChipsRow rendering
+    // FIX: Do not put raw React Elements (JSX) inside useMemo that depends on dynamic data
+    // FIX: Moved useMemo above early returns to comply with React Hooks rules
+    const globalMetricsData = useMemo(() => {
+        if (!workstreams) return [];
+        return [
+            {
+                label: 'Active Pipelines',
+                value: workstreams.raw.length.toString(),
+                iconId: 'activity',
+                trend: { text: '+3 vs yesterday', direction: 'up' as const }
+            },
+            {
+                label: 'Tokens Used (Last 24h)',
+                value: `${(workstreams.boardData.reduce((acc, t) => acc + t.tokensUsed, 0) / 1000).toFixed(1)}k`,
+                iconId: 'zap',
+                trend: { text: '-12% usage', direction: 'up' as const }
+            },
+            {
+                label: 'Avg Execution Time',
+                value: '18s',
+                iconId: 'clock',
+                trend: { text: '+2s latency', direction: 'down' as const }
+            }
+        ];
+    }, [workstreams]);
+
+    // Map icon keys to actual React Elements outside the memoized data block
+    const globalMetrics = globalMetricsData.map(item => ({
+        ...item,
+        icon: item.iconId === 'activity' ? <Activity className="h-3.5 w-3.5 text-indigo-500" /> :
+            item.iconId === 'zap' ? <Zap className="h-3.5 w-3.5 text-amber-500" /> :
+                <Clock className="h-3.5 w-3.5 text-blue-500" />
+    }));
+
     if (isLoading) {
         return (
             <div className="w-full h-[60vh] flex flex-col items-center justify-center">
@@ -27,37 +62,6 @@ export default function ActiveWorkstreamsPage() {
             </div>
         );
     }
-
-    // Dynamic metrics dynamically memoized to prevent breaking MetaChipsRow rendering
-    // FIX: Do not put raw React Elements (JSX) inside useMemo that depends on dynamic data
-    const globalMetricsData = useMemo(() => [
-        {
-            label: 'Active Pipelines',
-            value: workstreams.raw.length.toString(),
-            iconId: 'activity',
-            trend: { text: '+3 vs yesterday', direction: 'up' as const }
-        },
-        {
-            label: 'Tokens Used (Last 24h)',
-            value: `${(workstreams.boardData.reduce((acc, t) => acc + t.tokensUsed, 0) / 1000).toFixed(1)}k`,
-            iconId: 'zap',
-            trend: { text: '-12% usage', direction: 'up' as const }
-        },
-        {
-            label: 'Avg Execution Time',
-            value: '18s',
-            iconId: 'clock',
-            trend: { text: '+2s latency', direction: 'down' as const }
-        }
-    ], [workstreams]);
-
-    // Map icon keys to actual React Elements outside the memoized data block
-    const globalMetrics = globalMetricsData.map(item => ({
-        ...item,
-        icon: item.iconId === 'activity' ? <Activity className="h-3.5 w-3.5 text-indigo-500" /> :
-            item.iconId === 'zap' ? <Zap className="h-3.5 w-3.5 text-amber-500" /> :
-                <Clock className="h-3.5 w-3.5 text-blue-500" />
-    }));
 
     return (
         <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
