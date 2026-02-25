@@ -214,7 +214,7 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
         actions: state.actions.map((a) => ({ ...a, isRead: true }))
     })),
 
-    unreadCount: () => get().actions.filter((a) => !a.isRead && a.status === 'pending').length,
+    unreadCount: () => get().actions.filter((a) => !a.isRead && ['pending', 'approving', 'rejecting', 'failed'].includes(a.status)).length,
 
     approveAction: (id) => {
         set((state) => ({

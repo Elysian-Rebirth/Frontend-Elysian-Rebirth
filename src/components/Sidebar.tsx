@@ -70,7 +70,7 @@ export function Sidebar() {
             )}
 
             {/* Navigation - Dense Mode */}
-            <div className="relative z-10 flex-1 px-3 py-4 overflow-y-auto overflow-x-hidden pb-6">
+            <div className="relative z-10 flex-1 px-3 py-4 overflow-y-auto overflow-x-hidden pb-6 scrollbar-width-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none]">
                 <NavigationMenu />
             </div>
 

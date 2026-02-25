@@ -8,14 +8,21 @@ export interface NavItem {
 }
 
 export const mainNav: NavItem[] = [
-    { key: 'dashboard', label: 'Dashboard', href: '/dashboard', icon: 'dashboard', section: 'Main' },
-    { key: 'workstreams', label: 'Mission Control', href: '/workstreams', icon: 'Activity', section: 'Main' },
-    { key: 'action-center', label: 'Action Center', href: '/action-center', icon: 'ShieldAlert', section: 'Main' },
-    { key: 'chat', label: 'Chat', href: '/chat', icon: 'chat', section: 'Main' },
-    { key: 'knowledge', label: 'Knowledge Base', href: '/knowledge', icon: 'Book', roles: ['admin', 'editor'], section: 'Main' },
-    { key: 'editor', label: 'Document Editor', href: '/editor', icon: 'FileText', section: 'Main' },
-    { key: 'workflow', label: 'Workflow', href: '/workflow', icon: 'Workflow', section: 'Main' },
-    { key: 'settings', label: 'Settings', href: '/settings', icon: 'Settings', section: 'System' },
+    // OPERATIONS
+    { key: 'dashboard', label: 'Dashboard', href: '/dashboard', icon: 'dashboard', section: 'OPERATIONS' },
+    { key: 'workstreams', label: 'Mission Control', href: '/workstreams', icon: 'Activity', section: 'OPERATIONS' },
+    { key: 'action-center', label: 'Action Center', href: '/action-center', icon: 'ShieldAlert', section: 'OPERATIONS' },
+
+    // WORKSPACE
+    { key: 'knowledge', label: 'Knowledge Base', href: '/knowledge', icon: 'Book', roles: ['admin', 'editor'], section: 'WORKSPACE' },
+    { key: 'editor', label: 'Document Editor', href: '/editor', icon: 'FileText', section: 'WORKSPACE' },
+    { key: 'chat', label: 'Chat', href: '/chat', icon: 'chat', section: 'WORKSPACE' },
+
+    // AUTOMATION
+    { key: 'workflow', label: 'Workflow Builder', href: '/workflow', icon: 'Workflow', section: 'AUTOMATION' },
+
+    // SYSTEM
+    { key: 'settings', label: 'Settings', href: '/settings', icon: 'Settings', section: 'SYSTEM' },
 ];
 
 export const userNav: NavItem[] = [

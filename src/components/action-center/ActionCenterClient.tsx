@@ -34,11 +34,18 @@ export function ActionCenterClient() {
     // Bulk Selection State
     const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
 
-    const activeViewTab = searchParams.get('view') || 'explanation';
+    const activeTab = searchParams.get('tab') || 'pending';
+    const payloadTab = searchParams.get('payload') || 'explanation';
 
-    const setViewTab = (tab: string) => {
+    const setTab = (tab: string) => {
         const params = new URLSearchParams(searchParams);
-        params.set('view', tab);
+        params.set('tab', tab);
+        router.replace(`${pathname}?${params.toString()}`);
+    };
+
+    const setPayloadTab = (tab: string) => {
+        const params = new URLSearchParams(searchParams);
+        params.set('payload', tab);
         router.replace(`${pathname}?${params.toString()}`);
     };
 
@@ -53,7 +60,16 @@ export function ActionCenterClient() {
     // Derived Filter & Grouping Logic
     const groupedActions = useMemo(() => {
         const filtered = actions.filter(a => {
-            if (a.status !== 'pending' && a.status !== 'approving' && a.status !== 'rejecting') return false;
+            // Tab filtering
+            if (activeTab === 'pending') {
+                if (!['pending', 'approving', 'rejecting'].includes(a.status)) return false;
+                if (a.riskScore >= 75) return false; // Critical risk goes to Exceptions
+            } else if (activeTab === 'exceptions') {
+                const isException = ['failed', 'expired'].includes(a.status) || (['pending', 'approving', 'rejecting'].includes(a.status) && a.riskScore >= 75);
+                if (!isException) return false;
+            } else if (activeTab === 'review') {
+                if (!['approved', 'rejected', 'executed'].includes(a.status)) return false;
+            }
 
             // Search text
             if (searchQuery) {
@@ -256,6 +272,14 @@ export function ActionCenterClient() {
                         Action Center
                     </h2>
 
+                    <Tabs value={activeTab} onValueChange={setTab} className="w-full mb-4">
+                        <TabsList className="w-full grid grid-cols-3">
+                            <TabsTrigger value="pending" className="text-xs">Pending</TabsTrigger>
+                            <TabsTrigger value="exceptions" className="text-xs">Exceptions</TabsTrigger>
+                            <TabsTrigger value="review" className="text-xs">Review</TabsTrigger>
+                        </TabsList>
+                    </Tabs>
+
                     <div className="relative mb-3">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
                         <Input
@@ -298,7 +322,9 @@ export function ActionCenterClient() {
                                 <span className="absolute inset-0 rounded-full border-2 border-emerald-500/50 animate-ping"></span>
                                 <CheckCircle2 className="w-8 h-8" />
                             </div>
-                            <h3 className="font-semibold text-slate-800 dark:text-slate-200">All Systems Normal</h3>
+                            <h3 className="font-semibold text-slate-800 dark:text-slate-200">
+                                {activeTab === 'pending' ? 'All Systems Normal' : activeTab === 'exceptions' ? 'No Exceptions' : 'No Reviews'}
+                            </h3>
                             <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">No items match this filter.</p>
                         </motion.div>
                     ) : (
@@ -423,7 +449,7 @@ export function ActionCenterClient() {
 
                                 {/* Main Payload Tabs Viewer */}
                                 <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#060D18] shadow-sm overflow-hidden">
-                                    <Tabs value={activeViewTab} onValueChange={setViewTab} className="w-full">
+                                    <Tabs value={payloadTab} onValueChange={setPayloadTab} className="w-full">
                                         <div className="bg-slate-100/50 dark:bg-slate-900/50 px-4 pt-2 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                                             <TabsList className="bg-transparent h-10 p-0">
                                                 {selectedAction.explanation && <TabsTrigger value="explanation" className="data-[state=active]:bg-white dark:data-[state=active]:bg-[#0B1120] rounded-b-none border-t border-x border-transparent data-[state=active]:border-slate-200 dark:data-[state=active]:border-slate-800 pb-2">Explanation</TabsTrigger>}
@@ -508,29 +534,40 @@ export function ActionCenterClient() {
 
                         {/* Sticky Footer Actions */}
                         <div className="absolute bottom-0 w-full px-4 md:px-6 py-4 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/90 dark:bg-[#0B1120]/90 backdrop-blur-xl flex flex-wrap items-center justify-between gap-4 z-40">
-                            <div className="flex items-center gap-2">
-                                <Button variant="outline" className="h-10 text-xs">Request Changes</Button>
-                                <Button variant="outline" className="h-10 text-xs">Escalate</Button>
-                            </div>
+                            {activeTab !== 'review' ? (
+                                <>
+                                    <div className="flex items-center gap-2">
+                                        <Button variant="outline" className="h-10 text-xs">Request Changes</Button>
+                                        <Button variant="outline" className="h-10 text-xs">Escalate</Button>
+                                    </div>
 
-                            <div className="flex items-center gap-3 w-full md:w-auto mt-2 md:mt-0">
-                                <Button
-                                    variant="outline"
-                                    className="text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/30 h-10 w-full md:w-auto"
-                                    onClick={() => handleReject(selectedAction)}
-                                >
-                                    Reject
-                                </Button>
-                                <Button
-                                    className="bg-blue-600 hover:bg-blue-700 text-white shadow-md h-10 w-full md:w-auto gap-2"
-                                    onClick={() => handleApprove(selectedAction)}
-                                    // Guardrail check: Critical Policy fails
-                                    disabled={selectedAction.policyChecks.some(p => p.status === 'fail')}
-                                >
-                                    <CheckCircle2 className="h-4 w-4" />
-                                    Approve & Execute
-                                </Button>
-                            </div>
+                                    <div className="flex items-center gap-3 w-full md:w-auto mt-2 md:mt-0">
+                                        <Button
+                                            variant="outline"
+                                            className="text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 hover:bg-rose-50 dark:hover:bg-rose-950/30 h-10 w-full md:w-auto"
+                                            onClick={() => handleReject(selectedAction)}
+                                        >
+                                            Reject
+                                        </Button>
+                                        <Button
+                                            className="bg-blue-600 hover:bg-blue-700 text-white shadow-md h-10 w-full md:w-auto gap-2"
+                                            onClick={() => handleApprove(selectedAction)}
+                                            // Guardrail check: Critical Policy fails
+                                            disabled={selectedAction.policyChecks.some(p => p.status === 'fail')}
+                                        >
+                                            <CheckCircle2 className="h-4 w-4" />
+                                            Approve & Execute
+                                        </Button>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="flex items-center gap-3 w-full justify-end">
+                                    <Button variant="outline" className="h-10 text-xs gap-2">
+                                        <Undo2 className="h-4 w-4" />
+                                        Revert Changes
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
