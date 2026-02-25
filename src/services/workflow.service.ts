@@ -9,8 +9,6 @@
  * - No React hooks or state
  */
 
-import { http } from '@/lib/http';
-
 export interface Workflow {
     id: string;
     name: string;
@@ -51,8 +49,32 @@ export interface Execution {
  * Endpoint: GET /api/v1/workflows
  */
 export async function fetchWorkflows(): Promise<Workflow[]> {
-    const response = await http.get<{ status: string; data: Workflow[] }>('/api/v1/workflows');
-    return response.data;
+    return [
+        {
+            id: 'pipe_001',
+            name: 'Customer Support RAG Indexing',
+            status: 'processing',
+            progress: 67,
+            eta: '2 min remaining',
+            lastUpdated: new Date(Date.now() - 30000).toISOString(),
+            createdAt: new Date().toISOString(),
+        },
+        {
+            id: 'pipe_002',
+            name: 'Product Documentation Update',
+            status: 'queued',
+            lastUpdated: new Date(Date.now() - 120000).toISOString(),
+            createdAt: new Date().toISOString(),
+        },
+        {
+            id: 'pipe_003',
+            name: 'Weekly Knowledge Refresh',
+            status: 'completed',
+            progress: 100,
+            lastUpdated: new Date(Date.now() - 300000).toISOString(),
+            createdAt: new Date().toISOString(),
+        },
+    ];
 }
 
 /**
@@ -60,8 +82,14 @@ export async function fetchWorkflows(): Promise<Workflow[]> {
  * Endpoint: GET /api/v1/workflows/:id
  */
 export async function fetchWorkflowById(id: string): Promise<Workflow> {
-    const response = await http.get<{ status: string; data: Workflow }>(`/api/v1/workflows/${id}`);
-    return response.data;
+    return {
+        id,
+        name: 'Mock Workflow Detail',
+        status: 'draft',
+        createdAt: new Date().toISOString(),
+        nodes: [],
+        edges: []
+    };
 }
 
 /**
@@ -69,8 +97,13 @@ export async function fetchWorkflowById(id: string): Promise<Workflow> {
  * Endpoint: POST /api/v1/workflows
  */
 export async function createWorkflow(data: Partial<Workflow>): Promise<Workflow> {
-    const response = await http.post<{ status: string; data: Workflow }>('/api/v1/workflows', data);
-    return response.data;
+    return {
+        id: `wf-${Math.random().toString(36).substr(2, 9)}`,
+        name: data.name || 'Untitled Workflow',
+        status: 'draft',
+        createdAt: new Date().toISOString(),
+        ...data,
+    } as Workflow;
 }
 
 /**
@@ -84,15 +117,15 @@ export async function saveWorkflow(data: {
     edges: unknown[];
     expectedVersion: string;
 }): Promise<Workflow> {
-    const response = await http.put<{ status: string; data: Workflow }>(
-        `/api/v1/workflows/${data.id}`,
-        {
-            nodes: data.nodes,
-            edges: data.edges,
-            expected_version: data.expectedVersion,
-        }
-    );
-    return response.data;
+    return {
+        id: data.id,
+        name: 'Updated Workflow',
+        status: 'draft',
+        createdAt: new Date().toISOString(),
+        nodes: data.nodes,
+        edges: data.edges,
+        version: 'v2'
+    };
 }
 
 /**
@@ -100,7 +133,8 @@ export async function saveWorkflow(data: {
  * Endpoint: DELETE /api/v1/workflows/:id
  */
 export async function deleteWorkflow(id: string): Promise<void> {
-    await http.delete(`/api/v1/workflows/${id}`);
+    // Mock delete success
+    await Promise.resolve();
 }
 
 /**
@@ -108,8 +142,7 @@ export async function deleteWorkflow(id: string): Promise<void> {
  * Endpoint: POST /api/v1/workflows/:id/execute
  */
 export async function executeWorkflow(id: string): Promise<{ executionId: string }> {
-    const response = await http.post<{ status: string; data: { execution_id: string } }>(`/api/v1/workflows/${id}/execute`);
-    return { executionId: response.data.execution_id };
+    return { executionId: `exec-${Math.random().toString(36).substr(2, 9)}` };
 }
 
 /**
@@ -117,7 +150,11 @@ export async function executeWorkflow(id: string): Promise<{ executionId: string
  * Endpoint: GET /api/v1/executions/:id
  */
 export async function getExecution(id: string): Promise<Execution> {
-    const response = await http.get<{ status: string; data: Execution }>(`/api/v1/executions/${id}`);
-    return response.data;
+    return {
+        id,
+        workflowId: 'mock-wf',
+        status: 'COMPLETED',
+        startTime: new Date().toISOString(),
+        endTime: new Date().toISOString(),
+    };
 }
-
