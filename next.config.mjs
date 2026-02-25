@@ -91,9 +91,9 @@ const nextConfig = {
                         value: `
                             default-src 'self';
                             script-src 'self' 'unsafe-eval' 'unsafe-inline';
-                            style-src 'self' 'unsafe-inline';
+                            style-src 'self' 'unsafe-inline' https://api.fontshare.com;
                             img-src 'self' blob: data: https:;
-                            font-src 'self';
+                            font-src 'self' https://api.fontshare.com https://cdn.fontshare.com;
                             object-src 'none';
                             base-uri 'self';
                             form-action 'self';
