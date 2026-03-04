@@ -36,7 +36,7 @@ export default async function DashboardLayout({
 
         const responseData = await response.json();
         // Fallback user object structure assuming typical data wrappers.
-        const user = responseData.data?.user || responseData.data || { name: 'Elysian User', email: 'user@elysian.com' };
+        const user = responseData.data?.user || responseData.data || { id: 'usr_fallback', name: 'Elysian User', email: 'user@elysian.com', role: 'viewer', avatar: '' };
 
         return (
             <div className="flex h-[100dvh] w-full overflow-hidden relative z-0 bg-slate-50/50 dark:bg-[#060D18]">

@@ -1,4 +1,3 @@
-```
 "use client";
 
 import React, { useState, useCallback } from "react";
@@ -26,10 +25,10 @@ async function uploadFileViaPresign(
 ): Promise<{ documentId: string }> {
     // Step 1: Get presigned URL from backend
     const presignRes = await fetch(
-        `${ API_BASE } /api/v1 / documents / presign ? filename = ${ encodeURIComponent(file.name) } `,
+        `${API_BASE} /api/v1 / documents / presign ? filename = ${encodeURIComponent(file.name)} `,
         {
             headers: {
-                Authorization: `Bearer ${ authToken } `,
+                Authorization: `Bearer ${authToken} `,
                 'X-Tenant-ID': tenantId,
             },
         }
@@ -50,11 +49,11 @@ async function uploadFileViaPresign(
     onProgress(85); // Upload done
 
     // Step 3: Confirm to backend → triggers Asynq vectorization worker
-    const confirmRes = await fetch(`${ API_BASE } /api/v1 / documents / confirm`, {
+    const confirmRes = await fetch(`${API_BASE} /api/v1 / documents / confirm`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${ authToken } `,
+            Authorization: `Bearer ${authToken} `,
             'X-Tenant-ID': tenantId,
         },
         body: JSON.stringify({ title: file.name, object_key }),
@@ -156,19 +155,19 @@ export function FileUploadZone({ tenantId, authToken, onUploadComplete }: FileUp
                                     "absolute bottom-0 left-0 h-1 transition-all duration-300",
                                     item.status === 'error' ? 'bg-red-500' : 'bg-blue-500',
                                 )}
-                                style={{ width: `${ item.progress }% `, opacity: item.status === 'completed' ? 0 : 1 }}
+                                style={{ width: `${item.progress}%`, opacity: item.status === 'completed' ? 0 : 1 }}
                             />
 
                             <div className="flex items-center gap-4 z-10">
                                 <div className={cn(
                                     "p-2 rounded-lg",
                                     item.status === 'completed' ? "bg-green-100 text-green-600" :
-                                    item.status === 'error' ? "bg-red-100 text-red-500" :
-                                    "bg-blue-50 text-blue-500"
+                                        item.status === 'error' ? "bg-red-100 text-red-500" :
+                                            "bg-blue-50 text-blue-500"
                                 )}>
                                     {item.status === 'completed' ? <CheckCircle2 className="w-5 h-5" /> :
-                                     item.status === 'error' ? <AlertCircle className="w-5 h-5" /> :
-                                     <FileText className="w-5 h-5" />}
+                                        item.status === 'error' ? <AlertCircle className="w-5 h-5" /> :
+                                            <FileText className="w-5 h-5" />}
                                 </div>
                                 <div>
                                     <p className="font-semibold text-sm text-slate-700 dark:text-slate-200">{item.file.name}</p>

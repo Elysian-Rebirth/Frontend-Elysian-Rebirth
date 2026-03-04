@@ -12,7 +12,7 @@ export function Protected({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         // Rehydrate store on mount
-        useAuthStore.persist.rehydrate();
+        (useAuthStore as any).persist?.rehydrate();
         setIsClient(true);
     }, []);
 

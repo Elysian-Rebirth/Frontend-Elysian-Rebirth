@@ -34,11 +34,7 @@ export function KnowledgeHub({ documents = [], isLoading, onUpload }: KnowledgeH
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <FileUploadZone onUpload={(files) => {
-                                if (onUpload && files.length > 0) {
-                                    files.forEach(f => onUpload(f));
-                                }
-                            }} />
+                            <FileUploadZone tenantId="demo-tenant" authToken="demo-token" />
                         </CardContent>
                     </Card>
 

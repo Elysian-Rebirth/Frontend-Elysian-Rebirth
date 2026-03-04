@@ -2,10 +2,10 @@ import { create } from 'zustand';
 import { User } from '@/lib/sdk/schemas/auth.schema';
 
 interface AuthState {
-    user: Pick<User, 'name' | 'email' | 'avatar'> | null;
+    user: Pick<User, 'id' | 'name' | 'email' | 'avatar' | 'role'> | null;
     isAuthenticated: boolean;
     isLoadingSession: boolean;
-    login: (user: Pick<User, 'name' | 'email' | 'avatar'>) => void;
+    login: (user: Pick<User, 'id' | 'name' | 'email' | 'avatar' | 'role'>) => void;
     logout: () => void;
     setLoadingSession: (isLoading: boolean) => void;
 }

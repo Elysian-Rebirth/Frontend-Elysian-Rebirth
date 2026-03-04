@@ -5,7 +5,7 @@ import { useAuthStore } from '@/store/authStore';
 import { User } from '@/lib/sdk/schemas/auth.schema';
 
 interface StoreInitializerProps {
-    user: Pick<User, 'name' | 'email' | 'avatar'>;
+    user: Pick<User, 'id' | 'name' | 'email' | 'avatar' | 'role'>;
 }
 
 /**
