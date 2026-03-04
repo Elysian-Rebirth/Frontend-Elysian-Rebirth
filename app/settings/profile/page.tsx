@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useUserStore } from '@/store/userStore';
+import { useAuthStore } from '@/store/authStore';
+import { userService } from '@/services/user.service';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,28 +17,29 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { profileSchema, type ProfileFormValues } from '@/lib/schemas/profile';
 import { useSettingsUiStore } from '@/store/ui/settingsStore';
 
-// Mock User Data Interface
+// Mock User Data Interface (Leaving bio/phone local since backend doesn't support yet)
 interface UserProfile {
-    name: string;
-    email: string;
-    avatar: string | null;
-    phone: string;
+    firstName: string;
+    lastName: string;
+    jobTitle?: string;
+    phone?: string;
     bio?: string;
+    avatar?: string | null;
 }
 
 export default function ProfilePage() {
-    const { profile, updateProfile } = useUserStore();
+    const { user, login } = useAuthStore();
     const [hasHydrated, setHasHydrated] = useState(false);
 
     const form = useForm<ProfileFormValues>({
         resolver: zodResolver(profileSchema),
         defaultValues: {
-            firstName: profile?.name?.split(' ')[0] || 'Alex',
-            lastName: profile?.name?.split(' ').slice(1).join(' ') || 'Morgan',
-            jobTitle: 'Product Manager', // Mock
-            phone: profile?.phone || '',
-            bio: profile?.bio || '',
-            avatar: profile?.avatar || null,
+            firstName: user?.name?.split(' ')[0] || 'Guest',
+            lastName: user?.name?.split(' ').slice(1).join(' ') || 'User',
+            jobTitle: 'System Administrator', // Mock
+            phone: '',
+            bio: 'Passionate about building great user experiences.',
+            avatar: user?.avatar || null,
             links: []
         }
     });
@@ -48,21 +50,20 @@ export default function ProfilePage() {
 
     // Hydration Fix: Wait for client-side load
     useEffect(() => {
-        useUserStore.persist.rehydrate();
         setHasHydrated(true);
-        if (profile) {
+        if (user) {
             form.reset({
-                firstName: profile?.name?.split(' ')[0] || 'Alex',
-                lastName: profile?.name?.split(' ').slice(1).join(' ') || 'Morgan',
-                jobTitle: 'Product Manager',
-                phone: profile?.phone || '',
-                bio: profile?.bio || '',
-                avatar: profile?.avatar || null,
+                firstName: user?.name?.split(' ')[0] || 'Guest',
+                lastName: user?.name?.split(' ').slice(1).join(' ') || 'User',
+                jobTitle: 'System Administrator',
+                phone: '',
+                bio: 'Passionate about building great user experiences.',
+                avatar: user?.avatar || null,
                 links: []
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [profile]);
+    }, [user]);
 
     // Sync form dirty state with Zustand
     useEffect(() => {
@@ -72,19 +73,36 @@ export default function ProfilePage() {
 
     if (!hasHydrated) return <div className="p-8 text-center text-slate-500">Loading profile settings...</div>;
 
-    const onSubmit = (data: ProfileFormValues) => {
-        const updatedUser: UserProfile = {
-            name: `${data.firstName} ${data.lastName}`.trim(),
-            email: profile?.email || 'alex@elysian.app',
-            avatar: data.avatar || null,
-            phone: data.phone || '',
-            bio: data.bio || ''
-        };
-        updateProfile(updatedUser);
-        form.reset(data); // Resets isDirty state
-        toast.success("Profil berhasil diperbarui", {
-            description: "Data Anda telah tersimpan di sistem lokal.",
-        });
+    const onSubmit = async (data: ProfileFormValues) => {
+        try {
+            const fullName = `${data.firstName} ${data.lastName}`.trim();
+
+            const payload = {
+                name: fullName,
+                avatar_url: data.avatar || undefined
+            };
+
+            const response = await userService.updateProfile(payload);
+
+            // Sync with global auth store
+            if (user) {
+                login({
+                    ...user,
+                    name: response.user.name,
+                    avatar: response.user.avatar_url || null
+                });
+            }
+
+            form.reset(data); // Resets isDirty state
+            toast.success("Profil berhasil diperbarui", {
+                description: "Perubahan telah tersinkronisasi dengan sistem.",
+            });
+        } catch (error) {
+            console.error("Failed to update profile", error);
+            toast.error("Gagal memperbarui profil", {
+                description: "Terjadi kesalahan internal. Silakan coba lagi.",
+            });
+        }
     };
 
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -187,7 +205,7 @@ export default function ProfilePage() {
                                     id="email"
                                     type="email"
                                     disabled
-                                    value={profile?.email || 'alex@elysian.app'}
+                                    value={user?.email || 'guest@elysian.app'}
                                     className="h-10 bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-md text-slate-500"
                                 />
                                 <p className="text-[13px] text-slate-500">Your email address cannot be changed from the profile page.</p>

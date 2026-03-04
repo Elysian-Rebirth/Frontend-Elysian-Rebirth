@@ -60,21 +60,45 @@ export function ChatInterface() {
             timestamp: new Date()
         };
 
-        // Optimistic update
-        setMessages(prev => [...prev, newMessage]);
+        const newMessages = [...messages, newMessage];
+        setMessages(newMessages);
         setIsTyping(true);
 
-        // Simulate backend delay and response
-        setTimeout(() => {
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: newMessages,
+                    mode: selectedMode
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || 'Failed to fetch response');
+            }
+
             const responseMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
-                content: "This is a simulated response demonstrating the optimistic UI and glassmorphism design. In a real implementation, this would connect to your backend inference API.",
+                content: data.reply,
                 timestamp: new Date()
             };
             setMessages(prev => [...prev, responseMessage]);
+        } catch (error: any) {
+            console.error(error);
+            const errorMessage: Message = {
+                id: (Date.now() + 1).toString(),
+                role: 'assistant',
+                content: `Error: ${error.message}`,
+                timestamp: new Date()
+            };
+            setMessages(prev => [...prev, errorMessage]);
+        } finally {
             setIsTyping(false);
-        }, 1500);
+        }
     };
 
     // ── Auto-send from Store (dashboard AiChatWidget) ──

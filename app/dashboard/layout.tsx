@@ -4,6 +4,8 @@ import { Sidebar } from '@/components/Sidebar';
 import { DashboardNavbar } from '@/components/DashboardNavbar';
 import { ElysianGrid } from '@/components/backgrounds/ElysianGrid';
 import { StoreInitializer } from '@/components/providers/StoreInitializer';
+import { SpotlightDriver } from '@/components/onboarding/SpotlightDriver';
+import { OnboardingWidget } from '@/components/onboarding/OnboardingWidget';
 import { config } from '@/lib/config';
 
 export default async function DashboardLayout({
@@ -13,18 +15,20 @@ export default async function DashboardLayout({
 }) {
     const cookieStore = cookies();
     // In Edge middleware, we rely on standard next/server. Here we use next/headers
-    const authCookie = cookieStore.get('auth_token')?.value || cookieStore.get('session')?.value;
+    const refreshCookie = cookieStore.get('refresh_token')?.value || cookieStore.get('auth_token')?.value;
 
-    if (!authCookie) {
+    if (!refreshCookie) {
         redirect('/login');
     }
 
     // Heavy Lifter: Server-to-Server Session Validation
     // This executes securely in the Node environment before the React UI tree ever mounts.
     try {
-        const response = await fetch(`${config.api.baseURL}/api/v1/auth/me`, {
+        const response = await fetch(`${config.api.baseURL}/api/v1/auth/refresh`, {
+            method: 'POST',
             headers: {
-                Cookie: `auth_token=${authCookie}`,
+                'Content-Type': 'application/json',
+                Cookie: `refresh_token=${refreshCookie}`,
             },
             cache: 'no-store', // Crucial: Never cache raw authentication state
         });
@@ -35,8 +39,15 @@ export default async function DashboardLayout({
         }
 
         const responseData = await response.json();
-        // Fallback user object structure assuming typical data wrappers.
-        const user = responseData.data?.user || responseData.data || { id: 'usr_fallback', name: 'Elysian User', email: 'user@elysian.com', role: 'viewer', avatar: '' };
+        const rawUser = responseData.data?.user || responseData.data;
+        const user = rawUser ? {
+            id: rawUser.id,
+            name: rawUser.full_name || rawUser.name || 'Elysian User',
+            email: rawUser.email,
+            role: rawUser.role || 'user',
+            avatar: rawUser.avatar_url || rawUser.avatar || null
+        } : { id: 'usr_fallback', name: 'Elysian User', email: 'user@elysian.com', role: 'user', avatar: null };
+        const accessToken = responseData.data?.access_token || responseData.access_token;
 
         return (
             <div className="flex h-[100dvh] w-full overflow-hidden relative z-0 bg-slate-50/50 dark:bg-[#060D18]">
@@ -44,7 +55,9 @@ export default async function DashboardLayout({
                     Synchronous Client Memory Hydration: 
                     Obliterates the client waterfall by passing the validated SSR user directly into Zustand.
                 */}
-                <StoreInitializer user={user} />
+                <StoreInitializer user={user} accessToken={accessToken} />
+                <SpotlightDriver />
+                <OnboardingWidget />
 
                 <ElysianGrid />
 

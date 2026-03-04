@@ -20,6 +20,7 @@ import { APP_NAME } from '@/lib/config';
 
 import { ElysianTextLogo } from '@/components/ui/elysian-logo';
 import { SocialAuth } from '@/components/auth/social-auth';
+import { authService } from '@/services/auth.service';
 
 // --- LOGIC AREA (TIDAK BERUBAH SAMA SEKALI) ---
 const formSchema = z.object({
@@ -101,16 +102,29 @@ export default function RegisterPage() {
     });
 
 
-
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
-        console.log("Submitting Sanitized Values:", values);
 
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        try {
+            // Mapping frontend schema ke DTO Backend
+            await authService.register({
+                name: values.fullName,
+                email: values.email,
+                password: values.password
+            });
 
-        toast.success('Pendaftaran berhasil! Silakan masuk.');
-        setIsLoading(false);
-        router.push('/login');
+            toast.success('Pendaftaran berhasil! Silakan masuk.');
+            router.push('/login');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.error("Register API Error:", error);
+
+            // Tangkap error duplikasi email dari Backend (HTTP 409 / 400)
+            const errorMessage = error.response?.data?.message || error.message || 'Pendaftaran gagal. Pastikan email belum terdaftar.';
+            toast.error(errorMessage);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (

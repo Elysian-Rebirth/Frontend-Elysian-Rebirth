@@ -29,10 +29,17 @@ class HttpClient {
     }
 
     private setupInterceptors() {
-        // Request interceptor: CSRF Token Injection
+        // Request interceptor: CSRF Token Injection & Bearer Token
         this.client.interceptors.request.use(
             (config) => {
                 const method = config.method?.toLowerCase();
+
+                // Inject Bearer Token from Zustand Store
+                const token = useAuthStore.getState().accessToken;
+                if (token) {
+                    config.headers['Authorization'] = `Bearer ${token}`;
+                }
+
                 // Inject CSRF mitigation for destructive/mutation endpoints
                 if (method && ['post', 'put', 'patch', 'delete'].includes(method)) {
                     const csrfToken = getCookie('XSRF-TOKEN') || getCookie('csrf_token');

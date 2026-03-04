@@ -127,13 +127,24 @@ export function Sidebar() {
                     "flex items-center gap-3 p-2 rounded-lg hover:bg-white/80 dark:hover:bg-slate-800/50 transition-all duration-200 cursor-pointer group border border-transparent hover:border-blue-100 dark:hover:border-blue-900/30 hover:shadow-sm",
                     !isOpen && "justify-center"
                 )}>
-                    <div className="h-8 w-8 min-w-[2rem] rounded-full bg-gradient-to-tr from-blue-400 to-cyan-300 flex items-center justify-center text-white shadow-md">
-                        <User className="h-4 w-4" />
-                    </div>
+                    {user?.avatar ? (
+                        <div className="h-8 w-8 min-w-[2rem] rounded-full overflow-hidden shadow-md">
+                            <Image src={user.avatar} alt={user.name || "User"} width={32} height={32} className="object-cover w-full h-full" />
+                        </div>
+                    ) : (
+                        <div className="h-8 w-8 min-w-[2rem] rounded-full bg-gradient-to-tr from-blue-400 to-cyan-300 flex items-center justify-center text-white shadow-md">
+                            <User className="h-4 w-4" />
+                        </div>
+                    )}
+
                     {isOpen && (
                         <div className="flex-1 overflow-hidden animate-in fade-in duration-300">
-                            <p className="text-sm font-bold text-slate-700 dark:text-slate-200 truncate group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">Admin User</p>
-                            <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate font-medium">admin@elysian.ai</p>
+                            <p className="text-sm font-bold text-slate-700 dark:text-slate-200 truncate group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
+                                {user?.name || 'User'}
+                            </p>
+                            <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate font-medium">
+                                {user?.email || 'user@elysian.app'}
+                            </p>
                         </div>
                     )}
                 </div>

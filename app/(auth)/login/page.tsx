@@ -21,6 +21,7 @@ import RiveLoginAvatar from '@/components/ui/rive-login-avatar';
 
 import { ElysianTextLogo } from '@/components/ui/elysian-logo';
 import { SocialAuth } from '@/components/auth/social-auth';
+import { authService } from '@/services/auth.service';
 
 const formSchema = z.object({
     email: z.string(),
@@ -49,43 +50,48 @@ export default function LoginPage() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
-        setSubmitStatus('idle'); // Reset status
+        setSubmitStatus('idle');
 
         try {
-            // Mock Login Logic
-            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API slightly longer to enjoy animation
+            // Panggilan langsung ke API Backend Go
+            const response = await authService.login({
+                email: values.email,
+                password: values.password
+            });
 
-            // Simple validation simulation
-            if (!values.email || !values.password) {
-                throw new Error("Kredensial tidak valid");
-            }
-
-            const mockUser = {
-                id: 'usr_' + Math.random().toString(36).substr(2, 9),
-                email: values.email || 'demo@elysian.ai',
-                name: 'Demo User',
-                role: 'admin' as const,
+            // Normalisasi data sesuai skema Zustand frontend
+            const userData = {
+                id: response.data.user.id,
+                email: response.data.user.email,
+                name: (response.data.user as any).full_name || response.data.user.name,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                role: (response.data.user as any).role || 'user', // Gunakan role fallback jika backend belum menyediakannya
                 company: 'Elysian Corp',
-                avatar: 'https://github.com/shadcn.png'
+                avatar: (response.data.user as any).avatar_url || (response.data.user as any).avatar || null
             };
 
-            // Call Global Store
-            login(mockUser);
+            // Masukkan data autentik yang valid ke Global Store
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            login(userData as any, (response as any).data?.access_token || (response as any).data?.data?.access_token);
 
             setSubmitStatus('success');
             toast.success('Berhasil masuk!');
 
-            // Allow animation to play success trigger before redirecting
+            // Eksekusi animasi sebelum redirect
             setTimeout(() => {
                 const redirectTo = sessionStorage.getItem('redirect_after_login') || '/dashboard';
                 sessionStorage.removeItem('redirect_after_login');
                 router.push(redirectTo);
             }, 1000);
 
-        } catch (error) {
-            console.error(error);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.error("Login API Error:", error);
             setSubmitStatus('error');
-            toast.error('Gagal masuk. Periksa kembali email dan kata sandi Anda.');
+
+            // Ekstrak pesan error spesifik dari Backend (misal: "invalid password" atau "user not found")
+            const errorMessage = error.response?.data?.message || error.message || 'Gagal masuk. Periksa kembali email dan kata sandi Anda.';
+            toast.error(errorMessage);
         } finally {
             setIsLoading(false);
         }

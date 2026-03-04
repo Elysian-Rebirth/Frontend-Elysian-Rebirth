@@ -6,6 +6,7 @@ import { User } from '@/lib/sdk/schemas/auth.schema';
 
 interface StoreInitializerProps {
     user: Pick<User, 'id' | 'name' | 'email' | 'avatar' | 'role'>;
+    accessToken?: string;
 }
 
 /**
@@ -15,14 +16,17 @@ interface StoreInitializerProps {
  * 
  * This obliterates the Client-Side Waterfall by rendering the UI fully authenticated on Frame 1.
  */
-export function StoreInitializer({ user }: StoreInitializerProps) {
+export function StoreInitializer({ user, accessToken }: StoreInitializerProps) {
     const initialized = useRef(false);
 
     if (!initialized.current) {
-        // Sync injection into Zustand state BEFORE React finishes the initial render cycle
-        useAuthStore.getState().login(user);
-        // Turn off loading flag immediately because SSR already did the work
-        useAuthStore.getState().setLoadingSession(false);
+        // Only hydrate from SSR if the store is completely empty (fresh full-page load)
+        // If it's already authenticated, it means this is a client-side soft navigation
+        // and Next.js might be feeding us stale Router Cache props. Client memory wins.
+        if (!useAuthStore.getState().isAuthenticated) {
+            useAuthStore.getState().login(user, accessToken);
+            useAuthStore.getState().setLoadingSession(false);
+        }
         initialized.current = true;
     }
 
