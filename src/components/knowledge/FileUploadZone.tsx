@@ -1,30 +1,20 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-<<<<<<< Updated upstream
-import { UploadCloud, FileText, X, CheckCircle2, AlertCircle } from "lucide-react";
-=======
-import { UploadCloud, FileText, X, CheckCircle2, Loader2, Database, Cog } from "lucide-react";
->>>>>>> Stashed changes
+import { UploadCloud, FileText, X, CheckCircle2, AlertCircle, Loader2, Database, Cog } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
 import { rag } from "@/lib/sdk/modules/rag";
 
-
 export interface FileUploadZoneProps {
-<<<<<<< Updated upstream
-    tenantId: string;
-    authToken: string;
+    tenantId?: string;
+    authToken?: string;
+    onUpload?: (files: File[], category?: string) => void;
     onUploadComplete?: (documentId: string, filename: string) => void;
 }
 
 type UploadStatus = 'uploading' | 'completed' | 'error';
-type QueueItem = { file: File; progress: number; status: UploadStatus; error?: string };
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:7777';
-=======
-    onUpload?: (files: File[], category?: string) => void;
-}
+type QueueItem = { file: File; progress: number; status: UploadStatus; backendState?: string; error?: string };
 
 const REGULATORY_TAGS = [
     { id: 'pbi', label: '[PBI] Peraturan BI', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' },
@@ -33,101 +23,28 @@ const REGULATORY_TAGS = [
     { id: 'laporan', label: '[Laporan] Data Mentah', color: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300' }
 ];
 
-export function FileUploadZone({ onUpload }: FileUploadZoneProps) {
-    const [uploadQueue, setUploadQueue] = useState<{ file: File; progress: number; status: 'uploading' | 'completed' | 'error' }[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState<string>('laporan');
-
-    const onDrop = useCallback(async (acceptedFiles: File[]) => {
-        // 1. Initial State
-        const newFiles = acceptedFiles.map(file => ({
-            file,
-            progress: 0,
-            status: 'uploading' as const
-        }));
->>>>>>> Stashed changes
-
-async function uploadFileViaPresign(
-    file: File,
-    tenantId: string,
-    authToken: string,
-    onProgress: (p: number) => void
-): Promise<{ documentId: string }> {
-    // Step 1: Get presigned URL from backend
-    const presignRes = await fetch(
-        `${API_BASE} /api/v1 / documents / presign ? filename = ${encodeURIComponent(file.name)} `,
-        {
-            headers: {
-                Authorization: `Bearer ${authToken} `,
-                'X-Tenant-ID': tenantId,
-            },
-        }
-    );
-    if (!presignRes.ok) throw new Error('Failed to get presigned URL');
-    const { presigned_url, object_key } = await presignRes.json();
-
-<<<<<<< Updated upstream
-    onProgress(20); // Presign done
-
-    // Step 2: PUT file directly to S3/MinIO (no server RAM usage)
-    const uploadRes = await fetch(presigned_url, {
-        method: 'PUT',
-        body: file,
-        headers: { 'Content-Type': file.type || 'application/octet-stream' },
-    });
-    if (!uploadRes.ok) throw new Error('S3 upload failed');
-
-    onProgress(85); // Upload done
-
-    // Step 3: Confirm to backend → triggers Asynq vectorization worker
-    const confirmRes = await fetch(`${API_BASE} /api/v1 / documents / confirm`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken} `,
-            'X-Tenant-ID': tenantId,
-        },
-        body: JSON.stringify({ title: file.name, object_key }),
-    });
-    if (!confirmRes.ok) throw new Error('Failed to confirm upload');
-    const { document_id } = await confirmRes.json();
-
-    onProgress(100);
-    return { documentId: document_id };
-}
-
-export function FileUploadZone({ tenantId, authToken, onUploadComplete }: FileUploadZoneProps) {
+export function FileUploadZone({ tenantId, authToken, onUpload, onUploadComplete }: FileUploadZoneProps) {
     const [uploadQueue, setUploadQueue] = useState<QueueItem[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string>('laporan');
 
     const updateItem = (file: File, patch: Partial<QueueItem>) => {
         setUploadQueue(prev => prev.map(q => q.file === file ? { ...q, ...patch } : q));
     };
 
     const onDrop = useCallback(async (acceptedFiles: File[]) => {
-        const newItems: QueueItem[] = acceptedFiles.map(file => ({ file, progress: 0, status: 'uploading' }));
+        // 1. Initial State
+        const newItems: QueueItem[] = acceptedFiles.map(file => ({
+            file,
+            progress: 0,
+            status: 'uploading' as const
+        }));
         setUploadQueue(prev => [...prev, ...newItems]);
 
+        // 2. Process each file
         for (const item of newItems) {
             try {
-                const { documentId } = await uploadFileViaPresign(
-                    item.file,
-                    tenantId,
-                    authToken,
-                    (p) => updateItem(item.file, { progress: p }),
-                );
-                updateItem(item.file, { progress: 100, status: 'completed' });
-                onUploadComplete?.(documentId, item.file.name);
-            } catch (err: unknown) {
-                const message = err instanceof Error ? err.message : 'Upload failed';
-                updateItem(item.file, { status: 'error', error: message });
-            }
-        }
-    }, [tenantId, authToken, onUploadComplete]);
-=======
-        // 2. Process each file
-        for (const item of newFiles) {
-            try {
                 // Step A: Upload and get Document ID (HTTP 202)
-                const res = await rag.uploadDocument(item.file, selectedCategory, "tenant-1");
+                const res = await rag.uploadDocument(item.file, selectedCategory, tenantId || "tenant-1");
                 if (!res.success || !res.documentId) throw new Error("Upload refused");
 
                 const docId = res.documentId;
@@ -140,7 +57,6 @@ export function FileUploadZone({ tenantId, authToken, onUploadComplete }: FileUp
 
                     setUploadQueue(prev => prev.map(q => {
                         if (q.file === item.file) {
-                            // Map backend status to UI status
                             let uiStatus = q.status;
                             if (pollRes.status === 'COMPLETED') uiStatus = 'completed';
                             else if (pollRes.status === 'FAILED') uiStatus = 'error';
@@ -153,16 +69,17 @@ export function FileUploadZone({ tenantId, authToken, onUploadComplete }: FileUp
                     if (pollRes.status === 'COMPLETED') {
                         clearInterval(pollInterval);
                         if (onUpload) onUpload([item.file], selectedCategory);
+                        if (onUploadComplete) onUploadComplete(docId, item.file.name);
                     } else if (pollRes.status === 'FAILED') {
                         clearInterval(pollInterval);
                     }
                 }, 1500); // Poll every 1.5s
-            } catch (err) {
-                setUploadQueue(prev => prev.map(q => q.file === item.file ? { ...q, status: 'error' } : q));
+            } catch (err: unknown) {
+                const message = err instanceof Error ? err.message : 'Upload failed';
+                updateItem(item.file, { status: 'error', error: message });
             }
         }
-    }, [onUpload, selectedCategory]);
->>>>>>> Stashed changes
+    }, [onUpload, onUploadComplete, selectedCategory, tenantId]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
@@ -268,21 +185,15 @@ export function FileUploadZone({ tenantId, authToken, onUploadComplete }: FileUp
                                     <div className="flex items-center gap-2 text-xs text-slate-500">
                                         <span>{(item.file.size / 1024).toFixed(0)} KB</span>
                                         {item.status === 'uploading' && (
-<<<<<<< Updated upstream
-                                            <><span>•</span><span className="text-blue-500 font-medium">Uploading {item.progress}%</span></>
-=======
                                             <>
                                                 <span>•</span>
                                                 <span className="text-blue-500 font-medium flex items-center gap-1">
                                                     <Loader2 className="w-3 h-3 animate-spin" />
-                                                    {/* @ts-ignore - dynamic property from state injection */}
                                                     {item.backendState === 'PARSING' ? 'Extracting Text...' 
-                                                        // @ts-ignore
                                                         : item.backendState === 'VECTORIZING' ? 'Embedding AI...' 
                                                         : 'Uploading...'} {item.progress}%
                                                 </span>
                                             </>
->>>>>>> Stashed changes
                                         )}
                                         {item.status === 'completed' && (
                                             <><span>•</span><span className="text-green-500 font-medium">Queued for indexing</span></>
