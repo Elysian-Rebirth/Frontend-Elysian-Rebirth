@@ -81,7 +81,7 @@ export function Sidebar() {
 
                 {/* Admin Dashboard Link (For Super Admins) */}
                 {isOpen ? (
-                    user?.role === 'admin' && (
+                    (user?.role === 'admin' || user?.role === 'super_admin') && (
                         <Link href="/admin" className="w-full">
                             <Button variant="outline" className="w-full justify-start gap-2 bg-gradient-to-r from-sky-50 to-white dark:from-sky-900/20 dark:to-[#0B1120] hover:from-sky-100 hover:to-sky-50 dark:hover:from-sky-900/40 dark:hover:to-sky-900/20 border-sky-200 dark:border-sky-800 text-sky-700 dark:text-sky-300 h-9 rounded-lg text-sm font-semibold shadow-sm animate-in fade-in duration-300 group">
                                 <Shield className="h-4 w-4 text-sky-500 dark:text-sky-400 group-hover:text-sky-600 dark:group-hover:text-sky-300 transition-colors" />
@@ -90,7 +90,7 @@ export function Sidebar() {
                         </Link>
                     )
                 ) : (
-                    user?.role === 'admin' && (
+                    (user?.role === 'admin' || user?.role === 'super_admin') && (
                         <div className="flex justify-center mb-2">
                             <Link href="/admin">
                                 <Button variant="ghost" size="icon" className="text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-900/30 h-9 w-9 relative group">
