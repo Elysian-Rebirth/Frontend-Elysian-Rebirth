@@ -56,7 +56,7 @@ export function SocialAuth() {
                 variant="outline"
                 disabled={loadingProvider !== null}
                 onClick={() => handleOAuthLogin('google')}
-                className="w-full h-11 bg-white border border-slate-200 shadow-sm text-slate-700 font-medium hover:bg-slate-50 hover:ring-4 hover:ring-blue-500/10 hover:border-blue-300 transition-all"
+                className="w-full h-11 bg-white border border-slate-200 shadow-sm text-slate-900 font-bold hover:bg-slate-50 hover:ring-4 hover:ring-blue-500/10 hover:border-blue-300 transition-all font-sans"
             >
                 {loadingProvider === 'google' ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin text-blue-600" />
@@ -76,7 +76,7 @@ export function SocialAuth() {
                 variant="outline"
                 disabled={loadingProvider !== null}
                 onClick={() => handleOAuthLogin('github')}
-                className="w-full h-11 bg-white border border-slate-200 shadow-sm text-slate-700 font-medium hover:bg-slate-50 hover:ring-4 hover:ring-blue-500/10 hover:border-blue-300 transition-all"
+                className="w-full h-11 bg-white border border-slate-200 shadow-sm text-slate-900 font-bold hover:bg-slate-50 hover:ring-4 hover:ring-blue-500/10 hover:border-blue-300 transition-all font-sans"
             >
                 {loadingProvider === 'github' ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin text-blue-600" />

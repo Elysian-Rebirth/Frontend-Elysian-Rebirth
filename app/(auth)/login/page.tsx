@@ -31,7 +31,6 @@ const formSchema = z.object({
 
 export default function LoginPage() {
     const { login } = useAuthStore();
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     // Rive Animation States
@@ -272,7 +271,7 @@ export default function LoginPage() {
                                         <FormControl>
                                             <Input
                                                 {...field}
-                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900"
+                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900 font-medium"
                                                 placeholder="name@company.com"
                                                 onFocus={() => setIsEmailFocused(true)}
                                                 onBlur={() => setIsEmailFocused(false)}
@@ -297,7 +296,7 @@ export default function LoginPage() {
                                         <FormControl>
                                             <InputPassword
                                                 {...field}
-                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900"
+                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900 font-medium"
                                                 placeholder="••••••••"
                                                 onFocus={() => setIsPasswordFocused(true)}
                                                 onBlur={() => setIsPasswordFocused(false)}
