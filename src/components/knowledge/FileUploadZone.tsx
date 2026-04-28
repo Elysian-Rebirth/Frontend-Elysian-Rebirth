@@ -1,52 +1,85 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { UploadCloud, FileText, X, CheckCircle2 } from "lucide-react";
+import { UploadCloud, FileText, X, CheckCircle2, AlertCircle, Loader2, Database, Cog } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
-
+import { rag } from "@/lib/sdk/modules/rag";
 
 export interface FileUploadZoneProps {
-    onUpload?: (files: File[]) => void;
+    tenantId?: string;
+    authToken?: string;
+    onUpload?: (files: File[], category?: string) => void;
+    onUploadComplete?: (documentId: string, filename: string) => void;
 }
 
-export function FileUploadZone({ onUpload }: FileUploadZoneProps) {
-    const [uploadQueue, setUploadQueue] = useState<{ file: File; progress: number; status: 'uploading' | 'completed' | 'error' }[]>([]);
+type UploadStatus = 'uploading' | 'completed' | 'error';
+type QueueItem = { file: File; progress: number; status: UploadStatus; backendState?: string; error?: string };
 
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        // Optimistic UI: Add files to queue immediately
-        const newFiles = acceptedFiles.map(file => ({
+const REGULATORY_TAGS = [
+    { id: 'pbi', label: '[PBI] Peraturan BI', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' },
+    { id: 'pojk', label: '[POJK] Peraturan OJK', color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' },
+    { id: 'katalog', label: '[Katalog] Harga Daerah', color: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' },
+    { id: 'laporan', label: '[Laporan] Data Mentah', color: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300' }
+];
+
+export function FileUploadZone({ tenantId, authToken, onUpload, onUploadComplete }: FileUploadZoneProps) {
+    const [uploadQueue, setUploadQueue] = useState<QueueItem[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string>('laporan');
+
+    const updateItem = (file: File, patch: Partial<QueueItem>) => {
+        setUploadQueue(prev => prev.map(q => q.file === file ? { ...q, ...patch } : q));
+    };
+
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
+        // 1. Initial State
+        const newItems: QueueItem[] = acceptedFiles.map(file => ({
             file,
             progress: 0,
             status: 'uploading' as const
         }));
+        setUploadQueue(prev => [...prev, ...newItems]);
 
-        setUploadQueue(prev => [...prev, ...newFiles]);
+        // 2. Process each file
+        for (const item of newItems) {
+            try {
+                // Step A: Upload and get Document ID (HTTP 202)
+                const res = await rag.uploadDocument(item.file, selectedCategory, tenantId || "tenant-1");
+                if (!res.success || !res.documentId) throw new Error("Upload refused");
 
-        // Simulate upload progress for MVP visualization
-        newFiles.forEach((item) => {
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 10) + 5;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
+                const docId = res.documentId;
+                const startTime = Date.now();
 
-                    // Update status to completed
-                    setUploadQueue(prev => prev.map(q =>
-                        q.file === item.file ? { ...q, progress: 100, status: 'completed' } : q
-                    ));
+                // Step B: Poll until COMPLETED or FAILED
+                const pollInterval = setInterval(async () => {
+                    const elapsed = Date.now() - startTime;
+                    const pollRes = await rag.pollDocumentStatus(docId, elapsed);
 
-                    // Trigger parent callback eventually
-                    if (onUpload) onUpload([item.file]);
-                } else {
-                    setUploadQueue(prev => prev.map(q =>
-                        q.file === item.file ? { ...q, progress } : q
-                    ));
-                }
-            }, 300); // Fast simulation
-        });
-    }, [onUpload]);
+                    setUploadQueue(prev => prev.map(q => {
+                        if (q.file === item.file) {
+                            let uiStatus = q.status;
+                            if (pollRes.status === 'COMPLETED') uiStatus = 'completed';
+                            else if (pollRes.status === 'FAILED') uiStatus = 'error';
+
+                            return { ...q, progress: pollRes.progress, status: uiStatus, backendState: pollRes.status };
+                        }
+                        return q;
+                    }));
+
+                    if (pollRes.status === 'COMPLETED') {
+                        clearInterval(pollInterval);
+                        if (onUpload) onUpload([item.file], selectedCategory);
+                        if (onUploadComplete) onUploadComplete(docId, item.file.name);
+                    } else if (pollRes.status === 'FAILED') {
+                        clearInterval(pollInterval);
+                    }
+                }, 1500); // Poll every 1.5s
+            } catch (err: unknown) {
+                const message = err instanceof Error ? err.message : 'Upload failed';
+                updateItem(item.file, { status: 'error', error: message });
+            }
+        }
+    }, [onUpload, onUploadComplete, selectedCategory, tenantId]);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
@@ -64,6 +97,29 @@ export function FileUploadZone({ onUpload }: FileUploadZoneProps) {
 
     return (
         <div className="space-y-4">
+            {/* Context/Category Selector */}
+            <div className="space-y-2 mb-4">
+                <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    Document Category / Context
+                </label>
+                <div className="flex flex-wrap gap-2">
+                    {REGULATORY_TAGS.map((tag) => (
+                        <button
+                            key={tag.id}
+                            onClick={() => setSelectedCategory(tag.id)}
+                            className={cn(
+                                "text-xs px-3 py-1.5 rounded-full font-medium transition-all shadow-sm",
+                                selectedCategory === tag.id 
+                                    ? `ring-2 ring-offset-1 ring-blue-500/50 ${tag.color}` 
+                                    : "bg-white dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700 hover:bg-slate-50"
+                            )}
+                        >
+                            {tag.label}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             {/* Drop Zone Area */}
             <div
                 {...getRootProps()}
@@ -98,24 +154,31 @@ export function FileUploadZone({ onUpload }: FileUploadZoneProps) {
                 </div>
             </div>
 
-            {/* Optimistic File List Preview */}
+            {/* File Queue */}
             {uploadQueue.length > 0 && (
                 <div className="grid grid-cols-1 gap-3">
                     {uploadQueue.map((item, idx) => (
                         <div key={idx} className="relative flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm animate-in fade-in slide-in-from-top-2 overflow-hidden">
 
-                            {/* Progress Background Fill */}
+                            {/* Progress bar */}
                             <div
-                                className="absolute bottom-0 left-0 h-1 bg-blue-500 transition-all duration-300"
+                                className={cn(
+                                    "absolute bottom-0 left-0 h-1 transition-all duration-300",
+                                    item.status === 'error' ? 'bg-red-500' : 'bg-blue-500',
+                                )}
                                 style={{ width: `${item.progress}%`, opacity: item.status === 'completed' ? 0 : 1 }}
                             />
 
                             <div className="flex items-center gap-4 z-10">
                                 <div className={cn(
                                     "p-2 rounded-lg",
-                                    item.status === 'completed' ? "bg-green-100 text-green-600" : "bg-blue-50 text-blue-500"
+                                    item.status === 'completed' ? "bg-green-100 text-green-600" :
+                                        item.status === 'error' ? "bg-red-100 text-red-500" :
+                                            "bg-blue-50 text-blue-500"
                                 )}>
-                                    {item.status === 'completed' ? <CheckCircle2 className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
+                                    {item.status === 'completed' ? <CheckCircle2 className="w-5 h-5" /> :
+                                        item.status === 'error' ? <AlertCircle className="w-5 h-5" /> :
+                                            <FileText className="w-5 h-5" />}
                                 </div>
                                 <div>
                                     <p className="font-semibold text-sm text-slate-700 dark:text-slate-200">{item.file.name}</p>
@@ -124,14 +187,19 @@ export function FileUploadZone({ onUpload }: FileUploadZoneProps) {
                                         {item.status === 'uploading' && (
                                             <>
                                                 <span>•</span>
-                                                <span className="text-blue-500 font-medium">Uploading {item.progress}%</span>
+                                                <span className="text-blue-500 font-medium flex items-center gap-1">
+                                                    <Loader2 className="w-3 h-3 animate-spin" />
+                                                    {item.backendState === 'PARSING' ? 'Extracting Text...' 
+                                                        : item.backendState === 'VECTORIZING' ? 'Embedding AI...' 
+                                                        : 'Uploading...'} {item.progress}%
+                                                </span>
                                             </>
                                         )}
                                         {item.status === 'completed' && (
-                                            <>
-                                                <span>•</span>
-                                                <span className="text-green-500 font-medium">Ready to index</span>
-                                            </>
+                                            <><span>•</span><span className="text-green-500 font-medium">Queued for indexing</span></>
+                                        )}
+                                        {item.status === 'error' && (
+                                            <><span>•</span><span className="text-red-500 font-medium">{item.error}</span></>
                                         )}
                                     </div>
                                 </div>

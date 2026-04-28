@@ -1,25 +1,22 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
 import { User } from '@/lib/sdk/schemas/auth.schema';
 
 interface AuthState {
-    user: User | null;
+    user: Pick<User, 'id' | 'name' | 'email' | 'avatar' | 'role'> | null;
+    accessToken: string | null;
     isAuthenticated: boolean;
-    login: (user: User) => void;
+    isLoadingSession: boolean;
+    login: (user: Pick<User, 'id' | 'name' | 'email' | 'avatar' | 'role'>, accessToken?: string) => void;
     logout: () => void;
+    setLoadingSession: (isLoading: boolean) => void;
 }
 
-export const useAuthStore = create<AuthState>()(
-    persist(
-        (set) => ({
-            user: null,
-            isAuthenticated: false,
-            login: (user) => set({ user, isAuthenticated: true }),
-            logout: () => set({ user: null, isAuthenticated: false }),
-        }),
-        {
-            name: 'elysian-auth-storage', // Key di localStorage
-            storage: createJSONStorage(() => localStorage),
-        }
-    )
-);
+export const useAuthStore = create<AuthState>((set) => ({
+    user: null,
+    accessToken: null,
+    isAuthenticated: false,
+    isLoadingSession: true, // Default true while checking HttpOnly cookie via /me
+    login: (user, accessToken) => set({ user, accessToken: accessToken || null, isAuthenticated: true }),
+    logout: () => set({ user: null, accessToken: null, isAuthenticated: false }),
+    setLoadingSession: (isLoadingSession) => set({ isLoadingSession }),
+}));

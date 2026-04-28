@@ -19,6 +19,8 @@ import { checkPasswordStrength } from '@/lib/password-strength';
 import { APP_NAME } from '@/lib/config';
 
 import { ElysianTextLogo } from '@/components/ui/elysian-logo';
+import { SocialAuth } from '@/components/auth/social-auth';
+import { authService } from '@/services/auth.service';
 
 // --- LOGIC AREA (TIDAK BERUBAH SAMA SEKALI) ---
 const formSchema = z.object({
@@ -83,7 +85,6 @@ const formSchema = z.object({
 });
 
 export default function RegisterPage() {
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -100,16 +101,30 @@ export default function RegisterPage() {
     });
 
 
-
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
-        console.log("Submitting Sanitized Values:", values);
 
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        try {
+            // Mapping frontend schema ke DTO Backend
+            await authService.register({
+                name: values.fullName,
+                email: values.email,
+                password: values.password
+            });
 
-        toast.success('Pendaftaran berhasil! Silakan masuk.');
-        setIsLoading(false);
-        router.push('/login');
+            toast.success('Pendaftaran berhasil! Silakan masuk.');
+            localStorage.setItem('elysian-first-login', 'true');
+            window.location.href = '/login';
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.error("Register API Error:", error);
+
+            // Tangkap error duplikasi email dari Backend (HTTP 409 / 400)
+            const errorMessage = error.response?.data?.message || error.message || 'Pendaftaran gagal. Pastikan email belum terdaftar.';
+            toast.error(errorMessage);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -140,6 +155,14 @@ export default function RegisterPage() {
 
                     {/* 2. The Form Card - Clean & Floating */}
                     <div className="w-full bg-white/80 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 p-6 sm:p-8 animate-in zoom-in-95 duration-500">
+                        <SocialAuth />
+
+                        <div className="flex items-center gap-3 my-6">
+                            <hr className="flex-1 border-slate-200" />
+                            <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Atau daftar manual</span>
+                            <hr className="flex-1 border-slate-200" />
+                        </div>
+
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 
@@ -152,7 +175,7 @@ export default function RegisterPage() {
                                             <FormLabel className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Nama Lengkap</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    className="bg-slate-50 border-slate-200 h-12 rounded-xl px-4 text-base focus-visible:ring-2 focus-visible:ring-blue-500/20 transition-all"
+                                                    className="bg-slate-50 border-slate-200 h-12 rounded-xl px-4 text-base text-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500/20 transition-all font-medium"
                                                     placeholder="Aditya..."
                                                     disabled={isLoading}
                                                     {...field}
@@ -176,7 +199,7 @@ export default function RegisterPage() {
                                                 </div>
                                                 <FormControl>
                                                     <Input
-                                                        className="bg-slate-50 border-slate-200 h-12 rounded-xl px-4 text-base focus-visible:ring-2 focus-visible:ring-blue-500/20 transition-all flex-1"
+                                                        className="bg-slate-50 border-slate-200 h-12 rounded-xl px-4 text-base text-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500/20 transition-all font-medium flex-1"
                                                         placeholder="812-3456-7890"
                                                         type="tel"
                                                         disabled={isLoading}
@@ -220,7 +243,7 @@ export default function RegisterPage() {
                                                 <FormLabel className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Password</FormLabel>
                                                 <FormControl>
                                                     <InputPassword
-                                                        className="bg-slate-50 border-slate-200 h-12 rounded-xl px-4 text-base focus-visible:ring-2 focus-visible:ring-blue-500/20 transition-all"
+                                                        className="bg-slate-50 border-slate-200 h-12 rounded-xl px-4 text-base text-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500/20 transition-all font-medium"
                                                         placeholder="Rahasia..."
                                                         disabled={isLoading}
                                                         {...field}
@@ -240,7 +263,7 @@ export default function RegisterPage() {
                                                 <FormLabel className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Ulangi Password</FormLabel>
                                                 <FormControl>
                                                     <InputPassword
-                                                        className="bg-slate-50 border-slate-200 h-12 rounded-xl px-4 text-base focus-visible:ring-2 focus-visible:ring-blue-500/20 transition-all"
+                                                        className="bg-slate-50 border-slate-200 h-12 rounded-xl px-4 text-base text-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500/20 transition-all font-medium"
                                                         placeholder="Konfirmasi..."
                                                         disabled={isLoading}
                                                         {...field}
@@ -261,7 +284,7 @@ export default function RegisterPage() {
                                             <FormLabel className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">Kode Referral (Opsional)</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    className="bg-slate-50 border-slate-200 h-12 rounded-xl px-4 text-base focus-visible:ring-2 focus-visible:ring-blue-500/20 transition-all"
+                                                    className="bg-slate-50 border-slate-200 h-12 rounded-xl px-4 text-base text-slate-900 focus-visible:ring-2 focus-visible:ring-blue-500/20 transition-all font-medium"
                                                     placeholder="ELYSIAN2024"
                                                     disabled={isLoading}
                                                     {...field}
@@ -344,6 +367,14 @@ export default function RegisterPage() {
                         <p className="text-slate-500 text-sm">Start your 14-day free trial with Elysian.</p>
                     </div>
 
+                    <SocialAuth />
+
+                    <div className="flex items-center gap-3 py-2">
+                        <hr className="flex-1 border-slate-200" />
+                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Atau daftar manual</span>
+                        <hr className="flex-1 border-slate-200" />
+                    </div>
+
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 
@@ -357,7 +388,7 @@ export default function RegisterPage() {
                                         <FormControl>
                                             <Input
                                                 disabled={isLoading}
-                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400"
+                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900 font-medium"
                                                 placeholder="cth. Aditya Pangestu"
                                                 {...field}
                                             />
@@ -383,7 +414,7 @@ export default function RegisterPage() {
                                             <FormControl>
                                                 <Input
                                                     disabled={isLoading}
-                                                    className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400"
+                                                    className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900 font-medium"
                                                     placeholder="812..."
                                                     {...field}
                                                 />
@@ -404,7 +435,7 @@ export default function RegisterPage() {
                                         <FormControl>
                                             <Input
                                                 disabled={isLoading}
-                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400"
+                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900 font-medium"
                                                 placeholder="cth. elysian@example.com"
                                                 {...field}
                                             />
@@ -425,7 +456,7 @@ export default function RegisterPage() {
                                             <FormControl>
                                                 <InputPassword
                                                     disabled={isLoading}
-                                                    className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400"
+                                                    className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900 font-medium"
                                                     placeholder="Rahasia..."
                                                     {...field}
                                                 />
@@ -446,7 +477,7 @@ export default function RegisterPage() {
                                             <FormControl>
                                                 <InputPassword
                                                     disabled={isLoading}
-                                                    className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400"
+                                                    className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900 font-medium"
                                                     placeholder="Ulangi..."
                                                     {...field}
                                                 />
@@ -467,7 +498,7 @@ export default function RegisterPage() {
                                         <FormControl>
                                             <Input
                                                 disabled={isLoading}
-                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400"
+                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900 font-medium"
                                                 placeholder="cth. ELYSIAN2024"
                                                 {...field}
                                             />

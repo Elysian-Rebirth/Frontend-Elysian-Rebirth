@@ -60,21 +60,45 @@ export function ChatInterface() {
             timestamp: new Date()
         };
 
-        // Optimistic update
-        setMessages(prev => [...prev, newMessage]);
+        const newMessages = [...messages, newMessage];
+        setMessages(newMessages);
         setIsTyping(true);
 
-        // Simulate backend delay and response
-        setTimeout(() => {
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: newMessages,
+                    mode: selectedMode
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || 'Failed to fetch response');
+            }
+
             const responseMessage: Message = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
-                content: "This is a simulated response demonstrating the optimistic UI and glassmorphism design. In a real implementation, this would connect to your backend inference API.",
+                content: data.reply,
                 timestamp: new Date()
             };
             setMessages(prev => [...prev, responseMessage]);
+        } catch (error: any) {
+            console.error(error);
+            const errorMessage: Message = {
+                id: (Date.now() + 1).toString(),
+                role: 'assistant',
+                content: `Error: ${error.message}`,
+                timestamp: new Date()
+            };
+            setMessages(prev => [...prev, errorMessage]);
+        } finally {
             setIsTyping(false);
-        }, 1500);
+        }
     };
 
     // ── Auto-send from Store (dashboard AiChatWidget) ──
@@ -156,7 +180,7 @@ export function ChatInterface() {
                                 {/* Desktop Logo */}
                                 {/* Mobile Logo (Smaller) */}
                                 <div className="md:hidden h-9 w-9 rounded-lg bg-white/40 dark:bg-slate-800/40 backdrop-blur-lg border border-white/50 dark:border-blue-900/30 flex items-center justify-center shadow-md">
-                                    <NextImage src="/logo.svg" alt="Elysian" width={20} height={20} className="drop-shadow-sm" />
+                                    <NextImage src="/assets/logo.svg" alt="Elysian" width={20} height={20} className="drop-shadow-sm" />
                                 </div>
                                 <div>
                                     <h2 className="text-sm font-bold text-slate-800 dark:text-slate-50 tracking-tight">Elysian Assistant</h2>
@@ -180,7 +204,7 @@ export function ChatInterface() {
                                 {/* Hero Greeting */}
                                 <div className="space-y-4 md:space-y-6 max-w-3xl px-4 mt-4 md:mt-0 text-center">
                                     <div className="h-16 w-16 md:h-24 md:w-24 bg-white/60 dark:bg-slate-800/60 backdrop-blur-2xl border border-white/50 dark:border-slate-700/50 rounded-2xl md:rounded-[2rem] shadow-xl flex items-center justify-center mx-auto mb-6 md:mb-8 transform hover:scale-105 transition-transform duration-500">
-                                        <NextImage src="/logo.svg" alt="Elysian" width={56} height={56} className="drop-shadow-sm w-10 h-10 md:w-14 md:h-14" />
+                                        <NextImage src="/assets/logo.svg" alt="Elysian" width={56} height={56} className="drop-shadow-sm w-10 h-10 md:w-14 md:h-14" />
                                     </div>
 
                                     <div className="space-y-2">

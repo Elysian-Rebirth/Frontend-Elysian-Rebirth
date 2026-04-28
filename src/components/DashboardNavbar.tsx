@@ -21,15 +21,26 @@ import { MobileSidebar } from './MobileSidebar';
 import { NotificationPopover } from '@/components/NotificationPopover';
 import { useUiStore } from '@/store/uiStore';
 import { useSettingsUiStore } from '@/store/ui/settingsStore';
+import { useAuthStore } from '@/store/authStore';
 
-// Placeholder for user avatar
-const UserAvatar = () => (
-    <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-300 p-[2px] cursor-pointer hover:shadow-md transition-shadow">
-        <div className="h-full w-full rounded-full bg-white flex items-center justify-center overflow-hidden">
-            <User className="h-5 w-5 text-blue-400" />
+// User avatar using data from store
+const UserAvatar = ({ avatarUrl }: { avatarUrl?: string | null }) => {
+    if (avatarUrl) {
+        return (
+            <div className="h-9 w-9 rounded-full cursor-pointer hover:shadow-md transition-shadow overflow-hidden border border-slate-200 dark:border-slate-700">
+                <Image src={avatarUrl} alt="User Avatar" width={36} height={36} className="object-cover w-full h-full" />
+            </div>
+        );
+    }
+
+    return (
+        <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-300 p-[2px] cursor-pointer hover:shadow-md transition-shadow">
+            <div className="h-full w-full rounded-full bg-white flex items-center justify-center overflow-hidden">
+                <User className="h-5 w-5 text-blue-400" />
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }) {
     const { theme, resolvedTheme, setTheme } = useTheme();
@@ -37,6 +48,7 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
     const [scrolled, setScrolled] = useState(false);
     const { isGridVisible, toggleGrid } = useUiStore();
     const setReturnUrl = useSettingsUiStore((s) => s.setReturnUrl);
+    const { user, logout } = useAuthStore();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -111,7 +123,7 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                     <div className="flex items-center gap-2 md:hidden">
                         <MobileSidebar />
                         <Link href="/dashboard">
-                            <Image src="/logo.svg" alt="Elysian Logo" width={54} height={54} className="scale-100 drop-shadow-md" />
+                            <Image src="/assets/logo.svg" alt="Elysian Logo" width={54} height={54} className="scale-100 drop-shadow-md" />
                         </Link>
                     </div>
 
@@ -147,7 +159,7 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                         variant="ghost"
                         size="icon"
                         className={cn(
-                            "rounded-full text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all",
+                            "hidden md:flex rounded-full text-slate-500 dark:text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all",
                             scrolled ? "h-9 w-9" : "h-10 w-10 bg-white/50 dark:bg-slate-800/40"
                         )}
                         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -185,36 +197,38 @@ export function DashboardNavbar({ staticMode = false }: { staticMode?: boolean }
                         <NotificationPopover />
                     </div>
 
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                variant="ghost"
-                                className={cn(
-                                    "relative rounded-full border-none p-0 ml-1 hover:bg-transparent focus-visible:ring-0 transition-all",
-                                    scrolled ? "h-9 w-9" : "h-10 w-10 scale-105"
-                                )}
-                            >
-                                <UserAvatar />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56 mt-2" align="end" forceMount>
-                            <DropdownMenuLabel className="font-normal">
-                                <div className="flex flex-col space-y-1">
-                                    <p className="text-sm font-medium leading-none">Administrator</p>
-                                    <p className="text-xs leading-none text-muted-foreground">admin@elysian.ai</p>
-                                </div>
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <Link href="/settings/profile" onClick={() => { if (!pathname.startsWith('/settings')) setReturnUrl(pathname); }}>
-                                <DropdownMenuItem className="cursor-pointer"><User className="mr-2 h-4 w-4" />Profile</DropdownMenuItem>
-                            </Link>
-                            <Link href="/settings" onClick={() => { if (!pathname.startsWith('/settings')) setReturnUrl(pathname); }}>
-                                <DropdownMenuItem className="cursor-pointer"><Settings className="mr-2 h-4 w-4" />Settings</DropdownMenuItem>
-                            </Link>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-red-600"><LogOut className="mr-2 h-4 w-4" />Log out</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="hidden md:block">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    className={cn(
+                                        "relative rounded-full border-none p-0 ml-1 hover:bg-transparent focus-visible:ring-0 transition-all",
+                                        scrolled ? "h-9 w-9" : "h-10 w-10 scale-105"
+                                    )}
+                                >
+                                    <UserAvatar avatarUrl={user?.avatar} />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56 mt-2" align="end" forceMount>
+                                <DropdownMenuLabel className="font-normal">
+                                    <div className="flex flex-col space-y-1">
+                                        <p className="text-sm font-medium leading-none">{user?.name || 'User'}</p>
+                                        <p className="text-xs leading-none text-muted-foreground">{user?.email || 'user@elysian.app'}</p>
+                                    </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <Link href="/settings/profile" onClick={() => { if (!pathname.startsWith('/settings')) setReturnUrl(pathname); }}>
+                                    <DropdownMenuItem className="cursor-pointer"><User className="mr-2 h-4 w-4" />Profile</DropdownMenuItem>
+                                </Link>
+                                <Link href="/settings" onClick={() => { if (!pathname.startsWith('/settings')) setReturnUrl(pathname); }}>
+                                    <DropdownMenuItem className="cursor-pointer"><Settings className="mr-2 h-4 w-4" />Settings</DropdownMenuItem>
+                                </Link>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="text-red-600 cursor-pointer" onClick={() => logout()}><LogOut className="mr-2 h-4 w-4" />Log out</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                 </div>
             </motion.header >
         </div >

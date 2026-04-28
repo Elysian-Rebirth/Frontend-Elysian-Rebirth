@@ -26,8 +26,8 @@ export function ElysianGrid() {
                 className={`absolute inset-0 dark:hidden transition-opacity duration-500 ease-out ${isGridVisible ? 'opacity-100' : 'opacity-0'}`}
                 style={{
                     backgroundImage: `
-                        linear-gradient(to right, rgba(15, 23, 42, 0.05) 1.5px, transparent 1.5px),
-                        linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1.5px, transparent 1.5px)
+                        linear-gradient(to right, rgba(15, 23, 42, 0.025) 1.5px, transparent 1.5px),
+                        linear-gradient(to bottom, rgba(15, 23, 42, 0.025) 1.5px, transparent 1.5px)
                     `,
                     backgroundSize: '24px 24px',
                     maskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)',
@@ -41,8 +41,8 @@ export function ElysianGrid() {
                 className={`absolute inset-0 hidden dark:block transition-opacity duration-500 ease-out ${isGridVisible ? 'opacity-100' : 'opacity-0'}`}
                 style={{
                     backgroundImage: `
-                        linear-gradient(to right, rgba(148, 163, 184, 0.04) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(148, 163, 184, 0.04) 1px, transparent 1px)
+                        linear-gradient(to right, rgba(148, 163, 184, 0.02) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(148, 163, 184, 0.02) 1px, transparent 1px)
                     `,
                     backgroundSize: '32px 32px',
                     maskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)',

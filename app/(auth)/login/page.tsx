@@ -20,6 +20,8 @@ import { useAuthStore } from '@/store/authStore';
 import RiveLoginAvatar from '@/components/ui/rive-login-avatar';
 
 import { ElysianTextLogo } from '@/components/ui/elysian-logo';
+import { SocialAuth } from '@/components/auth/social-auth';
+import { authService } from '@/services/auth.service';
 
 const formSchema = z.object({
     email: z.string(),
@@ -29,7 +31,6 @@ const formSchema = z.object({
 
 export default function LoginPage() {
     const { login } = useAuthStore();
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     // Rive Animation States
@@ -48,43 +49,48 @@ export default function LoginPage() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
-        setSubmitStatus('idle'); // Reset status
+        setSubmitStatus('idle');
 
         try {
-            // Mock Login Logic
-            await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API slightly longer to enjoy animation
+            // Panggilan langsung ke API Backend Go
+            const response = await authService.login({
+                email: values.email,
+                password: values.password
+            });
 
-            // Simple validation simulation
-            if (!values.email || !values.password) {
-                throw new Error("Kredensial tidak valid");
-            }
-
-            const mockUser = {
-                id: 'usr_' + Math.random().toString(36).substr(2, 9),
-                email: values.email || 'demo@elysian.ai',
-                name: 'Demo User',
-                role: 'admin' as const,
+            // Normalisasi data sesuai skema Zustand frontend
+            const userData = {
+                id: response.data.user.id,
+                email: response.data.user.email,
+                name: (response.data.user as any).full_name || response.data.user.name,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                role: (response.data.user as any).role || 'user', // Gunakan role fallback jika backend belum menyediakannya
                 company: 'Elysian Corp',
-                avatar: 'https://github.com/shadcn.png'
+                avatar: (response.data.user as any).avatar_url || (response.data.user as any).avatar || null
             };
 
-            // Call Global Store
-            login(mockUser);
+            // Masukkan data autentik yang valid ke Global Store
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            login(userData as any, (response as any).data?.access_token || (response as any).data?.data?.access_token);
 
             setSubmitStatus('success');
             toast.success('Berhasil masuk!');
 
-            // Allow animation to play success trigger before redirecting
+            // Eksekusi animasi sebelum redirect
             setTimeout(() => {
                 const redirectTo = sessionStorage.getItem('redirect_after_login') || '/dashboard';
                 sessionStorage.removeItem('redirect_after_login');
-                router.push(redirectTo);
+                window.location.href = redirectTo;
             }, 1000);
 
-        } catch (error) {
-            console.error(error);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.error("Login API Error:", error);
             setSubmitStatus('error');
-            toast.error('Gagal masuk. Periksa kembali email dan kata sandi Anda.');
+
+            // Ekstrak pesan error spesifik dari Backend (misal: "invalid password" atau "user not found")
+            const errorMessage = error.response?.data?.message || error.message || 'Gagal masuk. Periksa kembali email dan kata sandi Anda.';
+            toast.error(errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -132,6 +138,14 @@ export default function LoginPage() {
                     <div className="text-center mb-6">
                         <h1 className="text-xl font-bold tracking-tight text-slate-900">Selamat Datang Kembali</h1>
                         <p className="text-slate-500 text-xs font-medium mt-1">Masukkan kredensial Anda untuk mengakses fitur.</p>
+                    </div>
+
+                    <SocialAuth />
+
+                    <div className="flex items-center gap-3 my-6">
+                        <hr className="flex-1 border-slate-200" />
+                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Atau masuk manual</span>
+                        <hr className="flex-1 border-slate-200" />
                     </div>
 
                     <Form {...form}>
@@ -238,6 +252,14 @@ export default function LoginPage() {
                         </p>
                     </div>
 
+                    <SocialAuth />
+
+                    <div className="flex items-center gap-3 py-2">
+                        <hr className="flex-1 border-slate-200" />
+                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Atau masuk manual</span>
+                        <hr className="flex-1 border-slate-200" />
+                    </div>
+
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                             <FormField
@@ -249,7 +271,7 @@ export default function LoginPage() {
                                         <FormControl>
                                             <Input
                                                 {...field}
-                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900"
+                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900 font-medium"
                                                 placeholder="name@company.com"
                                                 onFocus={() => setIsEmailFocused(true)}
                                                 onBlur={() => setIsEmailFocused(false)}
@@ -274,7 +296,7 @@ export default function LoginPage() {
                                         <FormControl>
                                             <InputPassword
                                                 {...field}
-                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900"
+                                                className="h-11 bg-white/50 border-slate-200 focus:bg-white transition-all duration-200 focus:ring-4 focus:ring-blue-500/10 rounded-lg placeholder:text-slate-400 text-slate-900 font-medium"
                                                 placeholder="••••••••"
                                                 onFocus={() => setIsPasswordFocused(true)}
                                                 onBlur={() => setIsPasswordFocused(false)}
