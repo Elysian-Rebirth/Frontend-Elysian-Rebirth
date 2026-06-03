@@ -49,7 +49,7 @@ export const translationsZH: TranslationKeys = {
         heading: '仪表板',
         description: '监控令牌使用情况和管道状态。',
         documents: '文档',
-        apiCalls: 'API 调用',
+        apiCalls: 'LLM 令牌',
         errorRate: '错误率',
         knowledgeHealth: '知识健康度',
         activePipelines: '活动管道',
@@ -102,16 +102,19 @@ export const translationsZH: TranslationKeys = {
     },
     landingNav: {
         products: {
-            title: '产品',
+            title: 'Products',
         },
-        solutions: {
-            title: '解决方案',
+        documentations: {
+            title: 'Documentations',
         },
-        useCases: {
-            title: '应用场景',
+        pricing: {
+            title: 'Pricing',
         },
-        faq: {
-            title: '常见问题',
+        usecases: {
+            title: 'Usecases',
+        },
+        resources: {
+            title: 'Resources',
         },
         actions: {
             startFree: '免费开始',

@@ -19,7 +19,7 @@ export const useAuthStore = create<AuthState>()(
             user: null,
             accessToken: null,
             isAuthenticated: false,
-            isLoadingSession: true, // Default true while checking HttpOnly cookie via /me
+            isLoadingSession: false, // Default false to enable tenant queries on reload
             login: (user, accessToken) => {
                 set({ user, accessToken: accessToken || null, isAuthenticated: true, isLoadingSession: false });
                 clearQueryCache();
@@ -38,6 +38,15 @@ export const useAuthStore = create<AuthState>()(
                 accessToken: state.accessToken,
                 isAuthenticated: state.isAuthenticated,
             }),
+            merge: (persistedState: any, currentState: AuthState) => {
+                if (currentState.isAuthenticated && currentState.accessToken) {
+                    return currentState;
+                }
+                return {
+                    ...currentState,
+                    ...(persistedState as object),
+                };
+            }
         }
     )
 );

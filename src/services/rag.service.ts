@@ -23,7 +23,9 @@ export interface DocumentRecord {
     user_id: string;
     title: string;
     source_uri: string;
-    status: 'pending' | 'processing' | 'ready' | 'failed' | 'queued_failed';
+    status: 'pending' | 'pending_qa' | 'processing' | 'ready' | 'failed' | 'queued_failed';
+    category?: string;
+    ai_analysis_json?: any;
     created_at: string;
     last_updated_at: string;
 }
@@ -180,5 +182,96 @@ export async function listDocuments(
         },
     });
     if (!res.ok) throw new Error(`Failed to list documents: HTTP ${res.status}`);
+    return res.json();
+}
+
+/**
+ * Approves a parsed document that is in 'pending_qa' status.
+ * Triggers backend vectorization.
+ */
+export async function approveDocument(
+    authToken: string,
+    tenantId: string,
+    documentId: string,
+): Promise<{ status: string; document_id: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/v1/documents/${documentId}/approve`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${authToken}`,
+            'X-Tenant-ID': tenantId,
+        },
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body?.error ?? `Approval failed: HTTP ${res.status}`);
+    }
+    return res.json();
+}
+
+/**
+ * Rejects (deletes) a document that is in 'pending_qa' status.
+ */
+export async function rejectDocument(
+    authToken: string,
+    tenantId: string,
+    documentId: string,
+): Promise<{ status: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/v1/documents/${documentId}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${authToken}`,
+            'X-Tenant-ID': tenantId,
+        },
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body?.error ?? `Rejection failed: HTTP ${res.status}`);
+    }
+    return res.json();
+}
+
+/**
+ * Updates the parsed text metadata for a document before approval.
+ */
+export async function updateDocumentText(
+    authToken: string,
+    tenantId: string,
+    documentId: string,
+    extractedText: string,
+): Promise<{ status: string; message: string }> {
+    const res = await fetch(`${API_BASE}/api/v1/documents/${documentId}/text`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+            'X-Tenant-ID': tenantId,
+        },
+        body: JSON.stringify({ extracted_text: extractedText }),
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body?.error ?? `Failed to update document text: HTTP ${res.status}`);
+    }
+    return res.json();
+}
+
+/**
+ * Fetches the raw staging document text and its hash.
+ */
+export async function getDocumentRaw(
+    authToken: string,
+    tenantId: string,
+    documentId: string,
+): Promise<{ id: string; raw_text: string; hash: string }> {
+    const res = await fetch(`${API_BASE}/api/v1/documents/${documentId}/raw`, {
+        headers: {
+            Authorization: `Bearer ${authToken}`,
+            'X-Tenant-ID': tenantId,
+        },
+    });
+    if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body?.error ?? `Failed to fetch raw document: HTTP ${res.status}`);
+    }
     return res.json();
 }

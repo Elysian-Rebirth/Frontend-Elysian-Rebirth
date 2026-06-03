@@ -5,10 +5,12 @@ import { config } from '@/lib/config';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
+        console.log('[BFF Login] Received body from frontend:', JSON.stringify(body));
 
         // MOCK BACKEND FOR HACKATHON DEMO (If Go backend isn't running)
         let response;
         try {
+            console.log('[BFF Login] Forwarding to backend:', `${config.api.baseURL}/api/v1/auth/login`);
             response = await fetch(`${config.api.baseURL}/api/v1/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -37,7 +39,7 @@ export async function POST(request: Request) {
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
                 path: '/',
-                maxAge: 15 * 60 // 15 minutes
+                maxAge: 24 * 60 * 60 // 24 hours
             });
             nextResponse.cookies.set({
                 name: 'refresh_token',
@@ -52,6 +54,7 @@ export async function POST(request: Request) {
         }
 
         const data = await response.json();
+        console.log('[BFF Login] Backend response status:', response.status, 'data:', JSON.stringify(data));
 
         if (!response.ok) {
             return NextResponse.json(data, { status: response.status });
@@ -74,7 +77,7 @@ export async function POST(request: Request) {
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'lax',
                 path: '/',
-                maxAge: 15 * 60 // 15 minutes
+                maxAge: 24 * 60 * 60 // 24 hours
             });
         }
 

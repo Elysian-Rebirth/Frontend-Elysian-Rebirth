@@ -11,10 +11,10 @@
 
 import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchWorkflows, fetchWorkflowById, saveWorkflow as saveWorkflowApi, createWorkflow, publishWorkflow as publishWorkflowApi } from '@/services/workflow.service';
+import { fetchWorkflows, fetchWorkflowById, saveWorkflow as saveWorkflowApi, createWorkflow, publishWorkflow as publishWorkflowApi, deleteWorkflow } from '@/services/workflow.service';
 export { fetchWorkflowById };
 
-import { useWorkflowStore } from '@/store/workflowStore';
+import { useWorkflowStore } from '@/components/workflow/store';
 import { activityKeys } from '@/queries/activity.queries';
 import { toast } from 'sonner';
 import type { Node, Edge } from 'reactflow';
@@ -75,9 +75,11 @@ export function useWorkflowLoader(workflowId: string | null) {
     useEffect(() => {
         if (query.data) {
             const workflow = query.data;
+            const nodes = workflow.graph?.nodes ?? workflow.nodes ?? [];
+            const edges = workflow.graph?.edges ?? workflow.edges ?? [];
             setFromServer(
-                (workflow.nodes ?? []) as Node[],
-                (workflow.edges ?? []) as Edge[],
+                nodes as Node[],
+                edges as Edge[],
                 workflow.version ?? ''
             );
         }
@@ -181,3 +183,24 @@ export function useCreateWorkflow() {
         },
     });
 }
+
+/**
+ * useDeleteWorkflow — Delete a workflow/pipeline
+ */
+export function useDeleteWorkflow() {
+    const queryClient = useQueryClient();
+    const { currentTenant } = useTenant();
+    const tenantId = currentTenant?.id || '';
+
+    return useMutation({
+        mutationFn: (id: string) => deleteWorkflow(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: workflowKeys.lists(tenantId) });
+            toast.success('Pipeline deleted successfully');
+        },
+        onError: () => {
+            toast.error('Failed to delete pipeline');
+        },
+    });
+}
+

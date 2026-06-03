@@ -69,8 +69,9 @@ interface NotificationState {
     unreadCount: () => number;
 
     // Action Center Ops
-    approveAction: (id: string) => void;
-    rejectAction: (id: string) => void;
+    fetchActions: () => Promise<void>;
+    approveAction: (id: string, justification?: string) => void;
+    rejectAction: (id: string, justification?: string) => void;
     undoAction: (id: string) => void;
     refreshSLAStatuses: () => void; // Called periodically to lock expired tasks
 }
@@ -216,40 +217,249 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
 
     unreadCount: () => get().actions.filter((a) => !a.isRead && ['pending', 'approving', 'rejecting', 'failed'].includes(a.status)).length,
 
-    approveAction: (id) => {
-        set((state) => ({
-            actions: state.actions.map((a) =>
-                a.id === id ? { ...a, status: 'approving' } : a
-            )
-        }));
+    fetchActions: async () => {
+        try {
+            const res = await fetch('/api/proxy/action-center/items');
+            if (res.ok) {
+                const json = await res.json();
+                if (json.status === 'success' && json.data && json.data.length > 0) {
+                    const mappedActions = json.data.map((item: any) => {
+                        let metadata: any = {};
+                        try {
+                            metadata = typeof item.metadata_json === 'string'
+                                ? JSON.parse(item.metadata_json)
+                                : item.metadata_json;
+                        } catch (e) {
+                            metadata = {};
+                        }
 
-        // Store-managed timer for "Undo" window
-        setTimeout(() => {
-            const currentAction = get().actions.find(a => a.id === id);
-            // Only resolve if it hasn't been undone
-            if (currentAction && currentAction.status === 'approving') {
-                set((state) => ({
-                    actions: state.actions.map(a => a.id === id ? { ...a, status: 'approved' } : a)
-                }));
+                        const severity = metadata.severity || 'medium';
+                        const type = item.type || 'DATA_MUTATION';
+                        const blastRadius = metadata.blastRadius || { scope: 'staging' };
+                        const policyChecks = metadata.policyChecks || [];
+
+                        return {
+                            id: item.id,
+                            title: metadata.title || item.description || 'System Request',
+                            type: type,
+                            severity: severity,
+                            sourceAgent: metadata.sourceAgent || 'Orchestrator',
+                            tenant: metadata.tenant || 'Elysian Core',
+                            payloadType: metadata.payloadType || 'json',
+                            payload: metadata.payload || {},
+                            summary: item.description,
+                            explanation: metadata.explanation || '',
+                            blastRadius: blastRadius,
+                            target: metadata.target || { system: 'db' },
+                            policyChecks: policyChecks,
+                            riskScore: computeRisk(severity, type, blastRadius, policyChecks),
+                            createdAt: item.created_at || new Date().toISOString(),
+                            slaDueAt: metadata.slaDueAt || new Date(new Date(item.created_at).getTime() + 1000 * 60 * 60 * 2).toISOString(),
+                            expiresAt: metadata.expiresAt || new Date(new Date(item.created_at).getTime() + 1000 * 60 * 60 * 24).toISOString(),
+                            timelineEvents: metadata.timelineEvents || [
+                                { at: item.created_at, actor: 'System', type: 'CREATED', note: 'Created payload for review' }
+                            ],
+                            isRead: false,
+                            status: item.status === 'pending' ? 'pending' : (item.status === 'resolved' ? 'approved' : 'failed')
+                        };
+                    });
+                    set({ actions: mappedActions });
+                    return;
+                }
             }
-        }, 3000);
+        } catch (e) {
+            console.error("Failed to fetch action items:", e);
+        }
+        // Fallback to INITIAL_ACTIONS if API is empty or errors
+        set((state) => {
+            if (state.actions.length === 0 || state.actions === INITIAL_ACTIONS) {
+                const clientNow = new Date().getTime();
+                const adjustedActions = INITIAL_ACTIONS.map(action => {
+                    const offset = action.id === 'msg-audit-001' ? 1000 * 60 * 30 : 1000 * 60 * 5; // 30 mins ago vs 5 mins ago
+                    const dueOffset = action.id === 'msg-audit-001' ? 1000 * 60 * 60 * 2 : 1000 * 60 * 15; // 2 hours vs 15 mins
+                    const expOffset = action.id === 'msg-audit-001' ? 1000 * 60 * 60 * 24 : 1000 * 60 * 60; // 24 hours vs 1 hour
+                    return {
+                        ...action,
+                        createdAt: new Date(clientNow - offset).toISOString(),
+                        slaDueAt: new Date(clientNow + dueOffset).toISOString(),
+                        expiresAt: new Date(clientNow + expOffset).toISOString(),
+                        timelineEvents: action.timelineEvents.map(e => ({
+                            ...e,
+                            at: new Date(clientNow - offset).toISOString()
+                        }))
+                    };
+                });
+                return { actions: adjustedActions };
+            }
+            return {};
+        });
     },
 
-    rejectAction: (id) => {
+    approveAction: async (id, justification) => {
         set((state) => ({
-            actions: state.actions.map((a) =>
-                a.id === id ? { ...a, status: 'rejecting' } : a
-            )
+            actions: state.actions.map((a) => {
+                if (a.id === id) {
+                    const newEvents = [...a.timelineEvents];
+                    if (justification) {
+                        newEvents.push({
+                            at: new Date().toISOString(),
+                            actor: 'Security Compliance Office',
+                            type: 'OVERRIDE',
+                            note: `SecOps human override authorized. Reason: ${justification}`
+                        });
+                    }
+                    return { ...a, status: 'approving', timelineEvents: newEvents };
+                }
+                return a;
+            })
         }));
 
-        setTimeout(() => {
-            const currentAction = get().actions.find(a => a.id === id);
-            if (currentAction && currentAction.status === 'rejecting') {
+        try {
+            const res = await fetch(`/api/proxy/action-center/items/${id}/resolve`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ justification: justification || 'SecOps approved override.' })
+            });
+
+            if (res.ok) {
                 set((state) => ({
-                    actions: state.actions.map(a => a.id === id ? { ...a, status: 'rejected' } : a)
+                    actions: state.actions.map(a => {
+                        if (a.id === id) {
+                            return {
+                                ...a,
+                                status: 'approved',
+                                timelineEvents: [
+                                    ...a.timelineEvents,
+                                    { at: new Date().toISOString(), actor: 'Orchestrator', type: 'APPROVED', note: 'Action approved and queued for worker execution' }
+                                ]
+                            };
+                        }
+                        return a;
+                    })
                 }));
+            } else {
+                // local simulation fallback for UI demo (INITIAL_ACTIONS)
+                setTimeout(() => {
+                    set((state) => ({
+                        actions: state.actions.map(a => {
+                            if (a.id === id && a.status === 'approving') {
+                                return {
+                                    ...a,
+                                    status: 'approved',
+                                    timelineEvents: [
+                                        ...a.timelineEvents,
+                                        { at: new Date().toISOString(), actor: 'Orchestrator', type: 'APPROVED', note: 'Action approved locally (mock fallback)' }
+                                    ]
+                                };
+                            }
+                            return a;
+                        })
+                    }));
+                }, 3000);
             }
-        }, 3000);
+        } catch (e) {
+            console.error("Failed to approve action:", e);
+            setTimeout(() => {
+                set((state) => ({
+                    actions: state.actions.map(a => {
+                        if (a.id === id && a.status === 'approving') {
+                            return {
+                                ...a,
+                                status: 'approved',
+                                timelineEvents: [
+                                    ...a.timelineEvents,
+                                    { at: new Date().toISOString(), actor: 'Orchestrator', type: 'APPROVED', note: 'Action approved locally (mock fallback)' }
+                                ]
+                            };
+                        }
+                        return a;
+                    })
+                }));
+            }, 3000);
+        }
+    },
+
+    rejectAction: async (id, justification) => {
+        set((state) => ({
+            actions: state.actions.map((a) => {
+                if (a.id === id) {
+                    const newEvents = [...a.timelineEvents];
+                    if (justification) {
+                        newEvents.push({
+                            at: new Date().toISOString(),
+                            actor: 'Security Compliance Office',
+                            type: 'REJECTION_NOTE',
+                            note: `Reason: ${justification}`
+                        });
+                    }
+                    return { ...a, status: 'rejecting', timelineEvents: newEvents };
+                }
+                return a;
+            })
+        }));
+
+        try {
+            const res = await fetch(`/api/proxy/action-center/items/${id}/resolve`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ justification: justification || 'SecOps rejected.' })
+            });
+
+            if (res.ok) {
+                set((state) => ({
+                    actions: state.actions.map(a => {
+                        if (a.id === id) {
+                            return {
+                                ...a,
+                                status: 'rejected',
+                                timelineEvents: [
+                                    ...a.timelineEvents,
+                                    { at: new Date().toISOString(), actor: 'Orchestrator', type: 'REJECTED', note: 'Action rejected by human operator' }
+                                ]
+                            };
+                        }
+                        return a;
+                    })
+                }));
+            } else {
+                setTimeout(() => {
+                    set((state) => ({
+                        actions: state.actions.map(a => {
+                            if (a.id === id && a.status === 'rejecting') {
+                                return {
+                                    ...a,
+                                    status: 'rejected',
+                                    timelineEvents: [
+                                        ...a.timelineEvents,
+                                        { at: new Date().toISOString(), actor: 'Orchestrator', type: 'REJECTED', note: 'Action rejected locally (mock fallback)' }
+                                    ]
+                                };
+                            }
+                            return a;
+                        })
+                    }));
+                }, 3000);
+            }
+        } catch (e) {
+            console.error("Failed to reject action:", e);
+            setTimeout(() => {
+                set((state) => ({
+                    actions: state.actions.map(a => {
+                        if (a.id === id && a.status === 'rejecting') {
+                            return {
+                                ...a,
+                                status: 'rejected',
+                                timelineEvents: [
+                                    ...a.timelineEvents,
+                                    { at: new Date().toISOString(), actor: 'Orchestrator', type: 'REJECTED', note: 'Action rejected locally (mock fallback)' }
+                                ]
+                            };
+                        }
+                        return a;
+                    })
+                }));
+            }, 3000);
+        }
     },
 
     undoAction: (id) => {

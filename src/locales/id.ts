@@ -49,7 +49,7 @@ export const translationsID: TranslationKeys = {
         heading: 'Dasbor',
         description: 'Monitor penggunaan token dan status pipeline.',
         documents: 'Dokumen',
-        apiCalls: 'Panggilan API',
+        apiCalls: 'Token LLM',
         errorRate: 'Tingkat Error',
         knowledgeHealth: 'Kesehatan Pengetahuan',
         activePipelines: 'Pipeline Aktif',
@@ -102,16 +102,19 @@ export const translationsID: TranslationKeys = {
     },
     landingNav: {
         products: {
-            title: 'Fitur Utama',
+            title: 'Products',
         },
-        solutions: {
-            title: 'Teknologi',
+        documentations: {
+            title: 'Documentations',
         },
-        useCases: {
-            title: 'Pengguna',
+        pricing: {
+            title: 'Pricing',
         },
-        faq: {
-            title: 'FAQ',
+        usecases: {
+            title: 'Usecases',
+        },
+        resources: {
+            title: 'Resources',
         },
         actions: {
             startFree: 'Mulai Audit',

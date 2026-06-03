@@ -13,6 +13,9 @@ import {
 import { WorkflowState, WorkflowMeta, ExecutionState, UIState, WorkflowNodeData, NodeStatus } from './types';
 import { executeWorkflow, getExecution } from '@/services/workflow.service';
 import { toast } from 'sonner';
+import { createEncryptedIdbStorage } from '@/lib/storage-engine';
+
+const STORAGE_SECRET = process.env.NEXT_PUBLIC_STORAGE_KEY ?? 'DEV_ONLY_STATIC_KEY';
 
 
 // Initial State
@@ -63,37 +66,50 @@ export const useWorkflowStore = create<WorkflowState>()(
             // Layer 3: Execution
             execution: initialExecution,
 
+            // OCC and Auto-save flags
+            isDirty: false,
+            serverVersion: '',
+
             // --- Actions ---
 
-            setNodes: (nodes) => set({ nodes }),
-            setEdges: (edges) => set({ edges }),
+            setNodes: (nodes) => set({ nodes, isDirty: true }),
+            setEdges: (edges) => set({ edges, isDirty: true }),
 
             onNodesChange: (changes: NodeChange[]) => {
-                // When nodes change (dragged, selected), we update state.
+                const hasStructuralChange = changes.some(
+                    (c) => c.type === 'position' || c.type === 'remove' || c.type === 'add'
+                );
                 set({
                     nodes: applyNodeChanges(changes, get().nodes),
-                    meta: { ...get().meta, status: 'draft' } // Mark as draft on change
+                    meta: hasStructuralChange ? { ...get().meta, status: 'draft' } : get().meta,
+                    isDirty: get().isDirty || hasStructuralChange
                 });
             },
 
             onEdgesChange: (changes: EdgeChange[]) => {
+                const hasStructuralChange = changes.some(
+                    (c) => c.type === 'remove' || c.type === 'add' || c.type === 'reset'
+                );
                 set({
                     edges: applyEdgeChanges(changes, get().edges),
-                    meta: { ...get().meta, status: 'draft' }
+                    meta: hasStructuralChange ? { ...get().meta, status: 'draft' } : get().meta,
+                    isDirty: get().isDirty || hasStructuralChange
                 });
             },
 
             onConnect: (connection: Connection) => {
                 set({
                     edges: addEdge(connection, get().edges),
-                    meta: { ...get().meta, status: 'draft' }
+                    meta: { ...get().meta, status: 'draft' },
+                    isDirty: true
                 });
             },
 
             addNode: (node: Node<WorkflowNodeData>) => {
                 set({
                     nodes: [...get().nodes, node],
-                    meta: { ...get().meta, status: 'draft' }
+                    meta: { ...get().meta, status: 'draft' },
+                    isDirty: true
                 });
             },
 
@@ -154,7 +170,8 @@ export const useWorkflowStore = create<WorkflowState>()(
                         }
                         return node;
                     }),
-                    meta: { ...get().meta, status: 'draft' }
+                    meta: { ...get().meta, status: 'draft' },
+                    isDirty: true
                 });
             },
 
@@ -268,29 +285,29 @@ export const useWorkflowStore = create<WorkflowState>()(
                         const timestamp = new Date().toISOString();
                         let logsToAdd: { level: string; message: string }[] = [];
 
-                        if (nodeType === 'start') {
+                        if (nodeType === 'start' || nodeType === 'startTrigger') {
                             logsToAdd = [
                                 { level: 'INFO', message: 'Start Trigger activated. Capturing initial execution context.' },
                                 { level: 'INFO', message: 'Payload context: {"user_id": "68b02f86", "user_role": "admin", "tenant": "Workspace A", "channel": "testing_portal"}' }
                             ];
-                        } else if (nodeType === 'web_scraper' || nodeType === 'data_ingestion' || nodeType === 'rag_knowledge' || nodeType === 'knowledge_source') {
+                        } else if (nodeType === 'web_scraper' || nodeType === 'data_ingestion' || nodeType === 'rag_knowledge' || nodeType === 'knowledge_source' || nodeType === 'rag_retriever') {
                             logsToAdd = [
                                 { level: 'INFO', message: `Querying internal knowledge database for resource matching: "${nodeLabel}"` },
                                 { level: 'INFO', message: 'Successfully fetched reference content (size: 4.8 KB, format: markdown)' }
                             ];
-                        } else if (nodeType === 'sql_connector') {
+                        } else if (nodeType === 'sql_connector' || nodeType === 'sqlConnector') {
                             logsToAdd = [
                                 { level: 'INFO', message: 'Establishing connection to DB pool (Postgres localhost:5432)...' },
                                 { level: 'INFO', message: 'Query executed: SELECT email, full_name, role FROM users LIMIT 5' },
                                 { level: 'INFO', message: 'Retrieved 5 records from database cluster.' }
                             ];
-                        } else if (nodeType === 'fds_fraud') {
+                        } else if (nodeType === 'fds_fraud' || nodeType === 'fraudVerify' || nodeType === 'guardrail') {
                             logsToAdd = [
                                 { level: 'INFO', message: 'Triggering FDS (Fraud Detection System) compliance scan.' },
                                 { level: 'WARN', message: 'Scan Warning: Transaction rate anomaly detected on user_id "68b02f86"' },
                                 { level: 'INFO', message: 'FDS status: PASSED WITH WARNINGS (Risk level: 0.35)' }
                             ];
-                        } else if (nodeType === 'agent' || nodeType === 'llm' || nodeType === 'reasoning') {
+                        } else if (nodeType === 'agent' || nodeType === 'llm' || nodeType === 'reasoning' || nodeType === 'llm_agent') {
                             logsToAdd = [
                                 { level: 'INFO', message: 'Prompting Reasoning model with context data...' },
                                 { level: 'INFO', message: 'Model response parsed successfully. Tokens spent: 1,940 prompt / 420 completion.' }
@@ -467,6 +484,45 @@ export const useWorkflowStore = create<WorkflowState>()(
                 });
             },
 
+            setDirty: (dirty) => set({ isDirty: dirty }),
+
+            setFromServer: (nodes, edges, version) => {
+                set({
+                    nodes,
+                    edges,
+                    isDirty: false,
+                    serverVersion: version,
+                    meta: {
+                        ...get().meta,
+                        version: version || '1.0.0',
+                        status: get().meta.status === 'published' ? 'published' : 'draft',
+                    }
+                });
+            },
+
+            resetWorkflow: () => {
+                set({
+                    nodes: initialNodes,
+                    edges: [],
+                    isDirty: false,
+                    serverVersion: '',
+                    meta: initialMeta,
+                    execution: initialExecution,
+                    ui: initialUI
+                });
+            },
+
+            setWorkflowId: (id) => {
+                if (id) {
+                    set({
+                        meta: {
+                            ...get().meta,
+                            workflowId: id
+                        }
+                    });
+                }
+            },
+
             // Computed Getters (Mocking them as properties for now, ideally strictly typed getters)
             get selectedNode() {
                 const state = get();
@@ -475,12 +531,16 @@ export const useWorkflowStore = create<WorkflowState>()(
         }),
         {
             name: 'elysian-workflow-storage',
-            storage: createJSONStorage(() => localStorage),
+            storage: createEncryptedIdbStorage<WorkflowState>({
+                key: 'elysian-workflow',
+                secret: STORAGE_SECRET,
+            }),
             partialize: (state) => ({
                 nodes: state.nodes,
                 edges: state.edges,
-                meta: state.meta
-            }),
+                meta: state.meta,
+                serverVersion: state.serverVersion,
+            }) as unknown as WorkflowState,
         }
     )
 );
